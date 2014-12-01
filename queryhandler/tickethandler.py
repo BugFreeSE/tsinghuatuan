@@ -239,6 +239,13 @@ def book_ticket(user, district, now):
 def check_cancel_ticket(msg):
     return handler_check_text_header(msg, ['退票'])
 
+def cancel_ticket(ticket, districts):
+    with transaction.atomic():
+        ticket.status = 0
+        ticket.save()
+        districts.update(remain_tickets=F('remain_tickets') + 1)
+
+districts = None
 
 def response_cancel_ticket(msg):
     fromuser = get_msg_from(msg)
@@ -246,42 +253,22 @@ def response_cancel_ticket(msg):
     if user is None:
         return get_reply_text_xml(msg, get_text_unbinded_cancel_ticket(fromuser))
 
-    received_msg = get_msg_content(msg).split()
-    if len(received_msg) > 1:
-        key = received_msg[1]
-    else:
-        return get_reply_text_xml(msg, get_text_usage_cancel_ticket())
-
     now = datetime.datetime.fromtimestamp(get_msg_create_time(msg))
-    tickets = Ticket.objects.filter(unique_id='hQeXPjqHVHx4DXMJjr2U6nAw1GxcVnJi')
+    global districts
+    if districts is None:
+        districts = District.objects.select_for_update().filter(id=11)
+    district = districts[0]
+    tickets = Ticket.objects.filter(stu_id=user.stu_id, district=district, status=1)
 
     if not tickets.exists():
         return get_reply_text_xml(msg, get_text_no_such_activity('退票'))
     else:
         ticket = tickets[0]
         if ticket.district.activity.book_end >= now:
-            ticket.status = 0
-            ticket.save()
-            District.objects.filter(id=ticket.district.id).update(remain_tickets=F('remain_tickets') + 1)
+            cancel_ticket(tickets[0], districts)
             return get_reply_text_xml(msg, get_text_success_cancel_ticket())
         else:
             return get_reply_text_xml(msg, get_text_timeout_cancel_ticket())
-            # if not activities.exists():
-            #     return get_reply_text_xml(msg, get_text_no_such_activity('退票'))
-            # else:
-            #     activity = activities[0]
-            #     if activity.book_end >= now:
-            #         tickets = Ticket.objects.filter(stu_id=user.stu_id, activity=activity, status=1)
-            #         if tickets.exists():   # user has already booked the activity
-            #             ticket = tickets[0]
-            #             ticket.status = 0
-            #             ticket.save()
-            #             Activity.objects.filter(id=activity.id).update(remain_tickets=F('remain_tickets')+1)
-            #             return get_reply_text_xml(msg, get_text_success_cancel_ticket())
-            #         else:
-            #             return get_reply_text_xml(msg, get_text_fail_cancel_ticket())
-            #     else:
-            #         return get_reply_text_xml(msg, get_text_timeout_cancel_ticket())
 
 
 #check book event
