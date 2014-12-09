@@ -119,3 +119,59 @@ a.show-more, a.show-more:visited{
 .candidate-description {
 	text-align: justify;
 }
+
+.avatar{
+    height:40px;
+    width:40px;
+    border-radius:20px;
+}
+.S_line1 {
+    border-left-width: 1px;
+    border-color: #d9d9d9;
+}
+.S_txt1 {
+    color: #333;
+    text-decoration: none;
+}
+
+.tb_counter {
+    width: 100%;
+    margin-left: -1px;
+    line-height: 10px;
+    text-align: center;
+    table-layout: fixed;
+    font-size: small;
+    font-weight: bold;
+}
+
+table td {
+    display: table-cell;
+    vertical-align: inherit;
+}
+
+table td .t_link {
+    display: block;
+}
+
+table td strong {
+    display: block;
+    margin: 2px 0 6px 0;
+    font-family: Tahoma;
+    font-weight: 400;
+}
+
+.W_f14 {
+    font-size: 14px;
+}
+
+.highlight{
+    color:lightskyblue;
+}
+
+.vote_info_content{
+    margin: 10px 10px;
+}
+
+.shadow{
+	box-shadow: 2px 2px 2px gray;
+}
