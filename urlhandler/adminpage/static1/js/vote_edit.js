@@ -786,35 +786,36 @@ function putCandidateImg(node){
     $img.attr('src', getImgURL(node));
 }
 
-var vote_activity = {
-    'id':0,
-    'name': '看蓝猫',
-    'key':'klm',
-    'start_time':'2014-12-01 9:40',
-    'end_time':'2014-12-01 9:40',
-    'act_pic':'../../static1/img/default.png/',
-    'description':'description',
-    'candidates':[
-        {
-            'no':1,
-            'pic':'',
-            'name':'hxr0',
-            'description':'des0'
-        },
-        {
-            'no':2,
-            'pic':'',
-            'name':'hxr1',
-            'description':'des1'
-        },
-        {
-            'no':3,
-            'pic':'',
-            'name':'hxr2',
-            'description':'des2'
-        }
-    ]
-}
+var vote_activity;
+//var vote_activity = {
+//    'id':0,
+//    'name': '看蓝猫',
+//    'key':'klm',
+//    'start_time':'2014-12-01 9:40',
+//    'end_time':'2014-12-01 9:40',
+//    'act_pic':'../../static1/img/default.png/',
+//    'description':'description',
+//    'candidates':[
+//        {
+//            'no':1,
+//            'pic':'',
+//            'name':'hxr0',
+//            'description':'des0'
+//        },
+//        {
+//            'no':2,
+//            'pic':'',
+//            'name':'hxr1',
+//            'description':'des1'
+//        },
+//        {
+//            'no':3,
+//            'pic':'',
+//            'name':'hxr2',
+//            'description':'des2'
+//        }
+//    ]
+//}
 
 function setForm(){
     $('#input-name').val(vote_activity.name);
@@ -830,4 +831,45 @@ function setForm(){
     }
 }
 
-if (id != '') { setForm(); }
+
+function fromVoteActDetailAPIFormat(data) {
+    var result = {};
+    result.id = data.id;
+    result.name = data.name;
+    result.description = data.description;
+    result.key = data.key;
+    result.start_time = new Date(data.begin_vote.replace(/-/g,"/"));
+    result.end_time = new Date(data.end_vote.replace(/-/g,"/"));
+    result.act_pic = '/static1/img/default.png/';
+    result.candidates = [];
+    return result;
+}
+
+
+function fromCandidateListAPIFormat(data) {
+    var result = [];
+    for (i in data) {
+        var _candidate = data[i];
+        var candidate = {};
+        candidate.no = _candidate.key;
+        candidate.pic = '';
+        candidate.name = _candidate.name;
+        candidate.description = _candidate.description;
+        result.push(candidate);
+    }
+    return result;
+}
+
+
+function getData() {
+    $.get("/api/v1/VoteAct/"+id+"/?format=json",function (data, status) {
+        vote_activity = fromVoteActDetailAPIFormat(data);
+        $.get("/api/v1/Candidate/?format=json&activity_id="+id,function (data, status) {
+            vote_activity.candidates = fromCandidateListAPIFormat(data);
+            setForm();
+        })
+    })
+}
+
+
+if (id != '') { getData(); }
