@@ -8,10 +8,10 @@ WEIXIN_APPID = 'wx11353d338f38395d'
 WEIXIN_SECRET = 'c66e64bf06a757f3bff368c4c82aa254'
 
 WEIXIN_EVENT_KEYS = {
-    'info_activity': 'V1001_TODAT_ACTIVE',
-    'info_lecture': 'V1001_TODAT_LECTURE',
-    'info_news': 'V1001_SCHOOL_NEWS',
-    'info_organization': 'V1001_OGNIZATION',
+    #'info_activity': 'V1001_TODAT_ACTIVE',
+    #'info_lecture': 'V1001_TODAT_LECTURE',
+    #'info_news': 'V1001_SCHOOL_NEWS',
+    #'info_organization': 'V1001_OGNIZATION',
     'ticket_book_what': 'TSINGHUA_BOOK_WHAT',
     'ticket_get': 'TSINGHUA_TICKET',
     'account_bind': 'TSINGHUA_BIND',
@@ -20,9 +20,11 @@ WEIXIN_EVENT_KEYS = {
     'ticket_book_header': 'TSINGHUA_BOOK_',
     'modern_figure': 'V1001_MODERN_FIGURE',
     'ticket_setting': 'V1001_SETTING',
-    'ticket_book': 'V1001_BOOK'
+    'ticket_book': 'V1001_BOOK',
+    #modified by YY
+    'vote_what': 'TSINGHUA_VOTE_WHAT'
 }
-
+# modified by YY
 WEIXIN_CUSTOM_MENU_TEMPLATE = {
     "button": [
         {
@@ -30,38 +32,14 @@ WEIXIN_CUSTOM_MENU_TEMPLATE = {
             "sub_button": [
                 {
                     "type": "click",
-                    "name": "文艺",
-                    "key": WEIXIN_EVENT_KEYS['info_activity'],
+                    "name": "投啥",
+                    "key": WEIXIN_EVENT_KEYS['vote_what'],
                     "sub_button": []
                 },
-                {
-                    "type": "click",
-                    "name": "讲座",
-                    "key": WEIXIN_EVENT_KEYS['info_lecture'],
-                    "sub_button": []
-                },
-                {
-                    "type": "click",
-                    "name": "新闻",
-                    "key": WEIXIN_EVENT_KEYS['info_news'],
-                    "sub_button": []
-                },
-                {
-                    "type": "click",
-                    "name": "人物",
-                    "key": WEIXIN_EVENT_KEYS['modern_figure'],
-                    "sub_button": []
-                },
-                {
-                    "type": "click",
-                    "name": "社团",
-                    "key": WEIXIN_EVENT_KEYS['info_organization'],
-                    "sub_button": []
-                }
             ]
         },
         {
-            "name": "服务",
+            "name": "抢票",
             "sub_button": [
                 {
                     "type": "click",
@@ -75,29 +53,6 @@ WEIXIN_CUSTOM_MENU_TEMPLATE = {
                     "key": WEIXIN_EVENT_KEYS['ticket_get'],
                     "sub_button": []
                 },
-                #{
-                #    "type": "click",
-                #    "name": "指路",
-                #    "key": "TSINGHUA_PATH",
-                #    "sub_button": []
-                #},
-                {
-                    "type": "click",
-                    "name": "绑定",
-                    "key": WEIXIN_EVENT_KEYS['account_bind'],
-                    "sub_button": []
-                },
-                {
-                    "type": "click",
-                    "name": "帮助",
-                    "key": WEIXIN_EVENT_KEYS['help'],
-                    "sub_button": []
-                }
-            ]
-        },
-        {
-            "name": "抢票",
-            "sub_button": [
                 {
                     "type": "click",
                     "name": "设置",
@@ -108,6 +63,23 @@ WEIXIN_CUSTOM_MENU_TEMPLATE = {
                     "type": "click",
                     "name": "抢",
                     "key": WEIXIN_EVENT_KEYS['ticket_book'],
+                    "sub_button": []
+                }
+            ]
+        },
+        {
+            "name": "个人中心",
+            "sub_button": [
+                {
+                    "type": "click",
+                    "name": "绑定",
+                    "key": WEIXIN_EVENT_KEYS['account_bind'],
+                    "sub_button": []
+                },
+                {
+                    "type": "click",
+                    "name": "帮助",
+                    "key": WEIXIN_EVENT_KEYS['help'],
                     "sub_button": []
                 }
             ]

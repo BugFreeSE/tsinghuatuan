@@ -167,6 +167,10 @@ def details_view(request, activityid):
                                          'act_ticket_remain': act_ticket_remain})
     return render_to_response('activitydetails.html', variables)
 
+#modified by YY
+def vote_details_view(request, voteActId):
+    variables = RequestContext(request, {'vote_id': voteActId })
+    return render_to_response('votedetails.html', variables)
 
 def ticket_view(request, uid):
     ticket = Ticket.objects.filter(unique_id=uid)

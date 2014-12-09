@@ -75,6 +75,9 @@ def get_text_activity_description(activity, MAX_LEN):
 def get_text_no_bookable_activity():
     return '您好，目前没有抢票活动'
 
+#modified by YY
+def get_text_no_votes():
+    return '您好，目前没有投票活动'
 
 def get_text_unbinded_exam_ticket(openid):
     return get_text_unbinded_template('查票', openid)
@@ -251,3 +254,44 @@ def get_text_setting(openid):
 
 def get_text_unbinded_setting(openid):
     return get_text_unbinded_template('抢票设置', openid)
+
+#modified by YY
+def get_text_vote_title_with_status(vote, now):
+    title = vote.name
+    if vote.begin_vote > now:
+        delta = vote.begin_vote - now
+        title = ('【%s后开始投票】\n  ' % time_chs_format(delta)) + title
+    elif vote.end_vote > now:
+        title = '【投票进行中】\n  '+ title
+    else:
+        title = '【投票已结束】\n  '+ title
+    return title
+
+def get_text_vote_help():
+    return "输入“投啥”或点击微信菜单“投啥”按钮查看所有投票活动。\n" +\
+    "输入“投票 投票活动代码 以空格分隔的候选人编号列表”进行投票。\n" +\
+    "投票具体信息请在投票活动详情页面查看~"
+
+def get_text_unbinded_vote(openid):
+    return get_text_unbinded_template('投票', openid)
+
+def get_text_vote_not_exist():
+    return "此投票活动不存在，请检查活动代码!"
+
+def get_text_already_vote():
+    return "您已经投过票了！"
+
+def get_text_no_candidates_selected():
+    return "请在“投票 投票活动代码 ”后输入以空格分隔的候选人编号列表进行投票！"
+
+def get_text_too_many_candidates_selected(config):
+    return "对不起，超过可选的候选人个数上限！此活动最多可投"+str(config)+"人"
+
+def get_text_invalid_candidates_selected():
+    return "候选人列表中有非法值！"
+
+def get_text_vote_succeed():
+    return "投票成功！谢谢您的参与~\n请不要重复投票哦~"
+
+def get_text_vote_end():
+    return "该活动已结束。"

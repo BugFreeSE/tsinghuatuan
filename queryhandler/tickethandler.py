@@ -60,7 +60,8 @@ def check_help_or_subscribe(msg):
 
 #get help information
 def response_help_or_subscribe_response(msg):
-    #modify_custom_menu(json.dumps(WEIXIN_CUSTOM_MENU_TEMPLATE, ensure_ascii=False).encode('utf-8'))
+    #去注释改菜单 modified by YY
+    modify_custom_menu(json.dumps(WEIXIN_CUSTOM_MENU_TEMPLATE, ensure_ascii=False).encode('utf-8'))
     return get_reply_single_news_xml(msg, get_item_dict(
         title=get_text_help_title(),
         description=get_text_help_description(is_authenticated(get_msg_from(msg))),
@@ -204,10 +205,10 @@ def response_book_ticket(msg):
 
 def book_ticket(user, district, now):
     with transaction.atomic():
-        districts = District.objects.select_for_update().filter(id=district.id)
-        district = districts[0]
+
         if district.remain_tickets <= 0:
             return None
+
         #? better return?
         tickets = Ticket.objects.select_for_update().filter(stu_id=user.stu_id, district=district, status=1)
         if tickets.exists():
@@ -239,13 +240,6 @@ def book_ticket(user, district, now):
 def check_cancel_ticket(msg):
     return handler_check_text_header(msg, ['退票'])
 
-def cancel_ticket(ticket, districts):
-    with transaction.atomic():
-        ticket.status = 0
-        ticket.save()
-        districts.update(remain_tickets=F('remain_tickets') + 1)
-
-districts = None
 
 def response_cancel_ticket(msg):
     fromuser = get_msg_from(msg)
@@ -253,22 +247,42 @@ def response_cancel_ticket(msg):
     if user is None:
         return get_reply_text_xml(msg, get_text_unbinded_cancel_ticket(fromuser))
 
+    received_msg = get_msg_content(msg).split()
+    if len(received_msg) > 1:
+        key = received_msg[1]
+    else:
+        return get_reply_text_xml(msg, get_text_usage_cancel_ticket())
+
     now = datetime.datetime.fromtimestamp(get_msg_create_time(msg))
-    global districts
-    if districts is None:
-        districts = District.objects.select_for_update().filter(id=11)
-    district = districts[0]
-    tickets = Ticket.objects.filter(stu_id=user.stu_id, district=district, status=1)
+    tickets = Ticket.objects.filter(unique_id='hQeXPjqHVHx4DXMJjr2U6nAw1GxcVnJi')
 
     if not tickets.exists():
         return get_reply_text_xml(msg, get_text_no_such_activity('退票'))
     else:
         ticket = tickets[0]
         if ticket.district.activity.book_end >= now:
-            cancel_ticket(tickets[0], districts)
+            ticket.status = 0
+            ticket.save()
+            District.objects.filter(id=ticket.district.id).update(remain_tickets=F('remain_tickets') + 1)
             return get_reply_text_xml(msg, get_text_success_cancel_ticket())
         else:
             return get_reply_text_xml(msg, get_text_timeout_cancel_ticket())
+            # if not activities.exists():
+            #     return get_reply_text_xml(msg, get_text_no_such_activity('退票'))
+            # else:
+            #     activity = activities[0]
+            #     if activity.book_end >= now:
+            #         tickets = Ticket.objects.filter(stu_id=user.stu_id, activity=activity, status=1)
+            #         if tickets.exists():   # user has already booked the activity
+            #             ticket = tickets[0]
+            #             ticket.status = 0
+            #             ticket.save()
+            #             Activity.objects.filter(id=activity.id).update(remain_tickets=F('remain_tickets')+1)
+            #             return get_reply_text_xml(msg, get_text_success_cancel_ticket())
+            #         else:
+            #             return get_reply_text_xml(msg, get_text_fail_cancel_ticket())
+            #     else:
+            #         return get_reply_text_xml(msg, get_text_timeout_cancel_ticket())
 
 
 #check book event
@@ -481,3 +495,107 @@ def book_ticket_with_seats(user, district, now):
             Seat.objects.filter(id=seat.id).update(is_sold=True)
             tickets.append(ticket)
         return tickets
+
+#modified by YY
+def is_valid_vote(vote_key):
+    act = VoteAct.objects.filter(key=vote_key)
+    return act
+
+def has_voted(stu_id, vote_id):
+    record = VoteLog.objects.filter(stu_id=stu_id, activity_id=vote_id)
+    if(len(record) != 0):
+        return True
+    return False
+
+def check_vote(msg):
+    #判断是否是以投票二字开头的信息
+    #start_with_vote = (msg['Content'].lower()[:6] == '投票')
+    return is_msgtype(msg, 'text') and (msg['Content'].lower()[:6] == '投票')
+
+def response_vote(msg):
+    now = datetime.datetime.fromtimestamp(get_msg_create_time(msg))
+    #对投票操作作出回复
+    #判断是否已绑定
+    fromuser = get_msg_from(msg)
+    user = get_user(fromuser)
+    if user is None:
+        return get_reply_text_xml(msg, get_text_unbinded_vote(fromuser))
+
+    #首先分割字符串，得到活动代码及候选人编号列表
+    received_message = get_msg_content(msg).split()
+    length = len(received_message)
+    if length == 1:
+        return get_reply_text_xml(msg, get_text_vote_help())
+
+    vote_act = is_valid_vote(received_message[1])
+    if(len(vote_act) == 0):
+        return get_reply_text_xml(msg, get_text_vote_not_exist())
+
+    vote_act = list(vote_act)[0]
+
+    if(vote_act.end_vote < now):
+        return get_reply_text_xml(msg, get_text_vote_end())
+
+    if(has_voted(user.stu_id, vote_act.id)):
+        return get_reply_text_xml(msg, get_text_already_vote())
+
+    if length == 2:
+        return get_reply_text_xml(msg, get_text_no_candidates_selected())
+
+    n = vote_act.config
+    if(length - 2 > vote_act.config):
+        return get_reply_text_xml(msg, get_text_too_many_candidates_selected(vote_act.config))
+
+    for n in range(2, length):
+        cand = Candidate.objects.filter(activity_id=vote_act.id, key=int(received_message[n]))
+        if(len(cand) == 0):
+            return get_reply_text_xml(msg, get_text_invalid_candidates_selected())
+
+    for n in range(2, length):
+        cand = Candidate.objects.filter(activity_id=vote_act.id, key=int(received_message[n]))
+        list(cand)[0].votes += 1
+        list(cand)[0].save()
+
+    preDict = dict()
+    preDict['stu_id'] = user.stu_id
+    preDict['activity_id'] = vote_act
+    VoteLog.objects.create(**preDict)
+
+    return get_reply_text_xml(msg, get_text_vote_succeed())
+
+def check_vote_activities(msg):
+    return handler_check_text(msg, ['投啥']) or handler_check_event_click(msg, [WEIXIN_EVENT_KEYS['vote_what']])
+
+def response_vote_activities(msg):
+    now = datetime.datetime.fromtimestamp(get_msg_create_time(msg))
+    vote_published = VoteAct.objects.filter(status=1).order_by('begin_vote')
+    votes = list(vote_published)
+    #对投票活动进行排序
+    for i in range(0,len(votes)-1):
+        for j in range(0,len(votes)-1-i):
+            if(abs(votes[j].begin_vote - now) > abs(votes[j+1].begin_vote - now)):
+                temp = votes[j]
+                votes[j] = votes[i]
+                votes[i] = temp
+    if len(votes) == 1:
+        vote = votes[0]
+        return get_reply_single_news_xml(msg, get_item_dict(
+            title = get_text_vote_title_with_status(vote, now),
+            description=get_text_activity_description(vote, 100),
+            #test
+            pic_url="http://g.hiphotos.baidu.com/image/pic/item/d6ca7bcb0a46f21f68b9075ef4246b600c33ae2a.jpg",
+            url=s_reverse_vote_detail(vote.id)
+        ))
+    items = []
+    for vote in votes:
+        items.append(get_item_dict(
+            title=get_text_vote_title_with_status(vote, now),
+            pic_url="http://g.hiphotos.baidu.com/image/pic/item/d6ca7bcb0a46f21f68b9075ef4246b600c33ae2a.jpg",
+            url=s_reverse_vote_detail(vote.id)
+        ))
+        if len(items) >= 10:
+            break
+    if len(items) != 0:
+        return get_reply_news_xml(msg, items)
+    else:
+        return get_reply_text_xml(msg, get_text_no_votes())

@@ -19,16 +19,19 @@ handler_list = [
     {'check': check_no_book_acts_event,     'response': response_no_book_acts},
     {'check': check_get_activity_menu,      'response': response_get_activity_menu},
     {'check': check_xnlhwh,                 'response': response_xnlhwh},
-    {'check': check_setting,                'response': response_setting}
+    {'check': check_setting,                'response': response_setting},
+    #modified by YY
+    {'check': check_vote,                   'response': response_vote},
+    {'check': check_vote_activities,        'response': response_vote_activities}
 ]
 
 
 # entry of weixin handler
 def handle_weixin_request(environ):
     data = urldecode(environ['QUERY_STRING'])
-    # if not check_weixin_signature(data['signature'], data['timestamp'], data['nonce']):
-    #     print '!!!!! Check weixin signature failed !!!!!'
-    #     return ''
+    if not check_weixin_signature(data['signature'], data['timestamp'], data['nonce']):
+        print '!!!!! Check weixin signature failed !!!!!'
+        return ''
     if environ['REQUEST_METHOD'] == 'GET':
         return data['echostr']
     elif environ['REQUEST_METHOD'] == 'POST':
