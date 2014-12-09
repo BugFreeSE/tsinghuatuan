@@ -9,6 +9,9 @@ class VoteActResource(ModelResource):
         queryset = VoteAct.objects.all()
         resource_name = 'VoteAct'
         authorization = Authorization();
+        filtering = {
+            'status': ['gte']
+        }
 
 
 class CandidateResource(ModelResource):
