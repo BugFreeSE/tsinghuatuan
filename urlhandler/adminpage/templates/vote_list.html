@@ -32,7 +32,7 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a class="btn btn-default" href={% url "adminpage.views.vote_detail" %}>新增活动</a>
+            <a class="btn btn-default" href="/vote/edit/">新增活动</a>
         </div>
 
         <table class="table table-hover">
@@ -42,8 +42,7 @@
                 <th>名称</th>
                 <th>简介</th>
                 <th>时间</th>
-                <th>操作</th>
-                <th></th>
+                <th style="text-align: center;">操作</th>
             </tr>
             </thead>
             <tbody id="tbody-activities">

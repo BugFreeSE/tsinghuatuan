@@ -1,0 +1,162 @@
+{% extends "vote_base.html" %}
+
+{% load staticfiles %}
+
+{% block activity-title %}活动列表{% endblock %}
+
+{% block nav-li %}
+    <li class="{% block activity-list-active %}active{% endblock %}"><a class="btn-link"
+                                                                        href="{% url "adminpage.views.activity_list" %}">活动列表</a>
+    </li>
+    {% block nav-li-ext %}{% endblock %}
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/activity_list.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/pushBtn.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static "js/vote_list.js" %}"></script>
+{% endblock %}
+
+{% block username %}
+    <a href={% url "adminpage.views.logout" %}>登出</a>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container" id="detail-noscript">
+        <noscript>请开启JavaScript后重试。</noscript>
+    </div>
+    <div class="container" id="detail-form">
+        <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data"
+              action="{% url "adminpage.views.activity_post" %}" id="activity-form">
+            {% csrf_token %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">活动信息</div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-6" style="left:8.5%;">
+                                <div class="form-group">
+                                    <label for="input-name" class="col-sm-2 control-label"
+                                           id="label-input-name">活动名称</label>
+
+                                    <div class="col-sm-6">
+                                        <input type="text" maxlength="26" name="name" class="form-control"
+                                               id="input-name" placeholder="活动名称，如 清韵烛光" autofocus>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="input-key" class="col-sm-2 control-label">活动代称</label>
+
+                                    <div class="col-sm-6">
+                                        <input type="text" maxlength="26" name="key" class="form-control"
+                                               id="input-key" placeholder="用户用于订票的活动代称，推荐使用中文(少于7个字)，如 马兰花开">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-start_time" class="col-sm-2 control-label">投票开始</label>
+
+                                    <div class='col-sm-6 input-group date' id='datetimepicker1'>
+                                        <input type='text' class="form-control" name="start_time"
+                                               id="input-start_time"/>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-end_time" class="col-sm-2 control-label">投票结束</label>
+
+                                    <div class='col-sm-6 input-group date' id='datetimepicker2'>
+                                        <input type='text' class="form-control" name="end_time"
+                                               id="input-end_time"/>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-pic_url" class="col-sm-2 control-label" min="0">活动配图</label>
+
+                                    <div class="col-sm-6">
+                                        <input class="btn btn-info" id="upLoadBtn" onclick="$('#input-pic').click()"
+                                               type="button" value="上传图片"/>
+                                        <input style="display: none" type="file" name="pic" class="form-control"
+                                               id="input-pic" accept="image/*"
+                                               onchange="createImg('#poster', getImgURL(this))"/>
+                                        <input style="display: none" type="url" name="pic_url" class="form-control"
+                                               id="input-pic_url" min="0" placeholder="请填入图片链接"
+                                               value="http://p4.sinaimg.cn/2140529227/180/29231343381097">
+                                        <!--onchange="getPoster(this.value)"-->
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-description" class="col-sm-2 control-label">活动简介</label>
+
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" name="description" rows="7"
+                                                  id="input-description" placeholder="描述，如 好看的舞台剧" row="3"
+                                                  style="resize: none;"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <a href="#candidate" class="btn btn-primary col-sm-offset-9" role="tab"
+                                       data-toggle="tab">下一步</a>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-3 form-group" style="right:-15%;">
+                                <div class="form-group">
+                                    <img id="poster" class="img-responsive img-thumbnail" style="width:100%;" alt=""
+                                         src="../../static1/img/default.png"/>
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block;text-align: center;">图片预览</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="panel panel-default">
+                    <div class="panel-heading" style="font-size: 1.5em">
+                        投票结果
+                        <div style="float:right">
+                            <div class="btn-group">
+  <button type="button" class="btn btn-default" onclick="view_bar()"><span class="glyphicon glyphicon-stats gbtn" ></span></button>
+  <button type="button" class="btn btn-default" onclick="view_pie()"><span class="glyphicon glyphicon-dashboard gbtn" ></span></button>
+  <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-th gbtn"></span></button>
+</div>
+
+
+
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        {% include 'vote_charts.html' %}
+                    </div>
+                </div>
+
+
+        </form>
+        <div class="row">
+            <a class="col-sm-offset-4 col-sm-4 btnBegin" style="margin:1em auto;">投票开始！</a>
+    <div class="clearfix"></div>
+    <a class="col-sm-offset-4 col-sm-4 btnEnd" style="margin:1em auto;">投票结束！</a>
+    <div class="clearfix"></div>
+    <a class="col-sm-offset-4 col-sm-4 btnPub" style="margin:1em auto;">发布结果！</a>
+    <div class="clearfix"></div>
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}

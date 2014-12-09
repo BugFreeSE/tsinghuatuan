@@ -773,3 +773,37 @@ function putCandidateImg(node){
     var $img = $(node).parent().children('img');
     $img.attr('src', getImgURL(node));
 }
+
+var vote_activity = {
+    'id':0,
+    'name': '看蓝猫',
+    'key':'klm',
+    'start_time':'2014-12-01 9:40',
+    'end_time':'2014-12-01 9:40',
+    'act_pic':'../../static1/img/default.png/',
+    'candidates':[
+        {
+            'no':0,
+            'pic':'',
+            'name':'hxr0',
+            'description':'des0'
+        },
+        {
+            'no':1,
+            'pic':'',
+            'name':'hxr1',
+            'description':'des1'
+        },
+        {
+            'no':2,
+            'pic':'',
+            'name':'hxr2',
+            'description':'des2'
+        }
+    ]
+}
+
+function setForm(){
+    $('#input-name').val(vote_activity.name);
+    $('#input-key').val(vote_activity.key);
+}
