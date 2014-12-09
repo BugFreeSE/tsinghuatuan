@@ -598,5 +598,8 @@ def vote_detail(request):
     return render_to_response('vote_detail.html')
 
 
-def vote_edit(request):
-    return render_to_response('vote_edit.html')
+def vote_edit(request, voteid):
+    return render_to_response('vote_edit.html', {'id' : voteid}, context_instance=RequestContext(request))
+
+def vote_add(request):
+    return render_to_response('vote_edit.html', {id : ''}, context_instance=RequestContext(request))
