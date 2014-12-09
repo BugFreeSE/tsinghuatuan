@@ -588,3 +588,15 @@ def activity_export_stunum(request, actid):
     ##########################################保存
     wb.save(response)
     return response
+
+
+def vote_list(request):
+    return render_to_response('vote_list.html')
+
+
+def vote_detail(request):
+    return render_to_response('vote_detail.html')
+
+
+def vote_edit(request):
+    return render_to_response('vote_edit.html')
