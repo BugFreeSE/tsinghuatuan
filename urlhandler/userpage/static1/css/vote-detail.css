@@ -1,0 +1,121 @@
+body {
+	font-family: "Microsoft Yahei UI";
+	line-height: 1.5;
+	color: #000;
+	background-color: #FFF;
+	outline: 0;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, p, footer, header, aside, section, article, aside {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	list-style: none;
+}
+
+.clear-fix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: "";
+	clear: both;
+	height: 0;
+}
+
+.hidden {
+	display: none;
+}
+
+.ui-tab-nav {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background-color: #000;
+	left: 0;
+	z-index: 100;
+	display: -webkit-box;
+	font-size: 0.8em;
+	height: 45px;
+	box-sizing: border-box;
+}
+
+.ui-tab-nav li {
+	height: 45px;
+	line-height: 45px;
+	min-width: 70px;
+	-webkit-box-flex: 1;
+	text-align: center;
+	vertical-align: center;
+	color: #808080;
+	box-sizing: border-box;
+}
+
+.ui-tab-nav li.current {
+	color: #FFF;
+	text-shadow: 0 0 5px #FFF;
+}
+
+.ui-tab-content {
+	display: -webkit-box;
+	width: 300%;
+	height: 100%;
+	position: fixed;
+}
+
+.ui-tab-content > li {
+	-webkit-box-flex: 1;
+	width: 100%;
+	overflow: scroll;
+	padding-bottom: 45px;
+}
+
+.candidate-list li {
+	padding: 10px 10px 10px 10px;
+}
+
+.candidate-list li + li {
+	border-top: 1px #808080 solid;
+}
+
+.candidate-info {
+}
+
+.candidate-info-bar {
+	margin-bottom: 16px;
+}
+
+.brief {
+	height: 6em;
+	overflow: hidden;
+}
+
+a.show-more, a.show-more:visited{
+	font-size: 0.6em;
+	color: #2D64B3;
+	float: right;
+	text-decoration: none;
+}
+
+.candidate-list .candidate-poster {
+	width: 40%;
+}
+
+.candidate-list li:nth-child(odd) .candidate-poster {
+	float: right;
+	margin-left: 5%;
+}
+
+.candidate-list li:nth-child(even) .candidate-poster {
+	float: left;
+	margin-right: 5%;
+}
+
+.candidate-description {
+	text-align: justify;
+}
