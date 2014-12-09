@@ -781,6 +781,7 @@ var vote_activity = {
     'start_time':'2014-12-01 9:40',
     'end_time':'2014-12-01 9:40',
     'act_pic':'../../static1/img/default.png/',
+    'description':'description',
     'candidates':[
         {
             'no':0,
@@ -806,4 +807,8 @@ var vote_activity = {
 function setForm(){
     $('#input-name').val(vote_activity.name);
     $('#input-key').val(vote_activity.key);
+    $('#input-start_time').val(vote_activity.start_time);
+    $('#input-end_time').val(vote_activity.start_time);
+    $('#poster').attr('src',vote_activity.act_pic);
+    $('#input-description').val(vote_activity.description);
 }
