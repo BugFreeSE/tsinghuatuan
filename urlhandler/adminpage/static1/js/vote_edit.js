@@ -830,4 +830,4 @@ function setForm(){
     }
 }
 
-if (id != '') {setForm();}
+if (id != '') { setForm(); }
