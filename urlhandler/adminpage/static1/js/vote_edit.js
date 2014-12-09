@@ -820,13 +820,33 @@ function setForm(){
     $('#input-name').val(vote_activity.name);
     $('#input-key').val(vote_activity.key);
     $('#input-start_time').val(vote_activity.start_time);
-    $('#input-end_time').val(vote_activity.start_time);
+    $('#input-end_time').val(vote_activity.end_time);
     $('#poster').attr('src',vote_activity.act_pic);
     $('#input-description').val(vote_activity.description);
     $('#candidate-list tbody').children().remove();
     for (var i in vote_activity.candidates){
         var c = vote_activity.candidates[i];
         addCandidate(c);
+    }
+}
+function getCandidate($trNode){
+    var candidate = {};
+    candidate.no = $trNode.eq(0).html();
+    candidate.pic = $trNode.eq(1).children('img').attr('src');
+    if (typeof candidate.pic === 'undefined') candidate.pic = '';
+    candidate.name = $trNode.eq(2).children().val();
+    candidate.description = $trNode.eq(3).children().val();
+}
+function getForm(){
+    vote_activity.name = $('#input-name').val();
+    vote_activity.key = $('#input-key').val();
+    vote_activity.start_time = $('#input-start_time').val();
+    vote_activity.end_time = $('#input-end_time').val();
+    vote_activity.act_pic = $('#poster').attr('src');
+    vote_activity.description = $('#input-description').val();
+    var $trs = $('#candidate-list tbody').children('tr');
+    for (var i in $trs){
+        vote_activity.candidates.push(getCandidate($trs[i]));
     }
 }
 
