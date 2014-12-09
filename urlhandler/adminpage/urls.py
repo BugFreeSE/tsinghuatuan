@@ -20,4 +20,7 @@ urlpatterns = patterns('',
                        url(r'^menu/adjust/$', 'adminpage.views.adjust_menu_view'),
                        url(r'^menu/get/$', 'adminpage.views.custom_menu_get'),
                        url(r'^menu/submit/$', 'adminpage.views.custom_menu_modify_post'),
+                       url(r'^vote/list/$', 'adminpage.views.vote_list'),
+                       url(r'^vote/detail/$', 'adminpage.views.vote_detail'),
+                       url(r'^vote/edit/$', 'adminpage.views.vote_edit'),
                        )
