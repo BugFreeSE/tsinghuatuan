@@ -19,6 +19,7 @@ View.prototype = {
 	},
 	fetch: function(callback) {
 		callback = callback ? callback : function(data) {
+            console.log(data);
 			this.data = data;
 			render();
 		};
@@ -41,7 +42,7 @@ var homepage = new View({
 })
 
 var candidate_list = new View({
-	url: "",
+	url: "/api/v1/Candidate/?format=json&activity_id=" + activity_id,
 	target: "#candidates",
 	template: 
 		'<div id="candidate">' +

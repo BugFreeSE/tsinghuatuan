@@ -3,7 +3,7 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from urlhandler.models import User, Activity, Ticket, SettingForm, District, Seat
+from urlhandler.models import User, Activity, Ticket, SettingForm, District, Seat, Candidate, VoteAct
 from urlhandler.settings import STATIC_URL
 import urllib, urllib2
 import datetime
@@ -171,6 +171,16 @@ def details_view(request, activityid):
 def vote_details_view(request, voteActId):
     variables = RequestContext(request, {'vote_id': voteActId })
     return render_to_response('votedetails.html', variables)
+
+#modified by WYW
+
+def get_candidate_list(request, voteActId):
+    activity = VoteAct.objects.get(id=voteActId)
+    candidates = activity.candidate_set.filter(status=1)
+    candidate_list = {"list": []}
+    for candidate in candidates:
+        candidate_list["list"].append(model_to_dict(candidate))
+    return HttpResponse(json.dumps(candidate_list), content_type="application/json")
 
 def ticket_view(request, uid):
     ticket = Ticket.objects.filter(unique_id=uid)
