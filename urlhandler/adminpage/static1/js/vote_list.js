@@ -361,9 +361,12 @@ getActs();
 function delete_post(id){
     $.ajax({
         url: "/api/v1/VoteAct/"+id+"/?format=json",
-        type: "PUT",
+        type: "PATCH",
         data: '{"status":-1}',
         success: function() {
+            getActs();
+        },
+        error: function() {
             getActs();
         },
         contentType: 'application/json'
