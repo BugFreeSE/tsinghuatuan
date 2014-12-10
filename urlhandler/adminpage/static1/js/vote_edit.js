@@ -858,8 +858,10 @@ function fromVoteActDetailAPIFormat(data) {
     result.name = data.name;
     result.description = data.description;
     result.key = data.key;
-    result.start_time = new Date(data.begin_vote.replace(/-/g,"/"));
-    result.end_time = new Date(data.end_vote.replace(/-/g,"/"));
+    data.begin_vote = data.begin_vote.substring(0,10) + " " + data.begin_vote.substring(11,16);
+    data.end_vote = data.end_vote.substring(0,10) + " " + data.end_vote.substring(11,16);
+    result.start_time =data.begin_vote.replace(/-/g,"/");
+    result.end_time = data.end_vote.replace(/-/g,"/");
     result.act_pic = '/static1/img/default.png/';
     result.candidates = [];
     return result;
@@ -884,7 +886,7 @@ function fromCandidateListAPIFormat(data) {
 function getData() {
     $.get("/api/v1/VoteAct/"+id+"/?format=json",function (data, status) {
         vote_activity = fromVoteActDetailAPIFormat(data);
-        $.get("/api/v1/Candidate/?format=json&activity_id="+id,function (data, status) {
+        $.get("/api/v1/Candidate/?format=json&status__gt=0&activity_id="+id,function (data, status) {
             vote_activity.candidates = fromCandidateListAPIFormat(data);
             setForm();
         })
