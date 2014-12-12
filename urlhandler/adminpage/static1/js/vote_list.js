@@ -11,45 +11,49 @@ function clearActs() {
 
 //var vote_acts=[
 //    {
+//        'id':5,
 //        'status': 0,
 //        'name': '游泳教练',
 //        'description':'不知所措',
 //        'start_time': new Date(2014, 11, 7, 10, 4),
-//        'end_time': new Date(2014, 11, 17, 10, 4),
-//        'operations':{'detail':''},
-//        'delete':0
+//        'end_time': new Date(2014, 11, 17, 10, 4)
 //    },
 //    {
+//        'id':2,
 //        'status': 1,
 //        'name': '游泳教练',
 //        'description':'不知所措',
 //        'start_time': new Date(2014, 11, 7, 10, 4),
-//        'end_time': new Date(2014, 11, 17, 10, 4),
-//        'operations':{'detail':''},
-//        'delete':0
+//        'end_time': new Date(2014, 11, 17, 10, 4)
 //    },
 //    {
+//        'id':7,
 //        'status': 2,
 //        'name': '游泳教练',
 //        'description':'不知所措',
 //        'start_time': new Date(2014, 11, 7, 10, 4),
-//        'end_time': new Date(2014, 11, 17, 10, 4),
-//        'operations':{'detail':''},
-//        'delete':0
+//        'end_time': new Date(2014, 11, 17, 10, 4)
 //    }
 //];
 var operations_target = {'detail':''};
-var operations_icon = {'detail':'pencil'};
-var operations_name = {'detail':'详情'};
-//为了展示瞎写的
+var operations_icon = {'edit':'pencil', 'delete':'trash'};
+var operations_name = {'edit':'编辑', 'delete':'删除'};
+
+
 function getSmartStatus(act) {
+    var now = new Date();
     switch (act.status){
         case 0:
             return '未发布';
         case 1:
-            return '正在投票';
+            if (act.start_time > now)
+                return '投票尚未开始';
+            else if (act.end_time < now)
+                return '投票已结束';
+            else
+                return '正在投票';
         case 2:
-            return '投票已结束';
+            return '结果已发布';
         default:
             return '未知';
     }
@@ -129,8 +133,7 @@ var tdMap = {
     'name': 'text',
     'description': 'longtext',
     'time': 'time',
-    'operations': 'operation_links',
-    'delete': 'deletelink'
+    'operations': 'render_operations'
 }, operationMap = {
     'checkin': function(act) {
         var now = new Date()
@@ -163,20 +166,57 @@ var tdMap = {
     'time': function(act, key) {
         return smartTimeMap[key](act);
     },
-    'operation_links': function(act, key) {
-        var links = act[key], result = [], i, len;
-        for (i in links) {
-            if (operationMap[i](act)) {
-                result.push('<a href="' + links[i] + '" target="' + operations_target[i] + '"><span class="glyphicon glyphicon-' + operations_icon[i] + '"></span> ' + operations_name[i] + '</a>');
+//    'operation_links': function(act, key) {
+//        var links = act[key], result = [], i, len;
+//        for (i in links) {
+//            if (operationMap[i](act)) {
+//                result.push('<a href="' + links[i] + '" target="' + operations_target[i] + '"><span class="glyphicon glyphicon-' + operations_icon[i] + '"></span> ' + operations_name[i] + '</a>');
+//            }
+//        }
+//        return result.join('<br/>');
+//    },
+    'render_operations': function(act, key){
+        var ops = []
+        switch (getSmartStatus(act)){
+            case '未发布':
+                ops = ['edit','delete'];
+                break;
+            case '投票尚未开始':
+                ops = ['edit', 'delete'];
+                break;
+            case '投票已结束':
+                ops = ['delete'];
+                break;
+            case '正在投票':
+                ops = ['delete'];
+                break;
+            case '结果已发布':
+                ops = ['delete'];
+                break;
+        }
+        var icons = {
+            'edit':'pencil',
+            'delete':'trash'
+        }
+        var names = {
+            'edit':'编辑',
+            'delete':'删除'
+        }
+        function gethref(op, id){
+            if (op === 'edit'){
+                return '/vote/edit/'+id+'/';
+            }
+            else{
+                return 'javascript:delete_activity(this,'+id+')';
             }
         }
-        return result.join('<br/>');
-    },
-    'deletelink':function(act, key) {
-        if (typeof act[key] == 'undefined') {
-            return;
+        var result = [], i;
+        for (i in ops){
+            result.push('<a href="' + gethref(ops[i], act.id)+'"><span class="glyphicon glyphicon-' + icons[ops[i]] + '"></span> ' + names[ops[i]] + '</a>');
         }
-        return '<a href="javascript:void(0);" id="'+act[key]+'" onclick="deleteact('+act[key]+')"><span class="glyphicon glyphicon-trash"></span></a>';
+        return result.join('&nbsp;&nbsp;');
+
+
     }
 }, smartTimeMap = {
     'time': function(act) {
@@ -207,6 +247,14 @@ function deleteact(actid){
     });
     return;
 }
+
+function delete_activity(node, id){
+    delete_post(id);
+    var $tr = $('#tr'+id);
+    $tr.remove();
+
+}
+
 
 function delConfirm(){
     var delid = $('#deleteid').val();
@@ -258,7 +306,7 @@ function createtips(){
 }
 
 function appendAct(act) {
-    var tr = $('<tr' + ((typeof act.delete != "undefined") ? (' id="'+act.delete+'"') : '') + '></tr>'), key;
+    var tr = $('<tr' + ((typeof act.id != "undefined") ? (' id="tr'+act.id+'"') : '') + '></tr>'), key;
     for (key in tdMap) {
         getTd(key).html(tdActionMap[tdMap[key]](act, key)).appendTo(tr);
     }
@@ -272,6 +320,9 @@ function initialActs() {
     }
     createtips();
 }
+
+clearActs();
+initialActs();
 
 
 var vote_acts;
@@ -309,3 +360,7 @@ function getActs() {
 }
 
 getActs();
+
+function delete_post(id){
+
+}

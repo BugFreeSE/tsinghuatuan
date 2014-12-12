@@ -731,7 +731,7 @@ function returnFromModal(){
     nodeSelected.eq(3).children().val(description);
 }
 
-function addCandidate(){
+function addCandidate(candidate){
     var $tbody = $('#candidate-list').children('tbody');
     var $tr = $('<tr />');
     $tr.append($('<td style="vertical-align:middle"/>').html($tbody.children().length + 1))
@@ -741,6 +741,18 @@ function addCandidate(){
         .append($('<td style="vertical-align:middle"/>').append($('<input type="text" class="form-control" name="candidate_name" placeholder="姓名"/>')))
         .append($('<td style="vertical-align:middle"/>').append($('<input type="text" class="form-control" name="candidate_description" placeholder="候选人描述"/>')))
         .append($('<td style="vertical-align:middle"/>').append($('<span class="glyphicon glyphicon-trash gbtn" onclick="deleteCandidate(this)"></span><span class="glyphicon glyphicon-pencil gbtn" data-toggle="modal" data-target="#candidate_detail" onclick="launchModal(this)"></span>')));
+    if (typeof candidate != "undefined"){
+        var tds = $tr.children();
+        tds.eq(0).html(candidate.no);
+        if (candidate.pic != '') {
+            tds.eq(1).children('img').attr('src', candidate.pic).css('display', 'inline');
+            tds.eq(1).children('span').remove();
+        }
+        tds.eq(2).children().val(candidate.name);
+        tds.eq(3).children().val(candidate.description);
+    }
+
+
     $tbody.append($tr);
 }
 
@@ -773,3 +785,69 @@ function putCandidateImg(node){
     var $img = $(node).parent().children('img');
     $img.attr('src', getImgURL(node));
 }
+
+var vote_activity = {
+    'id':0,
+    'name': '看蓝猫',
+    'key':'klm',
+    'start_time':'2014-12-01 9:40',
+    'end_time':'2014-12-01 9:40',
+    'act_pic':'../../static1/img/default.png/',
+    'description':'description',
+    'candidates':[
+        {
+            'no':1,
+            'pic':'',
+            'name':'hxr0',
+            'description':'des0'
+        },
+        {
+            'no':2,
+            'pic':'',
+            'name':'hxr1',
+            'description':'des1'
+        },
+        {
+            'no':3,
+            'pic':'',
+            'name':'hxr2',
+            'description':'des2'
+        }
+    ]
+}
+
+function setForm(){
+    $('#input-name').val(vote_activity.name);
+    $('#input-key').val(vote_activity.key);
+    $('#input-start_time').val(vote_activity.start_time);
+    $('#input-end_time').val(vote_activity.end_time);
+    $('#poster').attr('src',vote_activity.act_pic);
+    $('#input-description').val(vote_activity.description);
+    $('#candidate-list tbody').children().remove();
+    for (var i in vote_activity.candidates){
+        var c = vote_activity.candidates[i];
+        addCandidate(c);
+    }
+}
+function getCandidate($trNode){
+    var candidate = {};
+    candidate.no = $trNode.eq(0).html();
+    candidate.pic = $trNode.eq(1).children('img').attr('src');
+    if (typeof candidate.pic === 'undefined') candidate.pic = '';
+    candidate.name = $trNode.eq(2).children().val();
+    candidate.description = $trNode.eq(3).children().val();
+}
+function getForm(){
+    vote_activity.name = $('#input-name').val();
+    vote_activity.key = $('#input-key').val();
+    vote_activity.start_time = $('#input-start_time').val();
+    vote_activity.end_time = $('#input-end_time').val();
+    vote_activity.act_pic = $('#poster').attr('src');
+    vote_activity.description = $('#input-description').val();
+    var $trs = $('#candidate-list tbody').children('tr');
+    for (var i in $trs){
+        vote_activity.candidates.push(getCandidate($trs[i]));
+    }
+}
+
+if (id != '') { setForm(); }

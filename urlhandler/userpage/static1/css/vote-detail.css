@@ -129,6 +129,13 @@ a.show-more, a.show-more:visited{
     border-left-width: 1px;
     border-color: #d9d9d9;
 }
+
+.top_border{
+    padding: 10px;
+    border-top-width: 1px;
+    border-color: #d9d9d9;
+    border-top-style:solid;
+}
 .S_txt1 {
     color: #333;
     text-decoration: none;
@@ -137,10 +144,9 @@ a.show-more, a.show-more:visited{
 .tb_counter {
     width: 100%;
     margin-left: -1px;
-    line-height: 10px;
+    line-height: 15px;
     text-align: center;
     table-layout: fixed;
-    font-size: small;
     font-weight: bold;
 }
 
@@ -156,7 +162,6 @@ table td .t_link {
 table td strong {
     display: block;
     margin: 2px 0 6px 0;
-    font-family: Tahoma;
     font-weight: 400;
 }
 
@@ -168,10 +173,22 @@ table td strong {
     color:lightskyblue;
 }
 
-.vote_info_content{
-    margin: 10px 10px;
-}
-
 .shadow{
 	box-shadow: 2px 2px 2px gray;
+}
+
+.poster_container{
+    height: 200px;
+    display: block;
+    overflow: hidden;
+}
+
+.coverage{
+    height: 150px;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: relative;
+    bottom: 150px;
+    color: #dedede;
+    padding: 10px 20px;
+    opacity: 0;
 }

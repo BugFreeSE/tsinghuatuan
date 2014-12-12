@@ -22,5 +22,6 @@ urlpatterns = patterns('',
                        url(r'^menu/submit/$', 'adminpage.views.custom_menu_modify_post'),
                        url(r'^vote/list/$', 'adminpage.views.vote_list'),
                        url(r'^vote/detail/$', 'adminpage.views.vote_detail'),
-                       url(r'^vote/edit/$', 'adminpage.views.vote_edit'),
+                       url(r'^vote/add/$', 'adminpage.views.vote_add'),
+                       url(r'^vote/edit/(?P<voteid>\d+)/$', 'adminpage.views.vote_edit'),
                        )
