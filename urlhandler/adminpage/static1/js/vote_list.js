@@ -321,9 +321,6 @@ function initialActs() {
     createtips();
 }
 
-clearActs();
-initialActs();
-
 
 var vote_acts;
 
@@ -349,7 +346,7 @@ function fromAPIFormat(data) {
 
 
 function getActs() {
-     $.get("/api/v1/VoteAct/?format=json",function (data, status) {
+    $.get("/api/v1/VoteAct/?format=json&status__gte=0",function (data, status) {
         console.log(status);
         vote_acts = fromAPIFormat(data.objects);
         clearActs();
@@ -362,5 +359,16 @@ function getActs() {
 getActs();
 
 function delete_post(id){
-
+    $.ajax({
+        url: "/api/v1/VoteAct/"+id+"/?format=json",
+        type: "PATCH",
+        data: '{"status":-1}',
+        success: function() {
+            getActs();
+        },
+        error: function() {
+            getActs();
+        },
+        contentType: 'application/json'
+    })
 }

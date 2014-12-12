@@ -37,7 +37,7 @@ var dateInterfaceMap = {
     'book_start': 'time',
     'book_end': 'time',
 //    'pic_url': 'value',
-    'total_tickets': 'value',
+    'total_tickets': 'value'
 //    'seat_status': 'value'
 }, lockMap = {
     'value': function(dom, lock) {
@@ -398,7 +398,7 @@ function beforeSubmit(formData, jqForm, options) {
 //        'pic_url': '活动配图',
         'pic': '活动海报',
         'book_start': '订票开始时间',
-        'book_end': '订票结束时间',
+        'book_end': '订票结束时间'
     };
     lackArray = []; dateArray = [
 
@@ -786,35 +786,36 @@ function putCandidateImg(node){
     $img.attr('src', getImgURL(node));
 }
 
-var vote_activity = {
-    'id':0,
-    'name': '看蓝猫',
-    'key':'klm',
-    'start_time':'2014-12-01 9:40',
-    'end_time':'2014-12-01 9:40',
-    'act_pic':'../../static1/img/default.png/',
-    'description':'description',
-    'candidates':[
-        {
-            'no':1,
-            'pic':'',
-            'name':'hxr0',
-            'description':'des0'
-        },
-        {
-            'no':2,
-            'pic':'',
-            'name':'hxr1',
-            'description':'des1'
-        },
-        {
-            'no':3,
-            'pic':'',
-            'name':'hxr2',
-            'description':'des2'
-        }
-    ]
-}
+var vote_activity;
+//var vote_activity = {
+//    'id':0,
+//    'name': '看蓝猫',
+//    'key':'klm',
+//    'start_time':'2014-12-01 9:40',
+//    'end_time':'2014-12-01 9:40',
+//    'act_pic':'../../static1/img/default.png/',
+//    'description':'description',
+//    'candidates':[
+//        {
+//            'no':1,
+//            'pic':'',
+//            'name':'hxr0',
+//            'description':'des0'
+//        },
+//        {
+//            'no':2,
+//            'pic':'',
+//            'name':'hxr1',
+//            'description':'des1'
+//        },
+//        {
+//            'no':3,
+//            'pic':'',
+//            'name':'hxr2',
+//            'description':'des2'
+//        }
+//    ]
+//}
 
 function setForm(){
     $('#input-name').val(vote_activity.name);
@@ -831,11 +832,13 @@ function setForm(){
 }
 function getCandidate($trNode){
     var candidate = {};
+    $trNode = $($trNode).children();
     candidate.no = $trNode.eq(0).html();
     candidate.pic = $trNode.eq(1).children('img').attr('src');
     if (typeof candidate.pic === 'undefined') candidate.pic = '';
     candidate.name = $trNode.eq(2).children().val();
     candidate.description = $trNode.eq(3).children().val();
+    return candidate;
 }
 function getForm(){
     vote_activity.name = $('#input-name').val();
@@ -845,9 +848,146 @@ function getForm(){
     vote_activity.act_pic = $('#poster').attr('src');
     vote_activity.description = $('#input-description').val();
     var $trs = $('#candidate-list tbody').children('tr');
-    for (var i in $trs){
-        vote_activity.candidates.push(getCandidate($trs[i]));
+    vote_activity.candidates = [];
+    for (var i = 0; i < $trs.length; i++){
+        vote_activity.candidates.push(getCandidate($trs.eq(i)));
     }
 }
 
-if (id != '') { setForm(); }
+
+function fromVoteActDetailAPIFormat(data) {
+    var result = {};
+    result.id = data.id;
+    result.name = data.name;
+    result.description = data.description;
+    result.key = data.key;
+    data.begin_vote = data.begin_vote.substring(0,10) + " " + data.begin_vote.substring(11,16);
+    data.end_vote = data.end_vote.substring(0,10) + " " + data.end_vote.substring(11,16);
+    result.start_time =data.begin_vote.replace(/-/g,"/");
+    result.end_time = data.end_vote.replace(/-/g,"/");
+    result.act_pic = '/static1/img/default.png/';
+    result.candidates = [];
+    return result;
+}
+
+
+function fromCandidateListAPIFormat(data) {
+    var result = [];
+    for (i in data) {
+        var _candidate = data[i];
+        var candidate = {};
+        candidate.no = _candidate.key;
+        candidate.pic = '';
+        candidate.name = _candidate.name;
+        candidate.description = _candidate.description;
+        result.push(candidate);
+    }
+    return result;
+}
+
+
+function getData() {
+    $.get("/api/v1/VoteAct/"+id+"/?format=json",function (data) {
+        vote_activity = fromVoteActDetailAPIFormat(data);
+        $.get("/api/v1/Candidate/?format=json&status__gt=0&activity_id="+id,function (data) {
+            vote_activity.candidates = fromCandidateListAPIFormat(data.objects);
+            setForm();
+        })
+    })
+}
+
+
+if (id != '') { getData(); }
+
+
+function toCandidateListAPIFormat() {
+    var result = [];
+    for (var i in vote_activity.candidates) {
+        var _candidate = vote_activity.candidates[i];
+        var Candidate = {};
+        Candidate['activity_id'] = '/api/v1/VoteAct/'+id+'/';
+        Candidate['name'] = _candidate.name;
+        Candidate['description'] = _candidate.description;
+        Candidate['key'] = _candidate.no;
+        Candidate['votes'] = 0;
+        Candidate['status'] = 1;
+        result.push(Candidate);
+    }
+    return result;
+}
+
+
+function toVoteActDetailAPIFormat(IsSave) {
+    var result = {};
+    result['name'] = vote_activity.name;
+    result['description'] = vote_activity.description;
+    result['key'] = vote_activity.key;
+    result['config'] = 1;
+    result['begin_vote'] = vote_activity.start_time;
+    result['end_vote'] = vote_activity.end_time;
+    if (!IsSave) {
+        result['status'] = 1;
+    }
+    return result;
+}
+
+
+function saveActivity() {
+    getForm();
+    var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
+    var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(true));
+    $.ajax({
+        type: 'PATCH',
+        url: '/api/v1/VoteAct/'+id+'/?format=json',
+        contentType: 'application/json',
+        data: VoteAct,
+        success: function() {
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/v1/Candidate/?format=json&activity_id='+id,
+                contentType: 'application/json',
+                success: function() {
+                    $.ajax({
+                        type: 'PATCH',
+                        url: '/api/v1/Candidate/?format=json',
+                        contentType: 'application/json',
+                        data: Candidates,
+                        error: function() {alert('create candidates failed')}
+                    })
+                },
+                error: function() {alert('delete candidate failed')}
+            })
+        },
+        error: function() {alert('save VoteAct failed')}
+    })
+}
+
+function m_publishActivity() {
+    getForm();
+    var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
+    var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(false));
+    $.ajax({
+        type: 'PATCH',
+        url: '/api/v1/VoteAct/'+id+'/?format=json',
+        contentType: 'application/json',
+        data: VoteAct,
+        success: function() {
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/v1/Candidate/?format=json&activity_id='+id,
+                contentType: 'application/json',
+                success: function() {
+                    $.ajax({
+                        type: 'PATCH',
+                        url: '/api/v1/Candidate/?format=json',
+                        contentType: 'application/json',
+                        data: Candidates,
+                        error: function() {alert('create candidates failed')}
+                    })
+                },
+                error: function() {alert('delete candidate failed')}
+            })
+        },
+        error: function() {alert('save VoteAct failed')}
+    })
+}
