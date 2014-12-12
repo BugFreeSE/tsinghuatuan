@@ -91,6 +91,7 @@ class VoteAct(models.Model):
     begin_vote = models.DateTimeField()
     end_vote = models.DateTimeField()
     status = models.IntegerField()
+    pic = models.ImageField(upload_to="uploadImages/", null=True)
     #status=0未发布
     #status=1已发布
     #status=-1已删除
