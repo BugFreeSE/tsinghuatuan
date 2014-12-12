@@ -7,7 +7,7 @@
         <title>投票</title>
         <link rel="stylesheet" type="text/css" href="{% static "css/vote-detail.css" %}" />
         <script>var vote_id = {{ vote.id }}</script>
-    <body>
+    <body background="{% static "img/bg_vote.gif" %}">
         <ul class="ui-tab-content">
             <li>
                 <div id="home" style="font-size:14px;">
@@ -72,7 +72,17 @@
                 <div id="candidates">
                     <ul class="candidate-list">
                         <li>
-                            <div class="clear-fix">
+                            <table class="one_candidate">
+                                <tr>
+                                    <td class="candidate_content">
+                                        具体介绍blabla
+                                    </td>
+                                    <td class="candidate_img">
+                                        <img src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--<div class="clear-fix">
 
                                 <img class="candidate-poster" src="img/test.jpg" />
                                 <div class="candidate-info">
@@ -90,7 +100,7 @@
                                 </div>
                                 <a class="show-more" href="#">查看更多</a>
                                 <a class="show-more hidden" href="#">收起</a>
-                            </div>
+                            </div>-->
                         </li>
                         <li>
                             <div class="clear-fix">
