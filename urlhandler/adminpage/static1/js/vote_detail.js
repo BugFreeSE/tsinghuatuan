@@ -35,7 +35,6 @@ function setForm(){
     $('#input-description').html(vote_activity.description);
 }
 
-setForm();
 
 function view_table(){
     var $table = $('<table>').attr('class', 'table table-hover table-bordered').css('width', '95%');
@@ -62,3 +61,47 @@ function view_table(){
 }
 
 
+var id = 9;
+
+
+function getDate() {
+    $.get("/api/v1/VoteAct/"+id+"/?format=json",function (data, status) {
+        vote_activity = fromVoteActDetailAPIFormat(data);
+        setForm();
+       //console.log(data);
+    })
+    $.get("/api/v1/Candidate/?activity_id="+id+"&format=json&status__gt=0", function (data, status) {
+        candidates = fromCandidateListAPIFormat(data.objects);
+        setForm();
+    })
+}
+
+
+function fromVoteActDetailAPIFormat(data) {
+    var result = {};
+    result.id = data.id;
+    result.name = data.name;
+    result.description = data.description;
+    result.key = data.key;
+    result.act_pic = '';
+    result.start_time = data.begin_vote.substring(0,10) + " " + data.begin_vote.substring(11);
+    result.end_time = data.end_vote.substring(0,10) + " " + data.end_vote.substring(11);
+    return result;
+}
+
+
+function fromCandidateListAPIFormat(data) {
+    var result = [];
+    for (var i in data) {
+        var _candidate = data[i];
+        var candidate = {};
+        candidate.name = _candidate.name;
+        candidate.id = _candidate.key;
+        candidate.votes = _candidate.votes;
+        result.push(candidate);
+    }
+    return result;
+}
+
+
+getDate();

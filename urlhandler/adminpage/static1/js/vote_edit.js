@@ -37,7 +37,7 @@ var dateInterfaceMap = {
     'book_start': 'time',
     'book_end': 'time',
 //    'pic_url': 'value',
-    'total_tickets': 'value',
+    'total_tickets': 'value'
 //    'seat_status': 'value'
 }, lockMap = {
     'value': function(dom, lock) {
@@ -398,7 +398,7 @@ function beforeSubmit(formData, jqForm, options) {
 //        'pic_url': '活动配图',
         'pic': '活动海报',
         'book_start': '订票开始时间',
-        'book_end': '订票结束时间',
+        'book_end': '订票结束时间'
     };
     lackArray = []; dateArray = [
 
@@ -887,9 +887,9 @@ function fromCandidateListAPIFormat(data) {
 
 
 function getData() {
-    $.get("/api/v1/VoteAct/"+id+"/?format=json",function (data, status) {
+    $.get("/api/v1/VoteAct/"+id+"/?format=json",function (data) {
         vote_activity = fromVoteActDetailAPIFormat(data);
-        $.get("/api/v1/Candidate/?format=json&status__gt=0&activity_id="+id,function (data, status) {
+        $.get("/api/v1/Candidate/?format=json&status__gt=0&activity_id="+id,function (data) {
             vote_activity.candidates = fromCandidateListAPIFormat(data.objects);
             setForm();
         })
@@ -934,63 +934,60 @@ function toVoteActDetailAPIFormat(IsSave) {
 
 function saveActivity() {
     getForm();
+    var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
+    var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(true));
     $.ajax({
-        type: 'DELETE',
-        url: '/api/v1/Candidate/?format=json&activity_id='+id,
+        type: 'PATCH',
+        url: '/api/v1/VoteAct/'+id+'/?format=json',
         contentType: 'application/json',
+        data: VoteAct,
         success: function() {
-            var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
-            var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(true));
             $.ajax({
-                type: 'PATCH',
-                url: '/api/v1/Candidate/?format=json',
+                type: 'DELETE',
+                url: '/api/v1/Candidate/?format=json&activity_id='+id,
                 contentType: 'application/json',
-                data: Candidates,
                 success: function() {
                     $.ajax({
                         type: 'PATCH',
-                        url: '/api/v1/VoteAct/'+id+'/?format=json',
+                        url: '/api/v1/Candidate/?format=json',
                         contentType: 'application/json',
-                        data: VoteAct,
-                        error: function() {alert('save VoteAct failed')}
+                        data: Candidates,
+                        error: function() {alert('create candidates failed')}
                     })
                 },
-                error: function() {alert('create candidate failed')}
+                error: function() {alert('delete candidate failed')}
             })
         },
-        error: function() {alert('delete candidate failed')}
+        error: function() {alert('save VoteAct failed')}
     })
 }
 
 function m_publishActivity() {
     getForm();
+    var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
+    var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(false));
     $.ajax({
-        type: 'DELETE',
-        url: '/api/v1/Candidate/?format=json&activity_id='+id,
+        type: 'PATCH',
+        url: '/api/v1/VoteAct/'+id+'/?format=json',
         contentType: 'application/json',
+        data: VoteAct,
         success: function() {
-            var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
-            var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(false));
             $.ajax({
-                type: 'PATCH',
-                url: '/api/v1/Candidate/?format=json',
+                type: 'DELETE',
+                url: '/api/v1/Candidate/?format=json&activity_id='+id,
                 contentType: 'application/json',
-                data: Candidates,
                 success: function() {
                     $.ajax({
                         type: 'PATCH',
-                        url: '/api/v1/VoteAct/'+id+'/?format=json',
+                        url: '/api/v1/Candidate/?format=json',
                         contentType: 'application/json',
-                        data: VoteAct,
-                        success: function() {
-                            location.href = '/vote/list';
-                        },
-                        error: function() {alert('save VoteAct failed')}
+                        data: Candidates,
+                        error: function() {alert('create candidates failed')}
                     })
                 },
-                error: function() {alert('create candidate failed')}
+                error: function() {alert('delete candidate failed')}
             })
         },
-        error: function() {alert('delete candidate failed')}
+        error: function() {alert('save VoteAct failed')}
     })
 }
