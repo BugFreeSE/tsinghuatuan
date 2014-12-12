@@ -19,7 +19,7 @@ window.addEventListener('load', function(){
 	})*/
 	//el.loading("hide");
     //homepage.render();
-    //homepage.fetch();
+    homepage.fetch();
     //candidate_list.render();
     candidate_list.fetch();
     /*var tab = new Scroll('.ui-tab', {
