@@ -10,8 +10,62 @@
     <body>
         <ul class="ui-tab-content">
             <li>
-                <div id="home" style="\padding-top:30px; text-align:center">
-                    <div class="ui-dialog ui-dialog-notice show" style="padding-top:30%;position:relative"><div class="ui-dialog-cnt"><i class="ui-loading-bright"></i><p>加载中...</p></div></div>
+                <div id="home" style="font-size:14px;">
+                    <!--<div class="ui-dialog ui-dialog-notice show" style="padding-top:30%;position:relative"><div class="ui-dialog-cnt"><i class="ui-loading-bright"></i><p>加载中...</p></div></div>-->
+                    <!--海报-->
+                    <div class="poster_container">
+                        <img id="poster" style="width:100%;" src="http://hdn.xnimg.cn/photos/hdn521/20120210/1750/h_large_YZaI_71850005ba532f76.jpg"/>
+                    </div>
+
+                    <!--信息部分1：活动标题、时间、候选人头像列表、候选人人数、参与者人数-->
+                    <div style="text-align: center; padding: 10px;">
+                        <div style="font-size:x-large; font-weight:bold;">校歌赛嘉宾票选</div>
+                        <div>2014年12月8日 - 12月15日 &nbsp;&nbsp; <strong class="highlight">正在进行</strong></div>
+                        <div id="avatar-list" style="margin: 10px 10px;">
+                            <span><img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0" /></span>
+                            <span><img class="avatar shadow" src="http://tp2.sinaimg.cn/1752502537/180/5648896565/1" /></span>
+                            <span><img class="avatar shadow" src="http://tp3.sinaimg.cn/1195354434/180/5712827770/1" /></span>
+                            <span><img class="avatar shadow" src="http://tp2.sinaimg.cn/1732008061/180/5706365063/1" /></span>
+                            <span><img class="avatar shadow" src="http://tp4.sinaimg.cn/1717748707/180/40010130572/1" /></span>
+                        </div>
+
+                        <table class="tb_counter" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td class="S_line1">
+                                        <strong>10</strong>
+                                        <span class="highlight">候选人</span>
+                                    </td>
+                                    <td class="S_line1" style="border-left-style: solid;">
+                                        <strong>100</strong>
+                                        <span class="highlight">参与者</span>
+                                    </td>
+                                    <td>
+                                    </td>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!--信息部分2：投票形式、活动代码、投票方式-->
+                    <div class="top_border">
+                        <div><strong class="highlight">投票形式&nbsp;&nbsp;</strong> <span>限选3人</span></div>
+                        <div><strong class="highlight">活动代码&nbsp;&nbsp;</strong> <span>嘉宾</span></div>
+                        <div><strong class="highlight">投票方式&nbsp;&nbsp;</strong> <span>微信回复“投票 活动代码 候选人编号列表”。例如“投票 嘉宾 1 3”</span></div>
+                    </div>
+
+                    <!--信息部分3：活动介绍-->
+                    <div class="top_border">
+                        <div><strong class="highlight">活动介绍</strong></div>
+                        <span>你想在校歌赛上看到谁？快来投票吧！</span>
+                    </div>
+
+                    <!--信息部分4：抽奖信息-->
+                    <div class="top_border">
+                        <div><strong class="highlight">抽奖信息</strong></div>
+                        <span>活动结束后将从参与者中抽取3名幸运观众，获得神秘礼品一份~</span>
+                    </div>
                 </div>
             </li>
             <li>
