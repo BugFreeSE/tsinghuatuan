@@ -18,7 +18,14 @@
 
 {% block js %}
     <script src="{% static "js/vote_detail.js"%}"></script>
+
+    <script type="text/javascript">
+
+
+    </script>
+
 {% endblock %}
+
 
 {% block username %}
     <a href={% url "adminpage.views.logout" %} >登出</a>
@@ -99,9 +106,9 @@
                         投票结果
                         <div style="float:right">
                             <div class="btn-group">
-  <button type="button" class="btn btn-default" onclick="view_bar()"><span class="glyphicon glyphicon-stats gbtn" ></span></button>
-  <button type="button" class="btn btn-default" onclick="view_pie()"><span class="glyphicon glyphicon-dashboard gbtn" ></span></button>
-  <button type="button" class="btn btn-default" onclick="view_table()"><span class="glyphicon glyphicon-th gbtn"></span></button>
+  <button type="button" class="btn btn-default" onclick="view_bar(vote_activity, candidates)"><span class="glyphicon glyphicon-stats gbtn" ></span></button>
+  <button type="button" class="btn btn-default" onclick="view_pie(vote_activity, candidates)"><span class="glyphicon glyphicon-dashboard gbtn" ></span></button>
+  <button type="button" class="btn btn-default" onclick="view_table(vote_activity, candidates)"><span class="glyphicon glyphicon-th gbtn"></span></button>
 </div>
 
 
@@ -116,18 +123,23 @@
 
 
         </form>
-        <div class="row">
-        <div class="clearfix"></div>
-            <a class="col-sm-4 btnBegin mycenter">投票开始！</a>
-    <div class="clearfix"></div>
-    <a class="col-sm-offset-4 col-sm-4 btnEnd" style="margin:1em auto;">投票结束！</a>
-    <div class="clearfix"></div>
-    <a class="col-sm-offset-4 col-sm-4 btnPub" style="margin:1em auto;">发布结果！</a>
-    <div class="clearfix"></div>
-        </div>
+
 
     </div>
-
+<div class="container">
+    <div class="panel panel-default">
+                    <div class="panel-heading" style="font-size: 1.5em">
+操作
+                        </div>
+    <div class="panel-body">
+        <div class="row" id="showButton">
+            <a class="btnBegin mycenter">投票开始！</a>
+    <a class="btnEnd mycenter">投票结束！</a>
+    <a class="btnPub mycenter">发布结果！</a>
+        </div>
+    </div>
+    </div>
+</div>
 
 
 
