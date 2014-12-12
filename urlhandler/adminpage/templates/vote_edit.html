@@ -319,7 +319,7 @@
     </div>
                                                 <form role="form" method="post" enctype="multipart/form-data" id="act_img_form" style="display:none">
 {% csrf_token %}
-                                            <input style="display: none" type="file" name="pic" class="form-control"
+                                            <input style="display: none" type="file" name = "pic" class="form-control"
                                                    id="input-pic" accept="image/*" onchange="createImg('#poster', getImgURL(this))"/>
                                             <input style="display: none" type="url" name="pic_url" class="form-control"
                                                    id="input-pic_url" min="0" placeholder="请填入图片链接"
