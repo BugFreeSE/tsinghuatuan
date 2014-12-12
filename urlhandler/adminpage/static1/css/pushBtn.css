@@ -3,6 +3,7 @@
   display: table;
   margin-left: auto;
   margin-right: auto;
+  margin:0.5em auto
 }
 a.btnBegin {
   position: relative;
@@ -12,11 +13,11 @@ a.btnBegin {
   font-family: 'Yanone Kaffeesatz';
   font-weight: 700;
   font-size: 5em;
-  display: block;
   padding: 0.3em;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
+  cursor: pointer;
   -webkit-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
   -moz-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
   box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
@@ -45,11 +46,11 @@ a.btnEnd {
   font-family: 'Yanone Kaffeesatz';
   font-weight: 700;
   font-size: 5em;
-  display: block;
   padding: 0.3em;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
+    cursor: pointer;
   -webkit-box-shadow: 0px 9px 0px rgba(51,102,0,1), 0px 9px 25px rgba(0,0,0,.7);
   -moz-box-shadow: 0px 9px 0px rgba(51,102,0,1), 0px 9px 25px rgba(0,0,0,.7);
   box-shadow: 0px 9px 0px rgba(51,102,0,1), 0px 9px 25px rgba(0,0,0,.7);
@@ -78,11 +79,11 @@ a.btnPub {
   font-family: 'Yanone Kaffeesatz';
   font-weight: 700;
   font-size: 5em;
-  display: block;
   padding: 0.3em;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
+  cursor: pointer;
   -webkit-box-shadow: 0px 9px 0px rgba(0,76,153,1), 0px 9px 25px rgba(0,0,0,.7);
   -moz-box-shadow: 0px 9px 0px rgba(0,76,153,1), 0px 9px 25px rgba(0,0,0,.7);
   box-shadow: 0px 9px 0px rgba(0,76,153,1), 0px 9px 25px rgba(0,0,0,.7);

@@ -786,7 +786,7 @@ function putCandidateImg(node){
     $img.attr('src', getImgURL(node));
 }
 
-var vote_activity;
+var vote_activity = {};
 //var vote_activity = {
 //    'id':0,
 //    'name': '看蓝猫',
@@ -897,7 +897,7 @@ function getData() {
 }
 
 
-if (id != '') { getData(); }
+if (typeof id != 'undefined' && id != '') { getData(); }
 
 
 function toCandidateListAPIFormat() {
@@ -990,4 +990,10 @@ function m_publishActivity() {
         },
         error: function() {alert('save VoteAct failed')}
     })
+}
+
+function upload_act_img(act_id){
+    var $form = $('#act_img_form').attr('action', '/vote/uploadImg/'+id+'/');
+    var $submit = $('#act_img_submit');
+    $submit.click();
 }
