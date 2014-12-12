@@ -55,7 +55,11 @@
 {% endblock %}
 
 {% block content %}
+<script type="text/javascript">
+        var id = {{ id }};
 
+
+    </script>
     <div class="container" id="detail-noscript">
         <noscript>请开启JavaScript后重试。</noscript>
     </div>
@@ -323,9 +327,5 @@
                                             <!--onchange="getPoster(this.value)"-->
                                             <input type="submit" style="display:none" id="act_img_submit"/>
                                             </form>
-    <script type="text/javascript">
-        var id = {{ id }};
 
-
-    </script>
 {% endblock %}
