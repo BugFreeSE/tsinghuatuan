@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.db.models import F
 import urllib
 import urllib2
-from urlhandler.models import Activity, Ticket, District, Seat, VoteAct
+from urlhandler.models import Activity, Ticket, District, Seat, VoteAct, Candidate
 from urlhandler.models import User as Booker
 from weixinlib.custom_menu import get_custom_menu, modify_custom_menu, add_new_custom_menu, auto_clear_old_menus
 from weixinlib.settings import get_custom_menu_with_book_acts, WEIXIN_BOOK_HEADER
@@ -600,15 +600,23 @@ def vote_detail(request):
 
 
 def vote_edit(request, voteid):
-    return render_to_response('vote_edit.html', {'id' : voteid}, context_instance=RequestContext(request))
+    return render_to_response('vote_edit.html', {'id': voteid}, context_instance=RequestContext(request))
 
 def vote_add(request):
-    return render_to_response('vote_edit.html', {id : ''}, context_instance=RequestContext(request))
+    return render_to_response('vote_edit.html', {'id': ''}, context_instance=RequestContext(request))
 
 def vote_act_upload_img(request, act_id):
     vote_act = VoteAct.objects.get(id=act_id)
-    pic = request.FILES['pic']
-    vote_act.pic = pic
-    vote_act.save()
-    return HttpResponse()
+    for (name, pic) in request.FILES.items():
+        if name == 'pic':
+            vote_act.pic = pic
+            vote_act.save()
+        else:
+            key = int(name)
+            cands = Candidate.objects.filter(activity_id=vote_act.id, key=key)
+            if cands.exists():
+                cand = cands[0]
+            cand.pic = pic
+            cand.save()
 
+    return HttpResponse()

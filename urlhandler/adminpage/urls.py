@@ -24,5 +24,5 @@ urlpatterns = patterns('',
                        url(r'^vote/detail/$', 'adminpage.views.vote_detail'),
                        url(r'^vote/add/$', 'adminpage.views.vote_add'),
                        url(r'^vote/edit/(?P<voteid>\d+)/$', 'adminpage.views.vote_edit'),
-                       url(r'^vote/uploadImg/(?P<act_id>\d+)/$', 'adminpage.views.vote_upload_img')
+                       url(r'^vote/uploadImg/(?P<act_id>\d+)/$', 'adminpage.views.vote_act_upload_img'),
                        )
