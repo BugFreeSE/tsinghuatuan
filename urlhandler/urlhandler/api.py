@@ -3,7 +3,16 @@ from urlhandler.models import VoteAct, Candidate, VoteLog
 from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
+from tastypie.authentication import BasicAuthentication, Authentication, MultiAuthentication
 import time
+
+
+class MyAuthentication(Authentication):
+    def is_authenticated(self, request, **kwargs):
+        if request.method == "GET":
+            return True
+        else:
+            return False
 
 
 class VoteActValidation(Validation):
@@ -35,6 +44,7 @@ class VoteActResource(ModelResource):
             'status': ['gte']
         }
         validation = VoteActValidation()
+        authentication = MultiAuthentication(MyAuthentication(), BasicAuthentication())
 
 
 class CandidateResource(ModelResource):
@@ -48,9 +58,11 @@ class CandidateResource(ModelResource):
             'activity_id': ALL_WITH_RELATIONS,
             'status': ['gt'],
         }
+        authentication = MultiAuthentication(MyAuthentication(), BasicAuthentication())
 
 
 class VoteLogResource(ModelResource):
     class Meta:
         queryset = VoteLog.objects.all()
         resource_name = 'VoteLog'
+        authentication = MultiAuthentication(MyAuthentication(), BasicAuthentication())

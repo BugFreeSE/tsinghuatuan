@@ -3,10 +3,11 @@ var vote_activity = {
     'id':0,
     'name': '看蓝猫',
     'key':'klm',
-    'start_time':'2014-12-01 9:40',
-    'end_time':'2014-12-01 9:40',
+    'start_time':new Date(2014, 12, 20, 4, 1),
+    'end_time':new Date(2014, 12, 20, 5, 1),
     'act_pic':'../../static1/img/default.png/',
-    'description':'description'
+    'description':'description',
+    'status':0
 }
 
 var candidates = [
@@ -26,39 +27,42 @@ var candidates = [
         'votes':111
     }
 ]
+
+function wrapTwoDigit(num) {
+    if (num < 10) {
+        return '0' + num;
+    } else {
+        return num;
+    }
+}
+
+function getChsDate(dt) {
+    return wrapTwoDigit(dt.getDate()) + '日';
+}
+
+function getChsMonthDay(dt) {
+    return wrapTwoDigit(dt.getMonth() + 1) + '月' + getChsDate(dt);
+}
+
+function getChsFullDate(dt) {
+    return dt.getFullYear() + '年' + getChsMonthDay(dt);
+}
+
+function getTimeStr(dt) {
+    return wrapTwoDigit(dt.getHours()) + ':' + wrapTwoDigit(dt.getMinutes());
+}
 function setForm(){
     $('#input-name').html(vote_activity.name);
     $('#input-key').html(vote_activity.key);
-    $('#input-start_time').html(vote_activity.start_time);
-    $('#input-end_time').html(vote_activity.end_time);
+    var start_time = getChsFullDate(vote_activity.start_time) + " " + getTimeStr(vote_activity.start_time);
+    var end_time = getChsFullDate(vote_activity.end_time) + " " + getTimeStr(vote_activity.end_time);
+    $('#input-start_time').html(start_time);
+    $('#input-end_time').html(end_time);
     $('#poster').attr('src',vote_activity.act_pic);
     $('#input-description').html(vote_activity.description);
 }
 
 
-function view_table(){
-    var $table = $('<table>').attr('class', 'table table-hover table-bordered').css('width', '95%');
-    var $thead = $('<thead>');
-    var $trh = $('<tr>');
-    $trh.append($('<th>').html('编号'))
-        .append($('<th>').html('候选人'))
-        .append($('<th>').html('票数'));
-    $thead.append($trh);
-    $table.append($thead);
-    var $tbody = $('<tbody>');
-    for (var i in candidates){
-        var $tr = $('<tr>');
-        $tr.append($('<td>').html(candidates[i].id));
-        $tr.append($('<td>').html(candidates[i].name));
-        $tr.append($('<td>').html(candidates[i].votes));
-        $tbody.append($tr);
-    }
-    $table.append($tbody);
-    $thead.children('tr').children('th').css('text-align', 'center');
-    $tbody.children('tr').children('td').css('text-align', 'center');
-    $('#container').css('display', 'none');
-    $('div.panel-body div.container').append($table);
-}
 
 
 var id = 9;
@@ -75,7 +79,7 @@ function getDate() {
         setForm();
     })
 }
-
+getDate();
 
 function fromVoteActDetailAPIFormat(data) {
     var result = {};
@@ -84,8 +88,11 @@ function fromVoteActDetailAPIFormat(data) {
     result.description = data.description;
     result.key = data.key;
     result.act_pic = '';
-    result.start_time = data.begin_vote.substring(0,10) + " " + data.begin_vote.substring(11);
-    result.end_time = data.end_vote.substring(0,10) + " " + data.end_vote.substring(11);
+    data.begin_vote = data.begin_vote.substring(0,10) + " " + data.begin_vote.substring(11);
+    data.end_vote = data.end_vote.substring(0,10) + " " + data.end_vote.substring(11);
+    result.start_time =  new Date(data.begin_vote.replace(/-/g,"/"));
+    result.end_time = new Date(data.begin_vote.replace(/-/g,"/"));
+    result.status = data.status;
     return result;
 }
 
@@ -104,4 +111,54 @@ function fromCandidateListAPIFormat(data) {
 }
 
 
-getDate();
+
+
+function getSmartStatus(act) {
+    var now = new Date();
+    switch (act.status){
+        case 0:
+            return '未发布';
+        case 1:
+            if (act.start_time > now)
+                return '投票尚未开始';
+            else if (act.end_time < now)
+                return '投票已结束';
+            else
+                return '正在投票';
+        case 2:
+            return '结果已发布';
+        default:
+            return '未知';
+    }
+}
+
+function showButton(){
+    var $beginBtn = $('<a class="btnBegin mycenter">投票开始！</a>');
+    var $endBtn = $('<a class="btnEnd mycenter">结束投票！</a>');
+    var $pubBtn = $('<a class="btnPub mycenter">发布结果！</a>');
+    var $bonusBtn = $('<a class="btnBegin mycenter">我要抽奖！</a>');
+    var $editBtn = $('<a class="btnPub mycenter">编辑活动</a>');
+    var $contain = $('#showButton');
+    $contain.children().remove();
+    switch (getSmartStatus(vote_activity)){
+        case '未发布':
+            $contain.append($editBtn);
+            break;
+        case '投票尚未开始':
+            $contain.append($beginBtn);
+            break;
+        case '正在投票':
+            $contain.append($endBtn);
+            break;
+        case '投票已结束':
+            $contain.append($pubBtn);
+            break;
+        case '结果已发布':
+            $contain.append($bonusBtn);
+            break;
+        default :
+            break;
+    };
+
+}
+showButton();

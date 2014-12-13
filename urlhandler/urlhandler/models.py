@@ -87,10 +87,11 @@ class VoteAct(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     key = models.CharField(max_length=255)
-    config = models.IntegerField()
-    begin_vote = models.DateTimeField()
-    end_vote = models.DateTimeField()
+    config = models.IntegerField(null=True)
+    begin_vote = models.DateTimeField(null=True)
+    end_vote = models.DateTimeField(null=True)
     status = models.IntegerField()
+    pic = models.ImageField(upload_to="uploadImages/", null=True)
     #status=0未发布
     #status=1已发布
     #status=-1已删除
@@ -102,6 +103,7 @@ class Candidate(models.Model):
     description = models.TextField()
     votes = models.IntegerField()
     status = models.IntegerField()
+    pic = models.ImageField(upload_to="uploadImages/", null=True)
 
 
 class VoteLog(models.Model):

@@ -55,7 +55,11 @@
 {% endblock %}
 
 {% block content %}
+<script type="text/javascript">
+        var id = {{ id }};
 
+
+    </script>
     <div class="container" id="detail-noscript">
         <noscript>请开启JavaScript后重试。</noscript>
     </div>
@@ -121,14 +125,10 @@
                                         <label for="input-pic_url" class="col-sm-2 control-label" min="0">活动配图</label>
 
                                         <div class="col-sm-6">
+                                            <form role="form" method="post" enctype="multipart/form-data" id="act_img_form">
                                             <input class="btn btn-info" id="upLoadBtn" onclick="$('#input-pic').click()"
                                                    type="button" value="上传图片"/>
-                                            <input style="display: none" type="file" name="pic" class="form-control"
-                                                   id="input-pic" accept="image/*" onchange="createImg('#poster', getImgURL(this))"/>
-                                            <input style="display: none" type="url" name="pic_url" class="form-control"
-                                                   id="input-pic_url" min="0" placeholder="请填入图片链接"
-                                                   value="http://p4.sinaimg.cn/2140529227/180/29231343381097">
-                                            <!--onchange="getPoster(this.value)"-->
+                                            </form>
                                         </div>
 
                                     </div>
@@ -214,6 +214,7 @@
                             </button>
                             <button type="button" onclick="saveActivity()" class="btn btn-default" id="saveBtn">暂存</button>
                             <button type="button" onclick="setForm()" class="btn btn-warning" id="resetBtn">重置</button>
+                            <button type="button" onclick="upload_act_img()" class="btn btn-warning" id="resetBtn">重置</button>
                         </div>
                     </div>
                 </div>
@@ -316,9 +317,15 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        var id = {{ id }};
+                                                <form role="form" method="post" enctype="multipart/form-data" id="act_img_form" style="display:none">
+{% csrf_token %}
+                                            <input style="display: none" type="file" name = "pic" class="form-control"
+                                                   id="input-pic" accept="image/*" onchange="createImg('#poster', getImgURL(this))"/>
+                                            <input style="display: none" type="url" name="pic_url" class="form-control"
+                                                   id="input-pic_url" min="0" placeholder="请填入图片链接"
+                                                   value="http://p4.sinaimg.cn/2140529227/180/29231343381097">
+                                            <!--onchange="getPoster(this.value)"-->
+                                            <input type="submit" style="display:none" id="act_img_submit"/>
+                                            </form>
 
-
-    </script>
 {% endblock %}
