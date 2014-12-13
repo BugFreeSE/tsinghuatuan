@@ -182,9 +182,18 @@ def vote_activity_info(request, voteActId):
     result["key"] = activity.key
     result["description"] = activity.description
     result["config"] = activity.config
-    result["start"] = activity.begin_vote.strftime("%Y年%m月%d日 %H:%M:%S")
-    result["end"] = activity.end_vote.strftime("%Y年%m月%d日 %H:%M:%S")
-    result["status"] = activity.status
+    result["start"] = activity.begin_vote.strftime("%Y年%m月%d日 %H:%M")
+    result["end"] = activity.end_vote.strftime("%Y年%m月%d日 %H:%M")
+    if activity.status != 1:
+        raise Http404
+    elif activity.begin_vote < datetime.datetime.now():
+        result["status"] = "正在进行"
+    else:
+        result["status"] = "即将开始"
+    candidates = activity.candidate_set.filter(status=1)
+    result["candidates"] = []
+    for candidate in candidates:
+        result["candidates"].append(model_to_dict(candidate))
     return HttpResponse(json.dumps(result), content_type="application/json")
 
 
