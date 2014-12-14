@@ -595,7 +595,7 @@ def vote_list(request):
     return render_to_response('vote_list.html')
 
 
-def vote_detail(request):
+def vote_detail(request, act_id):
     return render_to_response('vote_detail.html')
 
 
@@ -620,3 +620,45 @@ def vote_act_upload_img(request, act_id):
             cand.save()
 
     return HttpResponse()
+
+def vote_begin(request, act_id):
+    vote_act = VoteAct.objects.get(id=int(act_id))
+    vote_act.begin_vote = datetime.now()
+    vote_act.save()
+    return render_to_response('vote_detail_result.html', {'action': 'begin', 'id': act_id})
+
+def vote_end(request, act_id):
+    vote_act = VoteAct.objects.get(id=int(act_id))
+    vote_act.end_vote = datetime.now()
+    vote_act.save()
+    return render_to_response('vote_detail_result.html', {'action': 'end', 'id': act_id})
+
+def vote_pub(request, act_id):
+    vote_act = VoteAct.objects.get(id=int(act_id))
+    vote_act.status = 2
+    vote_act.save()
+    return render_to_response('vote_detail_result.html', {'action': 'pub', 'id': act_id})
+
+def vote_download_excel(request, act_id):
+    vote_act = VoteAct.objects.get(id=int(act_id))
+    response = HttpResponse(mimetype="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename='+vote_act.name+'.xls'
+
+    wb = xlwt.Workbook()
+    ws = wb.add_sheet('vote_result')
+
+    candidates = Candidate.objects.filter(activity_id=vote_act)
+    if not candidates.exists():
+        raise Http404
+    ws.write(0, 0, u'编号')
+    ws.write(0, 1, u'候选人姓名')
+    ws.write(0, 2, u'候选人票数')
+
+    i = 1
+    for c in candidates:
+        ws.write(i, 0, str(c.key))
+        ws.write(i, 1, c.name)
+        ws.write(i, 2, str(c.votes))
+
+    wb.save(response)
+    return response

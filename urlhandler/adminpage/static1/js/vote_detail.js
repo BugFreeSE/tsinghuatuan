@@ -28,6 +28,16 @@ var candidates = [
     }
 ]
 
+var id = 0;
+function getActId(){
+    var href = window.location.href;
+    var b = href.lastIndexOf('/');
+    var a = href.substring(0, b).lastIndexOf('/');
+    id = href.substring(a+1, b);
+}
+
+getActId();
+
 function wrapTwoDigit(num) {
     if (num < 10) {
         return '0' + num;
@@ -64,23 +74,20 @@ function setForm(){
 
 
 
-
-var id = 9;
-
-
 function getDate() {
     $.get("/api/v1/VoteAct/"+id+"/?format=json",function (data, status) {
         vote_activity = fromVoteActDetailAPIFormat(data);
-        setForm();
-       //console.log(data);
-    })
-    $.get("/api/v1/Candidate/?activity_id="+id+"&format=json&status__gt=0", function (data, status) {
+//        setForm();
+       $.get("/api/v1/Candidate/?activity_id="+id+"&format=json&status__gt=0", function (data, status) {
         candidates = fromCandidateListAPIFormat(data.objects);
         setForm();
+        initializePage();
     })
+    })
+
 }
 getDate();
-
+//setForm();
 function fromVoteActDetailAPIFormat(data) {
     var result = {};
     result.id = data.id;
@@ -91,7 +98,7 @@ function fromVoteActDetailAPIFormat(data) {
     data.begin_vote = data.begin_vote.substring(0,10) + " " + data.begin_vote.substring(11);
     data.end_vote = data.end_vote.substring(0,10) + " " + data.end_vote.substring(11);
     result.start_time =  new Date(data.begin_vote.replace(/-/g,"/"));
-    result.end_time = new Date(data.begin_vote.replace(/-/g,"/"));
+    result.end_time = new Date(data.end_vote.replace(/-/g,"/"));
     result.status = data.status;
     return result;
 }
@@ -138,6 +145,16 @@ function showButton(){
     var $pubBtn = $('<a class="btnPub mycenter">发布结果！</a>');
     var $bonusBtn = $('<a class="btnBegin mycenter">我要抽奖！</a>');
     var $editBtn = $('<a class="btnPub mycenter">编辑活动</a>');
+    var beginhref = '/vote/begin/'+id+'/';
+    var endhref = '/vote/end/'+id+'/';
+    var pubhref = '/vote/pub/'+id+'/';
+    var edithref = '/vote/edit/'+id+'/';
+    var bonushref = '/vote/bonus/'+id+'/';
+    $beginBtn.attr('href',beginhref);
+    $endBtn.attr('href', endhref);
+    $pubBtn.attr('href', pubhref);
+    $bonusBtn.attr('href', '');
+    $editBtn.attr('href', edithref);
     var $contain = $('#showButton');
     $contain.children().remove();
     switch (getSmartStatus(vote_activity)){
@@ -161,4 +178,13 @@ function showButton(){
     };
 
 }
-showButton();
+
+function download_data(){
+    window.location.href = '/vote/detail/download/'+id+'/';
+}
+function initializeResultPage(){
+
+}
+function initializePage(){
+    showButton();
+}
