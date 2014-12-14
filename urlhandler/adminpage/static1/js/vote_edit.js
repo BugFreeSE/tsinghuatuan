@@ -940,6 +940,7 @@ function upload_act_img(){
     $('#act_img_form').attr('action', '/vote/uploadImg/'+id+'/');
     var $submit = $('#act_img_submit');
     $submit.click();
+    $('#act_img_form input[type="file"]').remove();
 }
 
 function move_pics_to_form(){
