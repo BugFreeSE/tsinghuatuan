@@ -75,98 +75,6 @@ function updateActivity(nact) {
     }
 }
 
-function initializeForm(activity) {
-
-    if (!activity.id) {
-        $('#input-name').val('');
-        $('#remain_tickets').remove();
-    }
-    else
-    {
-        var key;
-        for (key in keyMap) {
-            actionMap[keyMap[key]]($('#input-' + key), activity[key]);
-        }
-
-        if (activity.place == '大礼堂')
-        {
-            multiDistricts.remove();
-            xinqingAllocation.remove();
-            $('#input-total_tickets').val(activity.districts[0].total_tickets);
-            $('#input-remain_tickets').val(activity.districts[0].remain_tickets);
-        }
-        else if (activity.place == '综体')
-        {
-            singleDistrict.remove();
-            multiDistricts.appendTo('#tickets_setting');
-            $('#remain_tickets').remove();
-            var list = $('#district-list');
-            var list_body = list.children('tbody');
-            list.children('thead').children().children()[3].innerHTML = '票余量';
-            list.children('tbody').children().remove();
-            for (var i = 0; i < activity.districts.length; i++)
-            {
-                list_body.append($('<tr />').append($('<th />').text(i + 1))
-                                            .append($('<th />').text(activity.districts[i].name))
-                                            .append($('<th />').text(activity.districts[i].total_tickets))
-                                            .append($('<th />').text(activity.districts[i].remain_tickets))
-                                )
-            }
-            list.parent().children('a').remove();
-        }
-        else {
-            singleDistrict.remove();
-            xinqingAllocation.appendTo('#tickets_setting');
-            $('#remain_tickets').remove();
-            var table = $("#seat_plan");
-            for (var i = 1; i <= rows; i++) {
-                var tr = $("<tr>");
-                var td1 = $("<td>");
-                var div = $("<div>");
-
-                div.attr({ class: "checkbox", style: "margin-right:30px" });
-
-                var label = $("<label>");
-
-                var input = $("<input>");
-                input.attr({id: "check_row" + i, name: "row" + i, onchange: "check(" + i + ")",
-                    type: "checkbox", value: "x", disabled: 'True'});
-                input.appendTo(label);
-
-                var span = $("<span>");
-                span[0].innerHTML = "第" + i + "排";
-                span.appendTo(label);
-
-                label.appendTo(div);
-                div.appendTo(td1);
-                td1.appendTo(tr);
-
-                var td2 = $("<td>");
-                td2.attr("id", "row" + i);
-
-                for (var j = 1; j <= cols; j++) {
-                    var s = $("<span>");
-                    s.attr("class", "seat unselected");
-                    s.appendTo(td2);
-                }
-                td2.appendTo(tr);
-
-                table.append(tr);
-            }
-            for (var i in activity.selectedRows)
-            {
-                $('#check_row' + (- -i + 1)).attr('checked', 'True');
-                $('#row' + (- -i + 1)).children().removeClass('unselected').addClass('selected');
-            }
-        }
-    }
-    if (typeof activity.checked_tickets !== 'undefined') {
-        initialProgress(activity.checked_tickets, activity.ordered_tickets, activity.total_tickets);
-    }
-    curstatus = activity.status;
-    lockByStatus(curstatus, activity.book_start, activity.start_time, activity.end_time);
-}
-
 function check_percent(p) {
     if (p > 100.0) {
         return 100.0;
@@ -175,75 +83,6 @@ function check_percent(p) {
     }
 }
 
-function checktime(){
-    var actstart = new Date($("#input-start_time").val());
-    var actend = new Date($("#input-end_time").val());
-    var bookstart = new Date($("#input-book_start").val());
-    var bookend = new Date($("#input-book_end").val());
-    var now = new Date();
-    console.log(now);
-    if(curstatus == 0){
-        if(bookstart < now){
-            $('#input-book_start').popover({
-                    html: true,
-                    placement: 'top',
-                    title:'',
-                    content: '<span style="color:red;">“订票开始时间”应晚于“当前时间”</span>',
-                    trigger: 'focus',
-                    container: 'body'
-            });
-            $('#input-book_start').focus();
-            return false;
-        }
-
-        if(bookend < bookstart){
-            $('#input-book_end').popover({
-                html: true,
-                placement: 'top',
-                title:'',
-                content: '<span style="color:red;">“订票结束时间”应晚于“订票开始时间”</span>',
-                trigger: 'focus',
-                container: 'body'
-            });
-            $('#input-book_end').focus();
-            return false;
-        }
-    }
-    if(actstart < bookend){
-        $('#input-start_time').popover({
-                html: true,
-                placement: 'top',
-                title:'',
-                content: '<span style="color:red;">“活动开始时间”应晚于“订票结束时间”</span>',
-                trigger: 'focus',
-                container: 'body'
-        });
-         $('#input-start_time').focus();
-        return false;
-    }
-    if(actend < actstart){
-        $('#input-end_time').popover({
-            html: true,
-            placement: 'top',
-            title:'',
-            content: '<span style="color:red;">“活动结束时间”应晚于“活动开始时间”</span>',
-            trigger: 'focus',
-            container: 'body'
-        });
-         $('#input-end_time').focus();
-        return false;
-    }
-    return true;
-}
-
-function initialProgress(checked, ordered, total) {
-    $('#tickets-checked').css('width', check_percent(100.0 * checked / total) + '%')
-        .tooltip('destroy').tooltip({'title': '已检入：' + checked + '/' + ordered + '=' + (100.0 * checked / ordered).toFixed(2) + '%'});
-    $('#tickets-ordered').css('width', check_percent(100.0 * (ordered - checked) / total) + '%')
-        .tooltip('destroy').tooltip({'title': '订票总数：' + ordered + '/' + total + '=' + (100.0 * ordered / total).toFixed(2) + '%' + '，其中未检票：' + (ordered - checked) + '/' + ordered + '=' + (100.0 * (ordered - checked) / ordered).toFixed(2) + '%'});
-    $('#tickets-remain').css('width', check_percent(100.0 * (total - ordered) / total) + '%')
-        .tooltip('destroy').tooltip({'title': '余票：' + (total - ordered) + '/' + total + '=' + (100.0 * (total - ordered) / total).toFixed(2) + '%'});
-}
 
 function changeView(id) {
     var opt = ['noscript', 'form', 'processing', 'result'], len = opt.length, i;
@@ -835,6 +674,7 @@ function getData() {
         $.get("/api/v1/Candidate/?format=json&status__gt=0&activity_id="+id,function (data) {
             vote_activity.candidates = fromCandidateListAPIFormat(data.objects);
             setForm();
+            initializePage();
         })
     })
 }
@@ -947,4 +787,83 @@ function move_pics_to_form(){
     var $inputs = $('input[type="file"]');
     $('#act_img_form').append($inputs);
     $('#act_img_form #modal-pic').remove();
+}
+
+function initializePage(){
+    bind_validation();
+}
+
+function bind_validation(){
+    var validate_list = {
+    input:[
+        '#input-name',
+        '#input-key',
+    ],
+    validate:[
+        validate_name,
+        validate_key,
+    ],
+    form:[
+        '#name-form',
+        '#key-form',
+    ],
+    label:[
+        '#name-label',
+        '#key-label',
+    ]
+}
+
+    $(validate_list.input[0]).blur(function(){
+        validate_action(validate_list.validate[0], $(validate_list.form[0]), $(validate_list.label[0]))
+    });
+    $(validate_list.input[1]).blur(function(){
+        validate_action(validate_list.validate[1], $(validate_list.form[1]), $(validate_list.label[1]))
+    });
+}
+
+function validate_key(){
+    return '活动简称有重复哦～请更换一个^_^'
+}
+
+function validate_name(){
+    return 'ok'
+}
+
+function validate_start(){
+    var now = new Date();
+    var start = new Date($('#input-start_time').val());
+    if (start < now){
+        return '开始时间应晚于当前时间！';
+    }
+    else{
+        return 'ok';
+    }
+}
+
+function validate_end(){
+    var start = new Date($('#input-start_time').val());
+    var end = new Date($('input-end_time').val());
+    if (end < start){
+        return '结束时间应晚于开始时间！';
+    }
+    else{
+        return 'ok';
+    }
+}
+
+function validate_name(){
+    return 'ok';
+}
+
+function validate_action(validate, $div, $label){
+    var r = validate();
+    if (r === 'ok'){
+        $div.addClass('has-success');
+        $label.css('display', 'none');
+    }
+    else{
+        $div.addClass('has-error');
+        $label.text(r);
+        $label.css('display', 'inline');
+    }
 }
