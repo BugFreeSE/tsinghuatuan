@@ -35,12 +35,16 @@
     <div class="container" id="detail-noscript">
         <noscript>请开启JavaScript后重试。</noscript>
     </div>
+
+    <a name="info_point"></a>
     <div class="container" id="detail-form">
         <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data"
               action="{% url "adminpage.views.activity_post" %}" id="activity-form">
             {% csrf_token %}
+
                 <div class="panel panel-default">
-                    <div class="panel-heading">活动信息</div>
+                    <div class="panel-heading" style="font-size: 1.5em">活动信息</div>
+
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-6" style="left:8.5%;">
@@ -84,7 +88,7 @@
 
                                     <div class="col-sm-9">
                                         <textarea class="form-control" name="description" rows="7"
-                                                  id="input-description" placeholder="描述，如 好看的舞台剧" row="3"
+                                                  id="input-description" row="3"
                                                   style="resize: none;" disabled="disabled"></textarea>
                                     </div>
                                 </div>
@@ -94,13 +98,13 @@
                             <div class="col-sm-3 form-group" style="right:-15%;">
                                 <div class="form-group">
                                     <img id="poster" class="img-responsive img-thumbnail" style="width:100%;" alt=""
-                                         src="../../static1/img/default.png"/>
+                                         src="/static1/img/default.png"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
+<a name="result_point"></a>
             <div class="panel panel-default">
                     <div class="panel-heading" style="font-size: 1.5em">
                         投票结果
@@ -135,14 +139,11 @@
                         </div>
     <div class="panel-body">
         <div class="row" id="showButton">
-            <a class="btnBegin mycenter">投票开始！</a>
-    <a class="btnEnd mycenter">投票结束！</a>
-    <a class="btnPub mycenter">发布结果！</a>
         </div>
     </div>
     </div>
 </div>
 
-
+<div class="informer">开始成功！</div>
 
 {% endblock %}

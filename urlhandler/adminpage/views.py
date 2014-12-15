@@ -625,19 +625,19 @@ def vote_begin(request, act_id):
     vote_act = VoteAct.objects.get(id=int(act_id))
     vote_act.begin_vote = datetime.now()
     vote_act.save()
-    return render_to_response('vote_detail_result.html', {'action': 'begin', 'id': act_id})
+    return HttpResponse()
 
 def vote_end(request, act_id):
     vote_act = VoteAct.objects.get(id=int(act_id))
     vote_act.end_vote = datetime.now()
     vote_act.save()
-    return render_to_response('vote_detail_result.html', {'action': 'end', 'id': act_id})
+    return HttpResponse()
 
 def vote_pub(request, act_id):
     vote_act = VoteAct.objects.get(id=int(act_id))
     vote_act.status = 2
     vote_act.save()
-    return render_to_response('vote_detail_result.html', {'action': 'pub', 'id': act_id})
+    return HttpResponse()
 
 def vote_download_excel(request, act_id):
     vote_act = VoteAct.objects.get(id=int(act_id))

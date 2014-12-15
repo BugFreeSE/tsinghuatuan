@@ -145,14 +145,11 @@ function showButton(){
     var $pubBtn = $('<a class="btnPub mycenter">发布结果！</a>');
     var $bonusBtn = $('<a class="btnBegin mycenter">我要抽奖！</a>');
     var $editBtn = $('<a class="btnPub mycenter">编辑活动</a>');
-    var beginhref = '/vote/begin/'+id+'/';
-    var endhref = '/vote/end/'+id+'/';
-    var pubhref = '/vote/pub/'+id+'/';
     var edithref = '/vote/edit/'+id+'/';
     var bonushref = '/vote/bonus/'+id+'/';
-    $beginBtn.attr('href',beginhref);
-    $endBtn.attr('href', endhref);
-    $pubBtn.attr('href', pubhref);
+    $beginBtn.attr('onclick','actionButton("begin")');
+    $endBtn.attr('onclick','actionButton("end")');
+    $pubBtn.attr('onclick','actionButton("pub")');
     $bonusBtn.attr('href', '');
     $editBtn.attr('href', edithref);
     var $contain = $('#showButton');
@@ -175,16 +172,58 @@ function showButton(){
             break;
         default :
             break;
-    };
+    }
 
 }
 
 function download_data(){
-    window.location.href = '/vote/detail/download/'+id+'/';
+    window.location.href = '/vote/detail_download/'+id+'/';
 }
 function initializeResultPage(){
+    view_pie(vote_activity, candidates);
 
 }
 function initializePage(){
     showButton();
+    initializeResultPage();
+}
+
+function actionButton(action){
+    var href = '';
+    var html = '';
+    var point = '';
+    switch(action){
+        case 'begin':
+            href = '/vote/begin/'+id+'/';
+            html = '开始成功！';
+            point = '#info_point';
+            break;
+        case 'end':
+            href = '/vote/end/'+id+'/';
+            html = '结束成功！';
+            point = '#result_point';
+            break;
+        case 'pub':
+            href = '/vote/pub/'+id+'/';
+            html = '发布成功！';
+            point = '#result_point';
+            break;
+        default :
+            break;
+    }
+
+    $.ajax({
+        url: href,
+        success: function(){
+            $('div.informer').html(html)
+                .fadeIn(800, function(){
+                setTimeout(function(){
+                    $('div.informer').fadeOut(1000, function(){
+                    });
+                getDate();
+                window.location.href=point;
+                }, 1000);
+            });
+        }
+    });
 }
