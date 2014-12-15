@@ -76,10 +76,14 @@
                                 <label class="col-sm-2 control-label"
                                        id="label-input-name">活动名称</label>
 
-                                <div class="col-sm-6" id="name-form">
+                                <div class="col-sm-12" id="name-form">
+                                    <div class="col-sm-6">
                                     <input type="text" maxlength="26" name="name" class="form-control"
                                            id="input-name" placeholder="活动名称，如 清韵烛光" autofocus>
-                                    <label class="control-label" id="name-label" style="display:none"></label>
+                                        </div>
+                                    <div class="col-sm-4">
+                                    <label class="control-label info-label" id="name-label" style="display:none;padding-top:7px"></label>
+                                        </div>
                                 </div>
                             </div>
 
@@ -87,33 +91,64 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">活动代称</label>
 
-                                <div class="col-sm-6" id="key-form">
-                                    <input type="text" maxlength="26" name="key" class="form-control"
+                                <div class="col-sm-12" id="key-form">
+                                    <div class="col-sm-6">
+                                        <input type="text" maxlength="26" name="key" class="form-control"
                                            id="input-key" placeholder="用户用于订票的活动代称，如 马兰花开">
-                                    <label class="control-label" id="key-label" style="display:none"></label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label info-label" id="key-label" style="display:none;padding-top:7px"></label>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">投票开始</label>
 
-                                <div class='col-sm-6 input-group date' id='datetimepicker1'>
+                                <div class='col-sm-12' id="start-form">
+                                    <div class="col-sm-6 input-group date" id='datetimepicker1'>
                                     <input type='text' class="form-control" name="start_time"
                                            id="input-start_time"/>
+
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
 
                                 </span>
+                                        </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label info-label" id="start-label" style="display:none;padding-top:7px"></label>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group" id=>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">投票结束</label>
 
-                                <div class='col-sm-6 input-group date' id='datetimepicker2'>
+                                <div class='col-sm-12' id="end-form">
+                                    <div class="col-sm-6 input-group date" id='datetimepicker2'>
                                     <input type='text' class="form-control" name="end_time"
                                            id="input-end_time"/>
+
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
 
                                 </span>
+                                        </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label info-label" id="end-label" style="display:none;padding-top:7px"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">最多投票</label>
+
+                                <div class="col-sm-12" id="config-form">
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control"
+                                           id="input-config">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label info-label" id="config-label" style="display:none;padding-top:7px"></label>
+                                    </div>
+
                                 </div>
                             </div>
                             <!--
@@ -206,7 +241,7 @@
                     </button>
                     <button type="button" onclick="saveActivity()" class="btn btn-default" id="saveBtn">暂存</button>
                     <button type="button" onclick="setForm()" class="btn btn-warning" id="resetBtn">重置</button>
-                    <button type="button" onclick="upload_act_img()" class="btn btn-warning" id="resetBtn">重置</button>
+                    <button type="button" onclick="upload_act_img()" class="btn btn-warning" id="resetBtn">tupian</button>
                 </div>
             </div>
         </div>
@@ -216,7 +251,7 @@
     </form>
 </div>
 <div class="container" id="detail-processing" style="display: none;">
-    <img src="{% static " img/loading.gif" %}">
+    <img src="{% static "img/loading.gif" %}">
     正在执行，请稍候……
 </div>
 

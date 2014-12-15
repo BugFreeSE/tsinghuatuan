@@ -735,17 +735,24 @@ function saveActivity() {
                         url: '/api/v1/Candidate/?format=json',
                         contentType: 'application/json',
                         data: Candidates,
-                        error: function() {alert('create candidates failed')}
+                        success: function() {setResult('活动暂存成功!');showResult();},
+                        error: function() {setResult('create candidates failed');showResult();}
                     })
                 },
-                error: function() {alert('delete candidate failed')}
+                error: function() {setResult('delete candidate failed');showResult();}
             })
         },
-        error: function() {alert('save VoteAct failed')}
+        error: function() {setResult('save VoteAct failed');showResult();}
     })
 }
 
 function m_publishActivity() {
+    showProcessing();
+    var info = validatePage();
+    if (info != ''){
+        setResult(info);
+        showResult();
+    }
     getForm();
     var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
     var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(false));
@@ -765,13 +772,16 @@ function m_publishActivity() {
                         url: '/api/v1/Candidate/?format=json',
                         contentType: 'application/json',
                         data: Candidates,
-                        error: function() {alert('create candidates failed')}
+                        success: function(){
+                            setResult('活动创建成功!');showResult();
+                        },
+                        error: function() {setResult('create candidates failed');showResult();}
                     })
                 },
-                error: function() {alert('delete candidate failed')}
+                error: function() {setResult('delete candidate failed');showResult();}
             })
         },
-        error: function() {alert('save VoteAct failed')}
+        error: function() {setResult('save VoteAct failed');showResult();}
     })
 }
 
@@ -794,39 +804,27 @@ function initializePage(){
 }
 
 function bind_validation(){
-    var validate_list = {
-    input:[
-        '#input-name',
-        '#input-key',
-    ],
-    validate:[
-        validate_name,
-        validate_key,
-    ],
-    form:[
-        '#name-form',
-        '#key-form',
-    ],
-    label:[
-        '#name-label',
-        '#key-label',
-    ]
-}
 
-    $(validate_list.input[0]).blur(function(){
-        validate_action(validate_list.validate[0], $(validate_list.form[0]), $(validate_list.label[0]))
+    $('#input-name').blur(function(){
+        validate_action(validate_name(), $('#name-form'), $('#name-label'))
     });
-    $(validate_list.input[1]).blur(function(){
-        validate_action(validate_list.validate[1], $(validate_list.form[1]), $(validate_list.label[1]))
+    $('#input-key').blur(function(){
+        validate_action(validate_key(), $('#key-form'), $('#key-label'))
     });
+    $('#input-start_time').blur(function(){
+        validate_action(validate_start(), $('#start-form'), $('#start-label'))
+    });
+    $('#input-end_time').blur(function(){
+        validate_action(validate_end(), $('#end-form'), $('#end-label'))
+    })
 }
 
 function validate_key(){
-    return '活动简称有重复哦～请更换一个^_^'
+    return '活动简称有重复'
 }
 
 function validate_name(){
-    return 'ok'
+    return ''
 }
 
 function validate_start(){
@@ -836,7 +834,7 @@ function validate_start(){
         return '开始时间应晚于当前时间！';
     }
     else{
-        return 'ok';
+        return '';
     }
 }
 
@@ -847,23 +845,71 @@ function validate_end(){
         return '结束时间应晚于开始时间！';
     }
     else{
-        return 'ok';
+        return '';
     }
 }
 
 function validate_name(){
-    return 'ok';
+    return '';
 }
 
-function validate_action(validate, $div, $label){
-    var r = validate();
-    if (r === 'ok'){
+function validate_action(r, $div, $label){
+    if (r === ''){
         $div.addClass('has-success');
         $label.css('display', 'none');
     }
     else{
         $div.addClass('has-error');
         $label.text(r);
-        $label.css('display', 'inline');
+        $label.css('display', 'table');
     }
+}
+
+function validatePage(){
+    var items = ['name', 'key', 'start', 'end'];
+    var infos = {
+        'name': validate_name(),
+        'key': validate_key(),
+        'start': validate_start(),
+        'end': validate_end()
+    }
+    var divs = {
+        'name': '#name-form',
+        'key': '#key-form',
+        'start': '#start-form',
+        'end': '#end-form'
+    }
+    var labels = {
+        'name': '#name-label',
+        'key': '#key-label',
+        'start': '#start-label',
+        'end': '#end-label'
+    }
+    var result = '';
+    for (var i in items){
+        validate_action(infos[items[i]], $(divs[items[i]]), $(labels[items[i]]));
+        result += infos[items[i]];
+    }
+    return result;
+}
+
+function hideSaveBtn(){
+    var now = new Date();
+    var start = new Date($('#input-start_time').val());
+    if (now > start){
+        $('#saveBtn').remove();
+    }
+}
+
+function validateCandidates(candidates){
+    if (typeof candidates === 'undefined' || candidates.length == 0){
+        return '没有候选人';
+    }
+    var result = '';
+    for (var i in candidates){
+        if (typeof candidates[i].name === 'undefined' || candidates[i].name === ''){
+            result += '第' + (i+1) + '号候选人姓名为空;'
+        }
+    }
+    return result;
 }
