@@ -20,18 +20,7 @@
 
 <script src = "{% static "js/vote_edit.js" %}" ></script>
 <script type="text/javascript">
-    $(function () {
-        $('#datetimepicker1').datetimepicker({
-            language: 'zh-CN',
-            pick12HourFormat: false
-        });
-    });
-    $(function () {
-        $('#datetimepicker2').datetimepicker({
-            language: 'zh-CN',
-            pick12HourFormat: false
-        });
-    });
+
 
     function getPoster(url) {
         $("#poster").attr("src", url);

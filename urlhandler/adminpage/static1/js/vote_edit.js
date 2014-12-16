@@ -568,6 +568,10 @@ function getForm(){
     vote_activity.end_time = $('#input-end_time').val();
     vote_activity.act_pic = $('#poster').attr('src');
     vote_activity.description = $('#input-description').val();
+    var str = $('#input-config').val();
+    var n = 1;
+    if (str != ''){n = parseInt(str)}
+    vote_activity.config = n;
     var $trs = $('#candidate-list tbody').children('tr');
     vote_activity.candidates = [];
     for (var i = 0; i < $trs.length; i++){
@@ -582,6 +586,7 @@ function setForm(){
     $('#input-end_time').val(vote_activity.end_time);
     $('#poster').attr('src',vote_activity.act_pic);
     $('#input-description').val(vote_activity.description);
+    $('#input-config').val(vote_activity.config);
     if (vote_activity.candidates.length != 0){
         $('#candidate-list tbody').children().remove();
     }
@@ -647,7 +652,8 @@ function fromVoteActDetailAPIFormat(data) {
     data.end_vote = data.end_vote.substring(0,10) + " " + data.end_vote.substring(11,16);
     result.start_time =data.begin_vote.replace(/-/g,"/");
     result.end_time = data.end_vote.replace(/-/g,"/");
-    result.act_pic = '/static1/img/default.png/';
+    result.act_pic = data.pic;
+    result.config = data.config;
     result.candidates = [];
     return result;
 }
@@ -705,7 +711,7 @@ function toVoteActDetailAPIFormat(IsSave) {
     result['name'] = vote_activity.name;
     result['description'] = vote_activity.description;
     result['key'] = vote_activity.key;
-    result['config'] = 1;
+    result['config'] = vote_activity.config;
     result['begin_vote'] = vote_activity.start_time;
     result['end_vote'] = vote_activity.end_time;
     if (!IsSave) {
@@ -752,6 +758,7 @@ function m_publishActivity() {
     if (info != ''){
         setResult(info);
         showResult();
+        return;
     }
     getForm();
     var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
@@ -773,7 +780,7 @@ function m_publishActivity() {
                         contentType: 'application/json',
                         data: Candidates,
                         success: function(){
-                            setResult('活动创建成功!');showResult();
+                            setResult('活动发布成功!');showResult();
                         },
                         error: function() {setResult('create candidates failed');showResult();}
                     })
@@ -805,22 +812,26 @@ function initializePage(){
 
 function bind_validation(){
 
-    $('#input-name').blur(function(){
+    $('#input-name').change(function(){
         validate_action(validate_name(), $('#name-form'), $('#name-label'))
     });
-    $('#input-key').blur(function(){
+    $('#input-key').change(function(){
         validate_action(validate_key(), $('#key-form'), $('#key-label'))
     });
-    $('#input-start_time').blur(function(){
+    $('#input-start_time').change(function(){
         validate_action(validate_start(), $('#start-form'), $('#start-label'))
     });
-    $('#input-end_time').blur(function(){
+    $('#input-end_time').change(function(){
         validate_action(validate_end(), $('#end-form'), $('#end-label'))
+    })
+    $('#input-config').change(function(){
+        validate_action(validate_config(), $('#config-form'), $('#config-label'))
     })
 }
 
 function validate_key(){
-    return '活动简称有重复'
+//    return '活动简称有重复'
+    return ''
 }
 
 function validate_name(){
@@ -840,7 +851,7 @@ function validate_start(){
 
 function validate_end(){
     var start = new Date($('#input-start_time').val());
-    var end = new Date($('input-end_time').val());
+    var end = new Date($('#input-end_time').val());
     if (end < start){
         return '结束时间应晚于开始时间！';
     }
@@ -855,10 +866,12 @@ function validate_name(){
 
 function validate_action(r, $div, $label){
     if (r === ''){
+        $div.removeClass('has-error');
         $div.addClass('has-success');
         $label.css('display', 'none');
     }
     else{
+        $div.removeClass('has-success');
         $div.addClass('has-error');
         $label.text(r);
         $label.css('display', 'table');
@@ -866,30 +879,34 @@ function validate_action(r, $div, $label){
 }
 
 function validatePage(){
-    var items = ['name', 'key', 'start', 'end'];
+    var items = ['name', 'key', 'start', 'end', 'config'];
     var infos = {
         'name': validate_name(),
         'key': validate_key(),
         'start': validate_start(),
-        'end': validate_end()
+        'end': validate_end(),
+        'config': validate_config()
     }
     var divs = {
         'name': '#name-form',
         'key': '#key-form',
         'start': '#start-form',
-        'end': '#end-form'
+        'end': '#end-form',
+        'config': '#config-form'
     }
     var labels = {
         'name': '#name-label',
         'key': '#key-label',
         'start': '#start-label',
-        'end': '#end-label'
+        'end': '#end-label',
+        'config': '#config-label'
     }
     var result = '';
     for (var i in items){
         validate_action(infos[items[i]], $(divs[items[i]]), $(labels[items[i]]));
         result += infos[items[i]];
     }
+    result += validateCandidates();
     return result;
 }
 
@@ -908,8 +925,44 @@ function validateCandidates(candidates){
     var result = '';
     for (var i in candidates){
         if (typeof candidates[i].name === 'undefined' || candidates[i].name === ''){
-            result += '第' + (i+1) + '号候选人姓名为空;'
+            result += '第' + (i+1) + '号候选人姓名为空\n'
         }
     }
     return result;
 }
+
+function isInteger( str )
+{
+    var regu = /^[-]{0,1}[0-9]{1,}$/;
+    return regu.test(str);
+};
+
+function validate_config(){
+    var config = $('#input-config').val();
+    if (!isInteger(config)){
+        return '投票数应为整数';
+    }
+    var n = parseInt(config);
+    if (n <= 0){
+        return '投票数应为正数';
+    }
+    return '';
+}
+
+function initialzeDateTimePicker(){
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            language: 'zh-CN',
+            pick12HourFormat: false
+        });
+    });
+    $(function () {
+        $('#datetimepicker2').datetimepicker({
+            language: 'zh-CN',
+            pick12HourFormat: false
+        });
+    });
+}
+$(document).ready(function(){
+    initialzeDateTimePicker();
+})
