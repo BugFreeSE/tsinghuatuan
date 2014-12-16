@@ -184,6 +184,7 @@ def vote_activity_info(request, voteActId):
     result["config"] = activity.config
     result["start"] = activity.begin_vote.strftime("%Y年%m月%d日 %H:%M")
     result["end"] = activity.end_vote.strftime("%Y年%m月%d日 %H:%M")
+    result["pic"] = activity.pic.url
     if activity.status != 1:
         raise Http404
     elif activity.begin_vote < datetime.datetime.now():
@@ -191,13 +192,16 @@ def vote_activity_info(request, voteActId):
     else:
         result["status"] = "即将开始"
     candidates = activity.candidate_set.filter(status=1)
+    result["candidate_num"] = len(candidates)
+    result["participant_num"] = len(activity.votelog_set.all())
     result["candidates"] = []
     for candidate in candidates:
         result["candidates"].append({
             "name": candidate.name,
             "key": candidate.key,
             "description": candidate.description,
-            "vote": candidate.votes
+            "vote": candidate.votes,
+            "pic": candidate.pic.url
         })
     return HttpResponse(json.dumps(result), content_type="application/json")
 

@@ -142,8 +142,8 @@
                                 <tr>
                                     <td style="text-align: center" colspan="2">
                                         <div class="hide hidden">
-                                            <img style="width: 10px;" src="{% static "img/收起箭头.gif" %}"/>
-                                            <span style="font-size:12px;">收起</span>
+                                            <span class="icon-hide"></span>
+                                            <span style="font-size:12px;">&nbsp;收起</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -225,7 +225,9 @@
                     </ul>
                 </div>
             </li>
-            <li>3</li>
+            <li>
+                <div id="result" style="width:100%; height:300px"></div>
+            </li>
         </ul>
         <footer>
             <ul class="ui-tab-nav">
@@ -235,6 +237,8 @@
             </ul>
         </footer>
         <script type="text/javascript" src="{% static "lib/jq/jquery-1.10.2.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/jquery.flot.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/jquery.flot.pie.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui-tab.js" %}"></script>
         <script type="text/javascript" src="{% static "js/app.js" %}"></script>
         <script type="text/javascript" src="{% static "js/activity.js" %}"></script>
