@@ -574,7 +574,7 @@ function getForm(){
     vote_activity.config = n;
     var $trs = $('#candidate-list tbody').children('tr');
     vote_activity.candidates = [];
-    for (var i = 0; i < $trs.length; i++){
+    for (var i = 0; i < $('#candidate-list tbody').children('tr').length; i++){
         vote_activity.candidates.push(getCandidate($trs.eq(i)));
     }
 }
@@ -680,7 +680,7 @@ function getData() {
         $.get("/api/v1/Candidate/?format=json&status__gt=0&activity_id="+id,function (data) {
             vote_activity.candidates = fromCandidateListAPIFormat(data.objects);
             setForm();
-            initializePage();
+
         })
     })
 }
@@ -741,7 +741,9 @@ function saveActivity() {
                         url: '/api/v1/Candidate/?format=json',
                         contentType: 'application/json',
                         data: Candidates,
-                        success: function() {setResult('活动暂存成功!');showResult();},
+                        success: function() {
+                            upload_act_img();
+                            setResult('活动暂存成功!');showResult();},
                         error: function() {setResult('create candidates failed');showResult();}
                     })
                 },
@@ -754,13 +756,14 @@ function saveActivity() {
 
 function m_publishActivity() {
     showProcessing();
+    getForm();
     var info = validatePage();
     if (info != ''){
         setResult(info);
         showResult();
         return;
     }
-    getForm();
+
     var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
     var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(false));
     $.ajax({
@@ -780,6 +783,7 @@ function m_publishActivity() {
                         contentType: 'application/json',
                         data: Candidates,
                         success: function(){
+                            upload_act_img();
                             setResult('活动发布成功!');showResult();
                         },
                         error: function() {setResult('create candidates failed');showResult();}
@@ -906,7 +910,7 @@ function validatePage(){
         validate_action(infos[items[i]], $(divs[items[i]]), $(labels[items[i]]));
         result += infos[items[i]];
     }
-    result += validateCandidates();
+    result += validateCandidates(vote_activity.candidates);
     return result;
 }
 
@@ -925,7 +929,7 @@ function validateCandidates(candidates){
     var result = '';
     for (var i in candidates){
         if (typeof candidates[i].name === 'undefined' || candidates[i].name === ''){
-            result += '第' + (i+1) + '号候选人姓名为空\n'
+            result += '第' + (parseInt(i)+1) + '号候选人姓名为空\n'
         }
     }
     return result;
@@ -964,5 +968,7 @@ function initialzeDateTimePicker(){
     });
 }
 $(document).ready(function(){
+
     initialzeDateTimePicker();
+    initializePage();
 })
