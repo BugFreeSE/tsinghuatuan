@@ -227,3 +227,7 @@ function actionButton(action){
         }
     });
 }
+
+function createTips(){
+
+}
