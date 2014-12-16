@@ -29,6 +29,7 @@ from urlhandler.settings import MEDIA_ROOT
 import ImageFile
 import time
 
+
 @csrf_protect
 def home(request):
     if not request.user.is_authenticated():
@@ -603,7 +604,7 @@ def vote_edit(request, voteid):
     return render_to_response('vote_edit.html', {'id': voteid}, context_instance=RequestContext(request))
 
 def vote_add(request):
-    return render_to_response('vote_edit.html', {'id': ''}, context_instance=RequestContext(request))
+    return render_to_response('vote_edit.html', {'id' : -1}, context_instance=RequestContext(request))
 
 def vote_act_upload_img(request, act_id):
     vote_act = VoteAct.objects.get(id=act_id)
