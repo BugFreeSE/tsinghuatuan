@@ -72,10 +72,161 @@
             </li>
             <li>
                 <div id="candidates" style="font-size:14px;">
-                    <div style="text-align: center;">
-                        <div style="font-size:x-large; font-weight:bold;">候选人信息</div>
+                    <form style="font-size:10px">
+                        <div id="vote_area">
+                        <div style="text-align: center;">
+                            <div class="highlight" style="font-size:x-large;">投票</div>
+                        </div>
+                        <table id="vote_table">
+                            <tr>
+                                <td class="table_avatar" colspan="2">
+                                    <img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                </td>
+                                <td class="table_avatar" colspan="2">
+                                    <img class="avatar shadow" src="http://tp2.sinaimg.cn/1752502537/180/5648896565/1"/>
+                                </td>
+                                <td class="table_avatar" colspan="2">
+                                    <img class="avatar shadow" src="http://tp2.sinaimg.cn/1732008061/180/5706365063/1"/>
+                                </td>
+                                <td class="table_avatar" colspan="2">
+                                    <img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                </td>
+                                <td class="table_avatar" colspan="2">
+                                    <img class="avatar shadow" src="http://tp2.sinaimg.cn/1752502537/180/5648896565/1"/>
+                                </td>
+                                    <!--<div><input type="checkbox"></div>
+                                    <div style="font-size:10px">
+                                        编号&nbsp;1
+                                    </div>
+                                    <div style="font-size:10px">
+                                        范玮琪
+                                    </div>
+                                    -->
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div>
+                                        编号&nbsp;1
+                                    </div>
+                                    <div>
+                                        范玮琪
+                                    </div>
+                                </td>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div>
+                                        编号&nbsp;1
+                                    </div>
+                                    <div>
+                                        范玮琪
+                                    </div>
+                                </td>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div>
+                                        编号&nbsp;1
+                                    </div>
+                                    <div>
+                                        范玮琪
+                                    </div>
+                                </td>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div>
+                                        编号&nbsp;1
+                                    </div>
+                                    <div>
+                                        范玮琪
+                                    </div>
+                                </td>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div>
+                                        编号&nbsp;1
+                                    </div>
+                                    <div>
+                                        范玮琪
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="table_avatar" colspan="2">
+                                    <img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                </td>
+                                <td class="table_avatar" colspan="2">
+                                    <img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                </td>
+                                <td class="table_avatar" colspan="2">
+                                    <img class="avatar shadow" src="http://tp2.sinaimg.cn/1752502537/180/5648896565/1"/>
+                                </td>
+                                <td class="table_avatar" colspan="2">
+                                    <img class="avatar shadow" src="http://tp2.sinaimg.cn/1732008061/180/5706365063/1"/>
+                                </td>
+                                <td class="table_avatar" colspan="2">
+                                    <img class="avatar shadow" src="http://tp2.sinaimg.cn/1732008061/180/5706365063/1"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div>
+                                        编号&nbsp;1
+                                    </div>
+                                    <div>
+                                        范玮琪
+                                    </div>
+                                </td>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div>
+                                        编号&nbsp;1
+                                    </div>
+                                    <div>
+                                        范玮琪
+                                    </div>
+                                </td>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div>
+                                        编号&nbsp;1
+                                    </div>
+                                    <div>
+                                        范玮琪
+                                    </div>
+                                </td>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div>
+                                        编号&nbsp;1
+                                    </div>
+                                    <div>
+                                        范玮琪
+                                    </div>
+                                </td>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div>
+                                        编号&nbsp;1
+                                    </div>
+                                    <div>
+                                        范玮琪
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                    <ul class="candidate-list">
+                        <div style="margin-top: 10px; margin-bottom: 20px;">
+                            <div id="submit_button">提交</div>
+                            <button style="display: none;">提交</button>
+                        </div>
+                    </form>
+                    <div id="candidate_info_area" class="top_border">
+                        <div style="text-align: center;">
+                        <div class="highlight" style="font-size:x-large;">候选人信息</div>
+                    </div>
+                        <ul class="candidate-list">
                         <li class="over_hidden candidate-li">
                             <table class="one_candidate">
                                 <tr>
@@ -87,7 +238,7 @@
                                         <div style="font-size:16px">
                                             <span style="font-weight: bold">范玮琪</span>
                                         </div>
-                                        <div></div>
+
                                         <div class="show" style="margin-top: 45px;">
                                             <span class="icon-show"></span>
                                             <span style="font-size:12px;">&nbsp;展开</span>
@@ -223,6 +374,7 @@
                             </table>
                         </li>
                     </ul>
+                    </div>
                 </div>
             </li>
             <li>

@@ -310,6 +310,10 @@ function appendAct(act) {
     for (key in tdMap) {
         getTd(key).html(tdActionMap[tdMap[key]](act, key)).appendTo(tr);
     }
+    tr.css('cursor', 'pointer');
+    tr.click(function(){
+        window.location.href = '/vote/detail/'+act.id+'/';
+    });
     $('#tbody-activities').append(tr);
 }
 

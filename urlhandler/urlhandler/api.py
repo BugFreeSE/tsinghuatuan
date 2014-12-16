@@ -41,7 +41,8 @@ class VoteActResource(ModelResource):
         resource_name = 'VoteAct'
         authorization = Authorization()
         filtering = {
-            'status': ['gte']
+            'status': ['gte'],
+            'key': ['exact'],
         }
         validation = VoteActValidation()
         authentication = MultiAuthentication(MyAuthentication(), BasicAuthentication())
