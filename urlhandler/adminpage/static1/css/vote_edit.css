@@ -37,3 +37,12 @@ span.gbtn:hover{
     color: rgba(0,0,0,1);
 }
 
+.info-label{
+    font-size: 0.8em;
+    font-weight: normal;
+}
+
+.warn{
+    color: #b94a48;
+}
+

@@ -28,15 +28,9 @@ WEIXIN_EVENT_KEYS = {
 WEIXIN_CUSTOM_MENU_TEMPLATE = {
     "button": [
         {
-            "name": "资讯",
-            "sub_button": [
-                {
-                    "type": "click",
-                    "name": "投啥",
-                    "key": WEIXIN_EVENT_KEYS['vote_what'],
-                    "sub_button": []
-                },
-            ]
+            "name": "投票",
+            "type": "click",
+            "key": WEIXIN_EVENT_KEYS['vote_what'],
         },
         {
             "name": "抢票",

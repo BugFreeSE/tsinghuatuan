@@ -6,9 +6,39 @@ function formmatCandidates(candidates){
     return r;
 }
 
+function no_candidates(candidates){
+    if (typeof candidates === 'undefined' || candidates.length == 0) return true;
+    return false;
+}
+
+function no_votes(candidates){
+    for (var i in candidates){
+        if (candidates[i].votes != 0) return false;
+    }
+    return true;
+}
+
+function show_error(msg){
+    $('#detail_result').children().remove();
+    var $div = $('<div>').attr('class', 'mycenter').attr('id', 'result');
+    var $img = $('<img>').attr('src', '/static1/img/ohno.jpg').attr('width', 200);
+    var $msg = $('<span>').css('font-size', '3em').css('margin','1em').text(msg);
+    $div.append($img).append($msg);
+    $('#detail_result').append($div);
+}
 function view_pie(vote_act, candidates){
+    if (no_candidates(candidates)){
+        show_error('没有候选人！');
+        return;
+    }
+    if (no_votes(candidates)){
+        show_error('还没有人投票！');
+        return;
+    }
     var candsData = formmatCandidates(candidates);
-    $('.container table').remove();
+    $('#detail_result').children().remove();
+    var $con = $('<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">');
+    $('#detail_result').append($con);
     $('#container').css('display', 'block');
   $(function () {
     $('#container').highcharts({
@@ -61,8 +91,18 @@ function view_pie(vote_act, candidates){
 }
 
 function view_bar(vote_act, candidates){
+    if (no_candidates(candidates)){
+        show_error('没有候选人！');
+        return;
+    }
+    if (no_votes(candidates)){
+        show_error('还没有人投票！');
+        return;
+    }
     var candsData = formmatCandidates(candidates);
-    $('.container table').remove();
+    $('#detail_result').children().remove();
+    var $con = $('<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">');
+    $('#detail_result').append($con);
     $('#container').css('display', 'block');
   $(function () {
     $('#container').highcharts({
@@ -137,7 +177,11 @@ function view_bar(vote_act, candidates){
   });
 }
 function view_table(vote_act, candidates){
-    var $table = $('<table>').attr('class', 'table table-hover table-bordered').css('width', '95%');
+    if (no_candidates(candidates)){
+        show_error('没有候选人！');
+        return;
+    }
+    var $table = $('<table>').attr('class', 'table table-hover table-bordered').css('display', 'none');
     var $thead = $('<thead>');
     var $trh = $('<tr>');
     $trh.append($('<th>').html('编号'))
@@ -156,6 +200,7 @@ function view_table(vote_act, candidates){
     $table.append($tbody);
     $thead.children('tr').children('th').css('text-align', 'center');
     $tbody.children('tr').children('td').css('text-align', 'center');
-    $('#container').css('display', 'none');
-    $('div.panel-body div.container').append($table);
+    $('#detail_result').children().remove();
+    $('#detail_result').append($table);
+    $table.slideDown();
 }

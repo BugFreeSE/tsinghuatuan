@@ -75,98 +75,6 @@ function updateActivity(nact) {
     }
 }
 
-function initializeForm(activity) {
-
-    if (!activity.id) {
-        $('#input-name').val('');
-        $('#remain_tickets').remove();
-    }
-    else
-    {
-        var key;
-        for (key in keyMap) {
-            actionMap[keyMap[key]]($('#input-' + key), activity[key]);
-        }
-
-        if (activity.place == '大礼堂')
-        {
-            multiDistricts.remove();
-            xinqingAllocation.remove();
-            $('#input-total_tickets').val(activity.districts[0].total_tickets);
-            $('#input-remain_tickets').val(activity.districts[0].remain_tickets);
-        }
-        else if (activity.place == '综体')
-        {
-            singleDistrict.remove();
-            multiDistricts.appendTo('#tickets_setting');
-            $('#remain_tickets').remove();
-            var list = $('#district-list');
-            var list_body = list.children('tbody');
-            list.children('thead').children().children()[3].innerHTML = '票余量';
-            list.children('tbody').children().remove();
-            for (var i = 0; i < activity.districts.length; i++)
-            {
-                list_body.append($('<tr />').append($('<th />').text(i + 1))
-                                            .append($('<th />').text(activity.districts[i].name))
-                                            .append($('<th />').text(activity.districts[i].total_tickets))
-                                            .append($('<th />').text(activity.districts[i].remain_tickets))
-                                )
-            }
-            list.parent().children('a').remove();
-        }
-        else {
-            singleDistrict.remove();
-            xinqingAllocation.appendTo('#tickets_setting');
-            $('#remain_tickets').remove();
-            var table = $("#seat_plan");
-            for (var i = 1; i <= rows; i++) {
-                var tr = $("<tr>");
-                var td1 = $("<td>");
-                var div = $("<div>");
-
-                div.attr({ class: "checkbox", style: "margin-right:30px" });
-
-                var label = $("<label>");
-
-                var input = $("<input>");
-                input.attr({id: "check_row" + i, name: "row" + i, onchange: "check(" + i + ")",
-                    type: "checkbox", value: "x", disabled: 'True'});
-                input.appendTo(label);
-
-                var span = $("<span>");
-                span[0].innerHTML = "第" + i + "排";
-                span.appendTo(label);
-
-                label.appendTo(div);
-                div.appendTo(td1);
-                td1.appendTo(tr);
-
-                var td2 = $("<td>");
-                td2.attr("id", "row" + i);
-
-                for (var j = 1; j <= cols; j++) {
-                    var s = $("<span>");
-                    s.attr("class", "seat unselected");
-                    s.appendTo(td2);
-                }
-                td2.appendTo(tr);
-
-                table.append(tr);
-            }
-            for (var i in activity.selectedRows)
-            {
-                $('#check_row' + (- -i + 1)).attr('checked', 'True');
-                $('#row' + (- -i + 1)).children().removeClass('unselected').addClass('selected');
-            }
-        }
-    }
-    if (typeof activity.checked_tickets !== 'undefined') {
-        initialProgress(activity.checked_tickets, activity.ordered_tickets, activity.total_tickets);
-    }
-    curstatus = activity.status;
-    lockByStatus(curstatus, activity.book_start, activity.start_time, activity.end_time);
-}
-
 function check_percent(p) {
     if (p > 100.0) {
         return 100.0;
@@ -175,75 +83,6 @@ function check_percent(p) {
     }
 }
 
-function checktime(){
-    var actstart = new Date($("#input-start_time").val());
-    var actend = new Date($("#input-end_time").val());
-    var bookstart = new Date($("#input-book_start").val());
-    var bookend = new Date($("#input-book_end").val());
-    var now = new Date();
-    console.log(now);
-    if(curstatus == 0){
-        if(bookstart < now){
-            $('#input-book_start').popover({
-                    html: true,
-                    placement: 'top',
-                    title:'',
-                    content: '<span style="color:red;">“订票开始时间”应晚于“当前时间”</span>',
-                    trigger: 'focus',
-                    container: 'body'
-            });
-            $('#input-book_start').focus();
-            return false;
-        }
-
-        if(bookend < bookstart){
-            $('#input-book_end').popover({
-                html: true,
-                placement: 'top',
-                title:'',
-                content: '<span style="color:red;">“订票结束时间”应晚于“订票开始时间”</span>',
-                trigger: 'focus',
-                container: 'body'
-            });
-            $('#input-book_end').focus();
-            return false;
-        }
-    }
-    if(actstart < bookend){
-        $('#input-start_time').popover({
-                html: true,
-                placement: 'top',
-                title:'',
-                content: '<span style="color:red;">“活动开始时间”应晚于“订票结束时间”</span>',
-                trigger: 'focus',
-                container: 'body'
-        });
-         $('#input-start_time').focus();
-        return false;
-    }
-    if(actend < actstart){
-        $('#input-end_time').popover({
-            html: true,
-            placement: 'top',
-            title:'',
-            content: '<span style="color:red;">“活动结束时间”应晚于“活动开始时间”</span>',
-            trigger: 'focus',
-            container: 'body'
-        });
-         $('#input-end_time').focus();
-        return false;
-    }
-    return true;
-}
-
-function initialProgress(checked, ordered, total) {
-    $('#tickets-checked').css('width', check_percent(100.0 * checked / total) + '%')
-        .tooltip('destroy').tooltip({'title': '已检入：' + checked + '/' + ordered + '=' + (100.0 * checked / ordered).toFixed(2) + '%'});
-    $('#tickets-ordered').css('width', check_percent(100.0 * (ordered - checked) / total) + '%')
-        .tooltip('destroy').tooltip({'title': '订票总数：' + ordered + '/' + total + '=' + (100.0 * ordered / total).toFixed(2) + '%' + '，其中未检票：' + (ordered - checked) + '/' + ordered + '=' + (100.0 * (ordered - checked) / ordered).toFixed(2) + '%'});
-    $('#tickets-remain').css('width', check_percent(100.0 * (total - ordered) / total) + '%')
-        .tooltip('destroy').tooltip({'title': '余票：' + (total - ordered) + '/' + total + '=' + (100.0 * (total - ordered) / total).toFixed(2) + '%'});
-}
 
 function changeView(id) {
     var opt = ['noscript', 'form', 'processing', 'result'], len = opt.length, i;
@@ -491,98 +330,6 @@ function submitComplete(xhr) {
     showResult();
 }
 
-function addDistrict()
-{
-    var $tbody = $('#district-list').children('tbody');
-    var $tr = $('<tr />');
-    $tr.append($('<th />').html($tbody.children().length + 1))
-        .append($('<th />').append($('<input type="text" name="block_name"/>')))
-        .append($('<th />').append($('<input type="text" name="block_ticket_number"/>')))
-        .append($('<th />').append($('<a href="javascript:void(0)" onclick="deleteDistrict(this)">删除</a>')));
-    $tbody.append($tr);
-}
-
-function deleteDistrict(link)
-{
-    var $tbody = $('#district-list').children('tbody');
-    $(link).parent().parent().remove();
-    if ($tbody.children().length === 0)
-    {
-        addDistrict();
-    }
-    for (var i = 0; i < $tbody.children().length; i++)
-    {
-        $($($tbody.children()[i]).children()[0]).html(i + 1);
-    }
-}
-
-multiDistricts.remove();
-xinqingAllocation.remove();
-
-function changePlace()
-{
-    var place = $('#input-place option:selected');
-    singleDistrict.remove();
-    multiDistricts.remove();
-    xinqingAllocation.remove();
-//    if (allocation) allocation.remove();
-    if (place.val() == "大礼堂")
-    {
-        singleDistrict.appendTo($('#tickets_setting'));
-    }
-    else if (place.val() == "综体")
-    {
-        multiDistricts.appendTo($('#tickets_setting'));
-    }
-    else
-    {
-        xinqingAllocation.appendTo($('#tickets_setting'));
-        var table = $("#seat_plan");
-        if (table.children().children().length == 1)
-        {
-        for(var i = 1; i <= rows; i++) {
-            var tr = $("<tr>");
-            var td1 = $("<td>");
-            var div = $("<div>");
-
-            div.attr({ class: "checkbox", style: "margin-right:30px" });
-
-            var label = $("<label>");
-
-            var input = $("<input>");
-            input.attr({id: "check_row" + i, name: "row" + i, onchange: "check(" + i + ")",
-                type: "checkbox", value: "x"});
-            input.appendTo(label);
-
-            var span = $("<span>");
-            span[0].innerHTML = "第" + i + "排";
-            span.appendTo(label);
-
-            label.appendTo(div);
-            div.appendTo(td1);
-            td1.appendTo(tr);
-
-            var td2 = $("<td>");
-            td2.attr("id", "row" + i);
-
-            for (var j = 1; j <= cols; j++) {
-                var s = $("<span>");
-                s.attr("class", "seat unselected");
-                s.appendTo(td2);
-            }
-            td2.appendTo(tr);
-
-            table.append(tr);
-        }
-        }
-
-        if ($('#allocation_pic').attr('src') == "#")
-        {
-            $('#allocation_pic').attr('src', '/webhost_media/seatAllocation/xinqing.png');
-        }
-    }
-}
-
 function publishActivity() {
     if(!$('#activity-form')[0].checkValidity || $('#activity-form')[0].checkValidity()){
         if(!checktime()) {
@@ -700,91 +447,8 @@ function createImg(id, imgRUL){   //根据指定URL创建一个Img对象
     $(id).attr("src",imgRUL);
 }
 
-function putModalImg(node){
-    $('#modal-poster').attr('src', getImgURL(node));
-}
-
-var nodeSelected = null;
 var defaultPic = "../../static1/img/default.png";
-function launchModal(node){
-    var tds = $(node).parent().parent().children();
-    nodeSelected = tds;
-    var id = tds.eq(0).text();
-    var img = tds.eq(1).children('img').attr('src');
-    var name = tds.eq(2).children().val();
-    var description = tds.eq(3).children().val();
-    $('#modal_no').text(id);
-    if (img === '') img = defaultPic;
-    $('#modal-poster').attr('src', img);
-    $('#modal_name').val(name);
-    $('#modal_description').val(description);
-}
 
-function returnFromModal(){
-    var img = $('#modal-poster').attr('src');
-    var name = $('#modal_name').val();
-    var description = $('#modal_description').val();
-    if (img === defaultPic) img = "";
-    nodeSelected.eq(1).children('img').attr('src', img).css('display', 'inline');
-    nodeSelected.eq(1).children('span').remove();
-    nodeSelected.eq(2).children().val(name);
-    nodeSelected.eq(3).children().val(description);
-}
-
-function addCandidate(candidate){
-    var $tbody = $('#candidate-list').children('tbody');
-    var $tr = $('<tr />');
-    $tr.append($('<td style="vertical-align:middle"/>').html($tbody.children().length + 1))
-        .append($('<td style="vertical-align:middle"/>').append($('<img width="100" src="" onclick="uploadImgClick(this)" style="cursor:pointer;display:none"/>'))
-                                                        .append($('<span class="glyphicon glyphicon-circle-arrow-up gbtn" onclick="uploadIconClick(this)"></span>'))
-                                                        .append($('<input style="display: none" type="file" name="pic" class="form-control" accept="image/*" onchange="putCandidateImg(this)" />')))
-        .append($('<td style="vertical-align:middle"/>').append($('<input type="text" class="form-control" name="candidate_name" placeholder="姓名"/>')))
-        .append($('<td style="vertical-align:middle"/>').append($('<input type="text" class="form-control" name="candidate_description" placeholder="候选人描述"/>')))
-        .append($('<td style="vertical-align:middle"/>').append($('<span class="glyphicon glyphicon-trash gbtn" onclick="deleteCandidate(this)"></span><span class="glyphicon glyphicon-pencil gbtn" data-toggle="modal" data-target="#candidate_detail" onclick="launchModal(this)"></span>')));
-    if (typeof candidate != "undefined"){
-        var tds = $tr.children();
-        tds.eq(0).html(candidate.no);
-        if (candidate.pic != '') {
-            tds.eq(1).children('img').attr('src', candidate.pic).css('display', 'inline');
-            tds.eq(1).children('span').remove();
-        }
-        tds.eq(2).children().val(candidate.name);
-        tds.eq(3).children().val(candidate.description);
-    }
-
-
-    $tbody.append($tr);
-}
-
-function deleteCandidate(link)
-{
-    var $tbody = $('#candidate-list').children('tbody');
-    $(link).parent().parent().remove();
-    if ($tbody.children().length === 0)
-    {
-        addCandidate();
-    }
-    for (var i = 0; i < $tbody.children().length; i++)
-    {
-        $($($tbody.children()[i]).children()[0]).html(i + 1);
-    }
-}
-
-function uploadImgClick(node){
-    var $input = $(node).parent().children('input');
-    $input.click();
-}
-function uploadIconClick(node){
-    uploadImgClick(node);
-    var $img = $(node).parent().children('img');
-    $(node).remove();
-    $img.css('display', 'inline');
-}
-
-function putCandidateImg(node){
-    var $img = $(node).parent().children('img');
-    $img.attr('src', getImgURL(node));
-}
 
 var vote_activity = {};
 //var vote_activity = {
@@ -817,29 +481,86 @@ var vote_activity = {};
 //    ]
 //}
 
-function setForm(){
-    $('#input-name').val(vote_activity.name);
-    $('#input-key').val(vote_activity.key);
-    $('#input-start_time').val(vote_activity.start_time);
-    $('#input-end_time').val(vote_activity.end_time);
-    $('#poster').attr('src',vote_activity.act_pic);
-    $('#input-description').val(vote_activity.description);
-    $('#candidate-list tbody').children().remove();
-    for (var i in vote_activity.candidates){
-        var c = vote_activity.candidates[i];
-        addCandidate(c);
-    }
-}
+
 function getCandidate($trNode){
     var candidate = {};
-    $trNode = $($trNode).children();
-    candidate.no = $trNode.eq(0).html();
-    candidate.pic = $trNode.eq(1).children('img').attr('src');
+    var $tds = $($trNode).children();
+    candidate.no = $tds.eq(0).html();
+    candidate.pic = $tds.eq(1).children('img').attr('src');
     if (typeof candidate.pic === 'undefined') candidate.pic = '';
-    candidate.name = $trNode.eq(2).children().val();
-    candidate.description = $trNode.eq(3).children().val();
+    candidate.name = $tds.eq(2).children().val();
+    candidate.description = $tds.eq(3).children().val();
     return candidate;
 }
+
+function setCandidate(candidate, $trNode){
+    var $tds = $($trNode).children();
+    $tds.eq(0).html(candidate.no);
+    if (typeof candidate.pic === 'undefined') candidate.pic = '';
+    $tds.eq(1).children('img').attr('src', candidate.pic);
+    if (candidate.pic != ''){
+       $tds.eq(1).children('img').css('display', 'inline');
+       $tds.eq(1).children('span').remove();
+    }
+    $tds.eq(2).children('input').val(candidate.name);
+    $tds.eq(3).children('input').val(candidate.description);
+}
+
+function setModalData(candidate){
+    $('#modal_no').text(candidate.no);
+    var img = candidate.pic;
+    if (img === '') img = defaultPic;
+    $('#modal-poster').attr('src', img);
+    $('#modal_name').val(candidate.name);
+    $('#modal_description').val(candidate.description);
+}
+
+function getModalData(){
+    var img = $('#modal-poster').attr('src');
+    var name = $('#modal_name').val();
+    var description = $('#modal_description').val();
+    if (img === defaultPic) img = "";
+    var candidate = {};
+    candidate.name = name;
+    candidate.description = description;
+    candidate.pic = img;
+    return candidate;
+}
+
+function launchModal(node){
+    var key = $(node).attr('key');
+    var $trnode = $('#cand_'+key);
+    $('#candidate_detail').attr('key', key);
+    setModalData(getCandidate($trnode));
+}
+
+function returnFromModal(){
+    var key = $('#candidate_detail').attr('key');
+    var $trnode = $('#cand_'+key);
+    setCandidate(getModalData(), $trnode);
+}
+
+function uploadIconClick(node){
+    uploadImgClick(node);
+    var $img = $(node).parent().children('img');
+    $(node).remove();
+    $img.css('display', 'inline');
+}
+
+function uploadImgClick(node){
+    var $input = $(node).parent().children('input');
+    $input.click();
+}
+
+function putCandidateImg(node){
+    var $img = $(node).parent().children('img');
+    $img.attr('src', getImgURL(node));
+}
+
+function putModalImg(node){
+    $('#modal-poster').attr('src', getImgURL(node));
+}
+
 function getForm(){
     vote_activity.name = $('#input-name').val();
     vote_activity.key = $('#input-key').val();
@@ -847,6 +568,10 @@ function getForm(){
     vote_activity.end_time = $('#input-end_time').val();
     vote_activity.act_pic = $('#poster').attr('src');
     vote_activity.description = $('#input-description').val();
+    var str = $('#input-config').val();
+    var n = 1;
+    if (str != ''){n = parseInt(str)}
+    vote_activity.config = n;
     var $trs = $('#candidate-list tbody').children('tr');
     vote_activity.candidates = [];
     for (var i = 0; i < $trs.length; i++){
@@ -854,6 +579,68 @@ function getForm(){
     }
 }
 
+function setForm(){
+    $('#input-name').val(vote_activity.name);
+    $('#input-key').val(vote_activity.key);
+    $('#input-start_time').val(vote_activity.start_time);
+    $('#input-end_time').val(vote_activity.end_time);
+    $('#poster').attr('src',vote_activity.act_pic);
+    $('#input-description').val(vote_activity.description);
+    $('#input-config').val(vote_activity.config);
+    if (vote_activity.candidates.length != 0){
+        $('#candidate-list tbody').children().remove();
+    }
+    for (var i in vote_activity.candidates){
+        var c = vote_activity.candidates[i];
+        var $tr = addEmptyCandidate();
+        setCandidate(c, $tr);
+    }
+}
+
+function addEmptyCandidate(){
+    var $tbody = $('#candidate-list').children('tbody');
+    var key = $tbody.children().length+1;
+    var $tr = $('<tr />');
+    var $key = $('<td style="vertical-align:middle"/>').html($tbody.children().length + 1);
+    var $img = $('<img width="100" src="" onclick="uploadImgClick(this)" style="cursor:pointer;display:none"/>');
+    var $upicon = $('<span class="glyphicon glyphicon-circle-arrow-up gbtn" onclick="uploadIconClick(this)"></span>');
+    var $input = $('<input style="display: none" type="file" accept="image/*" onchange="putCandidateImg(this)" />');
+    var $imgtd = $('<td style="vertical-align:middle"/>').append($img).append($upicon).append($input);
+    var $name = $('<td style="vertical-align:middle"/>').append($('<input type="text" class="form-control" placeholder="姓名"/>'));
+    var $descript = $('<td style="vertical-align:middle"/>').append($('<input type="text" class="form-control" placeholder="候选人描述"/>'));
+    var $deleteicon = $('<span class="glyphicon glyphicon-trash gbtn" onclick="deleteCandidate(this)"></span>');
+    var $editicon = $('<span class="glyphicon glyphicon-pencil gbtn" data-toggle="modal" data-target="#candidate_detail" onclick="launchModal(this)"></span>');
+    var $action = $('<td style="vertical-align:middle"/>').append($deleteicon).append($editicon);
+    $tr.append($key).append($imgtd).append($name).append($descript).append($action);
+    setCandKey($tr, key);
+    $tbody.append($tr);
+    return $tr;
+}
+
+addEmptyCandidate();
+
+function setCandKey(trnode, key){
+    trnode.attr('id', 'cand_'+key);
+    var tds = trnode.children();
+    tds.eq(0).html(key);
+    tds.eq(1).children('input').attr('name', key);
+    tds.children().attr('key', key);
+}
+
+function deleteCandidate(node)
+{
+    var key = $(node).attr('key');
+    $('#cand_'+key).remove();
+    var $tbody = $('#candidate-list').children('tbody');
+    if ($tbody.children().length === 0)
+    {
+        addEmptyCandidate();
+    }
+    for (var i = 0; i < $tbody.children().length; i++)
+    {
+        setCandKey($tbody.children().eq(i), i);
+    }
+}
 
 function fromVoteActDetailAPIFormat(data) {
     var result = {};
@@ -865,7 +652,8 @@ function fromVoteActDetailAPIFormat(data) {
     data.end_vote = data.end_vote.substring(0,10) + " " + data.end_vote.substring(11,16);
     result.start_time =data.begin_vote.replace(/-/g,"/");
     result.end_time = data.end_vote.replace(/-/g,"/");
-    result.act_pic = '/static1/img/default.png/';
+    result.act_pic = data.pic;
+    result.config = data.config;
     result.candidates = [];
     return result;
 }
@@ -892,6 +680,7 @@ function getData() {
         $.get("/api/v1/Candidate/?format=json&status__gt=0&activity_id="+id,function (data) {
             vote_activity.candidates = fromCandidateListAPIFormat(data.objects);
             setForm();
+            initializePage();
         })
     })
 }
@@ -922,7 +711,7 @@ function toVoteActDetailAPIFormat(IsSave) {
     result['name'] = vote_activity.name;
     result['description'] = vote_activity.description;
     result['key'] = vote_activity.key;
-    result['config'] = 1;
+    result['config'] = vote_activity.config;
     result['begin_vote'] = vote_activity.start_time;
     result['end_vote'] = vote_activity.end_time;
     if (!IsSave) {
@@ -952,17 +741,25 @@ function saveActivity() {
                         url: '/api/v1/Candidate/?format=json',
                         contentType: 'application/json',
                         data: Candidates,
-                        error: function() {alert('create candidates failed')}
+                        success: function() {setResult('活动暂存成功!');showResult();},
+                        error: function() {setResult('create candidates failed');showResult();}
                     })
                 },
-                error: function() {alert('delete candidate failed')}
+                error: function() {setResult('delete candidate failed');showResult();}
             })
         },
-        error: function() {alert('save VoteAct failed')}
+        error: function() {setResult('save VoteAct failed');showResult();}
     })
 }
 
 function m_publishActivity() {
+    showProcessing();
+    var info = validatePage();
+    if (info != ''){
+        setResult(info);
+        showResult();
+        return;
+    }
     getForm();
     var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
     var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(false));
@@ -982,18 +779,190 @@ function m_publishActivity() {
                         url: '/api/v1/Candidate/?format=json',
                         contentType: 'application/json',
                         data: Candidates,
-                        error: function() {alert('create candidates failed')}
+                        success: function(){
+                            setResult('活动发布成功!');showResult();
+                        },
+                        error: function() {setResult('create candidates failed');showResult();}
                     })
                 },
-                error: function() {alert('delete candidate failed')}
+                error: function() {setResult('delete candidate failed');showResult();}
             })
         },
-        error: function() {alert('save VoteAct failed')}
+        error: function() {setResult('save VoteAct failed');showResult();}
     })
 }
 
-function upload_act_img(act_id){
-    var $form = $('#act_img_form').attr('action', '/vote/uploadImg/'+id+'/');
+function upload_act_img(){
+    move_pics_to_form();
+    $('#act_img_form').attr('action', '/vote/uploadImg/'+id+'/');
     var $submit = $('#act_img_submit');
     $submit.click();
+    $('#act_img_form input[type="file"]').remove();
 }
+
+function move_pics_to_form(){
+    var $inputs = $('input[type="file"]');
+    $('#act_img_form').append($inputs);
+    $('#act_img_form #modal-pic').remove();
+}
+
+function initializePage(){
+    bind_validation();
+}
+
+function bind_validation(){
+
+    $('#input-name').change(function(){
+        validate_action(validate_name(), $('#name-form'), $('#name-label'))
+    });
+    $('#input-key').change(function(){
+        validate_action(validate_key(), $('#key-form'), $('#key-label'))
+    });
+    $('#input-start_time').change(function(){
+        validate_action(validate_start(), $('#start-form'), $('#start-label'))
+    });
+    $('#input-end_time').change(function(){
+        validate_action(validate_end(), $('#end-form'), $('#end-label'))
+    })
+    $('#input-config').change(function(){
+        validate_action(validate_config(), $('#config-form'), $('#config-label'))
+    })
+}
+
+function validate_key(){
+//    return '活动简称有重复'
+    return ''
+}
+
+function validate_name(){
+    return ''
+}
+
+function validate_start(){
+    var now = new Date();
+    var start = new Date($('#input-start_time').val());
+    if (start < now){
+        return '开始时间应晚于当前时间！';
+    }
+    else{
+        return '';
+    }
+}
+
+function validate_end(){
+    var start = new Date($('#input-start_time').val());
+    var end = new Date($('#input-end_time').val());
+    if (end < start){
+        return '结束时间应晚于开始时间！';
+    }
+    else{
+        return '';
+    }
+}
+
+function validate_name(){
+    return '';
+}
+
+function validate_action(r, $div, $label){
+    if (r === ''){
+        $div.removeClass('has-error');
+        $div.addClass('has-success');
+        $label.css('display', 'none');
+    }
+    else{
+        $div.removeClass('has-success');
+        $div.addClass('has-error');
+        $label.text(r);
+        $label.css('display', 'table');
+    }
+}
+
+function validatePage(){
+    var items = ['name', 'key', 'start', 'end', 'config'];
+    var infos = {
+        'name': validate_name(),
+        'key': validate_key(),
+        'start': validate_start(),
+        'end': validate_end(),
+        'config': validate_config()
+    }
+    var divs = {
+        'name': '#name-form',
+        'key': '#key-form',
+        'start': '#start-form',
+        'end': '#end-form',
+        'config': '#config-form'
+    }
+    var labels = {
+        'name': '#name-label',
+        'key': '#key-label',
+        'start': '#start-label',
+        'end': '#end-label',
+        'config': '#config-label'
+    }
+    var result = '';
+    for (var i in items){
+        validate_action(infos[items[i]], $(divs[items[i]]), $(labels[items[i]]));
+        result += infos[items[i]];
+    }
+    result += validateCandidates();
+    return result;
+}
+
+function hideSaveBtn(){
+    var now = new Date();
+    var start = new Date($('#input-start_time').val());
+    if (now > start){
+        $('#saveBtn').remove();
+    }
+}
+
+function validateCandidates(candidates){
+    if (typeof candidates === 'undefined' || candidates.length == 0){
+        return '没有候选人';
+    }
+    var result = '';
+    for (var i in candidates){
+        if (typeof candidates[i].name === 'undefined' || candidates[i].name === ''){
+            result += '第' + (i+1) + '号候选人姓名为空\n'
+        }
+    }
+    return result;
+}
+
+function isInteger( str )
+{
+    var regu = /^[-]{0,1}[0-9]{1,}$/;
+    return regu.test(str);
+};
+
+function validate_config(){
+    var config = $('#input-config').val();
+    if (!isInteger(config)){
+        return '投票数应为整数';
+    }
+    var n = parseInt(config);
+    if (n <= 0){
+        return '投票数应为正数';
+    }
+    return '';
+}
+
+function initialzeDateTimePicker(){
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            language: 'zh-CN',
+            pick12HourFormat: false
+        });
+    });
+    $(function () {
+        $('#datetimepicker2').datetimepicker({
+            language: 'zh-CN',
+            pick12HourFormat: false
+        });
+    });
+}
+$(document).ready(function(){
+    initialzeDateTimePicker();
+})

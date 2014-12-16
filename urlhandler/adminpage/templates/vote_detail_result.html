@@ -1,0 +1,62 @@
+{% extends "vote_base.html" %}
+
+{% load staticfiles %}
+
+{% block activity-title %}活动列表{% endblock %}
+
+{% block nav-li %}
+    <li class="{% block activity-list-active %}active{% endblock %}"><a class="btn-link"
+                                                                        href="{% url "adminpage.views.activity_list" %}">活动列表</a>
+    </li>
+    {% block nav-li-ext %}{% endblock %}
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/activity_list.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/pushBtn.css" %}"/>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static "js/vote_detail.js"%}"></script>
+
+    <script type="text/javascript">
+
+
+    </script>
+
+{% endblock %}
+
+
+{% block username %}
+    <a href={% url "adminpage.views.logout" %} >登出</a>
+{% endblock %}
+
+{% block content %}
+    <div class="container" id="detail-noscript">
+        <noscript>请开启JavaScript后重试。</noscript>
+    </div>
+
+        <div class="panel panel-default">
+              <div class="panel-heading">操作结果</div>
+                    <div class="panel-body">
+                        <div class="mycenter">
+                            <img src="{% static "img/success.gif"%}">
+                            <span style="font-size:2em;">
+                                {% if action == 'begin' %}
+                                    开始成功！
+                                {% endif %}
+                                {% if action == 'end' %}
+                                    结束成功！
+                                {% endif %}
+                                {% if action == 'pub' %}
+                                    发布成功！
+                                {% endif %}
+                            </span>
+                        </div>
+                        <a class="btn btn-primary col-sm-offset-10" href="/vote/detail/1/">返回</a>
+
+
+                    </div>
+        </div>
+
+{% endblock %}

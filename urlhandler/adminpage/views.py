@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.db.models import F
 import urllib
 import urllib2
-from urlhandler.models import Activity, Ticket, District, Seat, VoteAct
+from urlhandler.models import Activity, Ticket, District, Seat, VoteAct, Candidate
 from urlhandler.models import User as Booker
 from weixinlib.custom_menu import get_custom_menu, modify_custom_menu, add_new_custom_menu, auto_clear_old_menus
 from weixinlib.settings import get_custom_menu_with_book_acts, WEIXIN_BOOK_HEADER
@@ -595,20 +595,70 @@ def vote_list(request):
     return render_to_response('vote_list.html')
 
 
-def vote_detail(request):
+def vote_detail(request, act_id):
     return render_to_response('vote_detail.html')
 
 
 def vote_edit(request, voteid):
-    return render_to_response('vote_edit.html', {'id' : voteid}, context_instance=RequestContext(request))
+    return render_to_response('vote_edit.html', {'id': voteid}, context_instance=RequestContext(request))
 
 def vote_add(request):
-    return render_to_response('vote_edit.html', {id : ''}, context_instance=RequestContext(request))
+    return render_to_response('vote_edit.html', {'id': ''}, context_instance=RequestContext(request))
 
 def vote_act_upload_img(request, act_id):
     vote_act = VoteAct.objects.get(id=act_id)
-    pic = request.FILES['pic']
-    vote_act.pic = pic
+    for (name, pic) in request.FILES.items():
+        if name == 'pic':
+            vote_act.pic = pic
+            vote_act.save()
+        else:
+            key = int(name)
+            cands = Candidate.objects.filter(activity_id=vote_act.id, key=key)
+            if cands.exists():
+                cand = cands[0]
+            cand.pic = pic
+            cand.save()
+
+    return HttpResponse()
+
+def vote_begin(request, act_id):
+    vote_act = VoteAct.objects.get(id=int(act_id))
+    vote_act.begin_vote = datetime.now()
     vote_act.save()
     return HttpResponse()
 
+def vote_end(request, act_id):
+    vote_act = VoteAct.objects.get(id=int(act_id))
+    vote_act.end_vote = datetime.now()
+    vote_act.save()
+    return HttpResponse()
+
+def vote_pub(request, act_id):
+    vote_act = VoteAct.objects.get(id=int(act_id))
+    vote_act.status = 2
+    vote_act.save()
+    return HttpResponse()
+
+def vote_download_excel(request, act_id):
+    vote_act = VoteAct.objects.get(id=int(act_id))
+    response = HttpResponse(mimetype="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename='+vote_act.name+'.xls'
+
+    wb = xlwt.Workbook()
+    ws = wb.add_sheet('vote_result')
+
+    candidates = Candidate.objects.filter(activity_id=vote_act)
+    if not candidates.exists():
+        raise Http404
+    ws.write(0, 0, u'编号')
+    ws.write(0, 1, u'候选人姓名')
+    ws.write(0, 2, u'候选人票数')
+
+    i = 1
+    for c in candidates:
+        ws.write(i, 0, str(c.key))
+        ws.write(i, 1, c.name)
+        ws.write(i, 2, str(c.votes))
+
+    wb.save(response)
+    return response
