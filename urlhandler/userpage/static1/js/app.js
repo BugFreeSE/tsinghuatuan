@@ -100,6 +100,34 @@ var homepage = new Observer({
 var candidates = new Observer({
     template:
         '<div id="candidates" style="font-size:14px;">' +
+            '<form id="vote" style="font-size:10px">' +
+                '<div id="vote_area">' +
+                    '<div style="text-align:center;">' +
+                        '<div class="hightlight" style="font-size:x-large;">投票</div>' +
+                    '</div>' +
+                    '<table id="vote_table">' + 
+                    '<% for (i = 0; i < parseInt((candidates.length - 1) / 5) + 1; i++) { %>' +
+                        '<tr>' +
+                        '<% for (j = 0; j < 5 && j < candidates.length - i * 5; j++) { %>' +
+                            '<td class="table_avatar" colspan="2">' +
+                                '<img class="avatar shadow" src="<%=candidates[i * 5 + j].pic%>" />' +
+                            '</td>' +
+                        '<% } %>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<% for (j = 0; j < 5 && j < candidates.length - i * 5; j++) { %>' +
+                            '<td><input type="checkbox"></td>' +
+                            '<td><div>编号&nbsp;<%=candidates[i * 5 + j].key%></div><div><%=candidates[i * 5 + j].name%></div></td>' +
+                        '<% } %>' +
+                        '</tr>' +
+                    '<% } %>' +
+                    '</table>' +
+                '</div>' +
+                '<div style="margin-top: 10px; margin-bottom: 20px;">' +
+                    '<div id="submit_button">提交</div>' +
+                    '<button class="hidden">提交</button>' +
+                '</div>' +
+            '</form>' +  
             '<div style="text-align: center;">' +
                 '<div style="font-size:x-large; font-weight:bold;">候选人信息</div>' +
             '</div>' +
@@ -108,6 +136,7 @@ var candidates = new Observer({
                 '<li class="over_hidden candidate-li">' +
                     '<table class="one_candidate">' +
                         '<tr>' +
+                            '<% if (i % 2 == 0) { %>' +
                             '<td class="candidate_img_container content_top">' +
                                 '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
                                 '<div style="font-size:16px">' +
@@ -122,9 +151,28 @@ var candidates = new Observer({
                                     '<span style="font-size:12px;">&nbsp;展开</span>' +
                                 '</div>' +
                             '</td>' +
-                            '<td class="candidate_info">' +
+                            '<td class="candidate_info content_top">' +
                                 '<p><%=candidates[i].description %></p>' +
                             '</td>' +
+                            '<% } else { %>' +
+                            '<td class="candidate_info content_top">' +
+                                '<p><%=candidates[i].description %></p>' +
+                            '</td>' +
+                            '<td class="candidate_img_container content_top">' +
+                                '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
+                                '<div style="font-size:16px">' +
+                                    '<span class="highlight">编号&nbsp;<%=candidates[i].key%></span>' +
+                                '</div>' +
+                                '<div style="font-size:16px">' +
+                                    '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
+                                '</div>' +
+                                '<div></div>' +
+                                '<div class="show" style="margin-top: 45px;">' +
+                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
+                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
+                                '</div>' +
+                            '</td>' +
+                            '<% } %>' +
                         '</tr>' +
                         '<tr>' +
                             '<td style="text-align: center" colspan="2">' +
@@ -165,7 +213,7 @@ var candidates = new Observer({
                 }
             })(i))
         }
-
+        $('#submit_button').onclick
     }
 })
 
