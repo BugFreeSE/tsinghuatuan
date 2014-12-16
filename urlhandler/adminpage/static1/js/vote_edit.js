@@ -1008,8 +1008,23 @@ function initialzeDateTimePicker(){
         });
     });
 }
+
+function initialize_nav(){
+    var $a = $('.btn-link');
+    var href = window.location.href;
+    if (href.endWith('add/')){
+        $a.html('新建活动');
+    }
+    else {
+        if (typeof vote_activity.name != 'undefined'){
+            $a.html(vote_activity.name);
+        }
+    }
+    $a.text()
+}
 $(document).ready(function(){
 
     initialzeDateTimePicker();
     initializePage();
+    initialize_nav();
 })
