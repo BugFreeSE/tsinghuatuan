@@ -496,7 +496,7 @@ function getCandidate($trNode){
 function setCandidate(candidate, $trNode){
     var $tds = $($trNode).children();
     $tds.eq(0).html(candidate.no);
-    if (typeof candidate.pic === 'undefined') candidate.pic = '';
+    if (typeof candidate.pic === 'undefined' || !candidate.pic) candidate.pic = '';
     $tds.eq(1).children('img').attr('src', candidate.pic);
     if (candidate.pic != ''){
        $tds.eq(1).children('img').css('display', 'inline');
@@ -841,20 +841,38 @@ function m_publishActivity() {
 
 function upload_act_img(){
     move_pics_to_form();
-    $('#act_img_form').attr('action', '/vote/uploadImg/'+id+'/');
-    var $submit = $('#act_img_submit');
-    $submit.click();
-    $('#act_img_form input[type="file"]').remove();
+     $('#act_img_form').ajaxSubmit({
+            url:'/vote/uploadImg/'+id+'/',
+            contentType:"multipart/form-data",
+            success: function(){
+                $('#act_img_form input[type="file"]').remove();
+            }
+     });
+//    $('#act_img_form').submit(function(){
+//        $.ajax({
+//            url:'/vote/uploadImg/'+id+'/',
+//            contentType:"multipart/form-data",
+//            success: function(){
+//                $('#act_img_form input[type="file"]').remove();
+//            }
+//        })
+//    })
 }
 
 function move_pics_to_form(){
     var $inputs = $('input[type="file"]');
-    $('#act_img_form').append($inputs);
+    $('#act_img_form').prepend($inputs);
     $('#act_img_form #modal-pic').remove();
 }
 
 function initializePage(){
     bind_validation();
+//    makeImgFormAjax();
+}
+
+function makeImgFormAjax(){
+    $('#act_img_form').ajaxForm(function() {
+            });
 }
 
 function bind_validation(){
