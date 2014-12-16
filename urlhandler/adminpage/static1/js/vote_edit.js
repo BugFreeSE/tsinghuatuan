@@ -665,7 +665,7 @@ function fromCandidateListAPIFormat(data) {
         var _candidate = data[i];
         var candidate = {};
         candidate.no = _candidate.key;
-        candidate.pic = '';
+        candidate.pic = _candidate.pic;
         candidate.name = _candidate.name;
         candidate.description = _candidate.description;
         result.push(candidate);
@@ -784,6 +784,7 @@ function m_publishActivity() {
                             contentType: 'application/json',
                             data: Candidates,
                             success: function () {
+                                upload_act_img();
                                 setResult('活动发布成功!');
                                 showResult();
                             },
@@ -820,6 +821,7 @@ function m_publishActivity() {
                     contentType: 'application/json',
                     data: Candidates,
                     success: function () {
+                        upload_act_img();
                         setResult('活动发布成功!');
                         showResult();
                     },
@@ -888,6 +890,9 @@ function bind_validation(){
 }
 
 function validate_key(str){
+    if (typeof str === 'undefined'){
+        return '';
+    }
     return str;
 }
 
