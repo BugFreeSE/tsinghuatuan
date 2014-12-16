@@ -237,3 +237,28 @@ table td strong {
     height: 10px;
     display: inline-block;
 }
+
+#vote_table{
+    margin: 0 auto;
+    text-align: center;
+    border: 1px;
+    cellspacing: 0px;
+}
+#vote_table .table_avatar{
+    padding: 0 10px 0 10px;
+}
+
+.square_avatar{
+    width: 40px;
+    height: 40px;
+}
+
+#submit_button{
+    height: 18px;
+    width: 40px;
+    margin: 0 auto;
+    text-align: center;
+    border-color: #d9d9d9;
+    border-width: 1px;
+    border-style: solid;
+}
