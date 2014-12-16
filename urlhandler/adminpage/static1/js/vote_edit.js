@@ -680,7 +680,7 @@ function getData() {
         $.get("/api/v1/Candidate/?format=json&status__gt=0&activity_id="+id,function (data) {
             vote_activity.candidates = fromCandidateListAPIFormat(data.objects);
             setForm();
-
+            initialize_nav();
         })
     })
 }
@@ -1010,9 +1010,17 @@ function initialzeDateTimePicker(){
 }
 
 function initialize_nav(){
-    var $a = $('.btn-link');
+    var $a = $('.navbar-nav li.active a');
     var href = window.location.href;
-    if (href.endWith('add/')){
+    function endWith(str1, str2){
+        if(str2==null||str1==""||str1.length==0||str2.length>str1.length)
+            return false;
+        if(str1.substring(str1.length-str2.length)==str2)
+            return true;
+        else
+            return false;
+    }
+    if (endWith(href, 'add/')){
         $a.html('新建活动');
     }
     else {

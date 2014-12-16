@@ -26,6 +26,10 @@ function show_error(msg){
     $div.append($img).append($msg);
     $('#detail_result').append($div);
 }
+
+function removeBottomText(){
+    $('text[text-anchor="end"').remove();
+}
 function view_pie(vote_act, candidates){
     if (no_candidates(candidates)){
         show_error('没有候选人！');
@@ -86,7 +90,7 @@ function view_pie(vote_act, candidates){
       }]
     });
   });
-
+removeBottomText()
 
 }
 
@@ -175,6 +179,7 @@ function view_bar(vote_act, candidates){
       }]
     });
   });
+    removeBottomText()
 }
 function view_table(vote_act, candidates){
     if (no_candidates(candidates)){
