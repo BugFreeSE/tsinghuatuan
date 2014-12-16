@@ -72,3 +72,6 @@ def s_reverse_get_menu():
 def s_reverse_modify_menu():
     return reverse('adminpage.views.custom_menu_modify_post')
 
+
+def s_reverse_vote_list():
+    return reverse('adminpage.views.vote_list')

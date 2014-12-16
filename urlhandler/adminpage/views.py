@@ -35,7 +35,7 @@ def home(request):
     if not request.user.is_authenticated():
         return render_to_response('login.html', context_instance=RequestContext(request))
     else:
-        return HttpResponseRedirect(s_reverse_activity_list())
+        return HttpResponseRedirect(s_reverse_vote_list())
 
 
 def activity_list(request):
@@ -150,7 +150,7 @@ def login(request):
     if user is not None and user.is_active:
         auth.login(request, user)
         rtnJSON['message'] = 'success'
-        rtnJSON['next'] = s_reverse_activity_list()
+        rtnJSON['next'] = s_reverse_vote_list()
     else:
         time.sleep(2)
         rtnJSON['message'] = 'failed'
@@ -593,20 +593,32 @@ def activity_export_stunum(request, actid):
 
 
 def vote_list(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(s_reverse_admin_home())
     return render_to_response('vote_list.html')
 
 
 def vote_detail(request, act_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(s_reverse_admin_home())
     return render_to_response('vote_detail.html')
 
 
 def vote_edit(request, voteid):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(s_reverse_admin_home())
     return render_to_response('vote_edit.html', {'id': voteid}, context_instance=RequestContext(request))
 
+
 def vote_add(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(s_reverse_admin_home())
     return render_to_response('vote_edit.html', {'id' : -1}, context_instance=RequestContext(request))
 
+
 def vote_act_upload_img(request, act_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(s_reverse_admin_home())
     vote_act = VoteAct.objects.get(id=act_id)
     for (name, pic) in request.FILES.items():
         if name == 'pic':
@@ -622,25 +634,37 @@ def vote_act_upload_img(request, act_id):
 
     return HttpResponse()
 
+
 def vote_begin(request, act_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(s_reverse_admin_home())
     vote_act = VoteAct.objects.get(id=int(act_id))
     vote_act.begin_vote = datetime.now()
     vote_act.save()
     return HttpResponse()
 
+
 def vote_end(request, act_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(s_reverse_admin_home())
     vote_act = VoteAct.objects.get(id=int(act_id))
     vote_act.end_vote = datetime.now()
     vote_act.save()
     return HttpResponse()
 
+
 def vote_pub(request, act_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(s_reverse_admin_home())
     vote_act = VoteAct.objects.get(id=int(act_id))
     vote_act.status = 2
     vote_act.save()
     return HttpResponse()
 
+
 def vote_download_excel(request, act_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(s_reverse_admin_home())
     vote_act = VoteAct.objects.get(id=int(act_id))
     response = HttpResponse(mimetype="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename='+vote_act.name+'.xls'
