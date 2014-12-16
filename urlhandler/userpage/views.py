@@ -193,7 +193,12 @@ def vote_activity_info(request, voteActId):
     candidates = activity.candidate_set.filter(status=1)
     result["candidates"] = []
     for candidate in candidates:
-        result["candidates"].append(model_to_dict(candidate))
+        result["candidates"].append({
+            "name": candidate.name,
+            "key": candidate.key,
+            "description": candidate.description,
+            "vote": candidate.votes
+        })
     return HttpResponse(json.dumps(result), content_type="application/json")
 
 

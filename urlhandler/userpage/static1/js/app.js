@@ -99,8 +99,80 @@ var homepage = new Observer({
     }
 })
 
-model.attachObserver(homepage);
+var candidates = new Observer({
+    template:
+        '<div id="candidates" style="font-size:14px;">' +
+            '<div style="text-align: center;">' +
+                '<div style="font-size:x-large; font-weight:bold;">候选人信息</div>' +
+            '</div>' +
+            '<ul class="candidate-list">' +
+                '<% for (i = 0; i < candidates.length; i++) { %>' +
+                '<li class="over_hidden candidate-li">' +
+                    '<table class="one_candidate">' +
+                        '<tr>' +
+                            '<td class="candidate_img_container content_top">' +
+                                '<img class="candidate_img shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>' +
+                                '<div style="font-size:16px">' +
+                                    '<span class="highlight">编号&nbsp;<%=candidates[i].key%></span>' +
+                                '</div>' +
+                                '<div style="font-size:16px">' +
+                                    '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
+                                '</div>' +
+                                '<div></div>' +
+                                '<div class="show" style="margin-top: 45px;">' +
+                                    '<span class="icon-show">&nbsp;</span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
+                                    '<span style="font-size:12px;">展开</span>' +
+                                '</div>' +
+                            '</td>' +
+                            '<td class="candidate_info">' +
+                                '<p><%=candidates[i].description %></p>' +
+                            '</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                            '<td style="text-align: center" colspan="2">' +
+                                '<div class="hide hidden">' +
+                                    '<span class="icon-hide">&nbsp;</span>' +
+                                    '<span style="font-size:12px;">收起</span>' +
+                                '</div>' +
+                            '</td>' +
+                        '</tr>' +
+                    '</table>' +
+                '</li>' +
+                '<% } %>' +
+            '</ul>' +
+        '</div>',
+    target: '#candidates',
+    update: function(model) {
+        var dest = tpl(this.template, model.data);
+        $(this.target).replaceWith(dest);
+        show_button = $('.show');
+        hide_button = $('.hide');
+        for (var i = 0; i < show_button.length; i++) {
+            $(show_button[i]).click((function (i){
+                return function (){
+                    $('.candidate-li:eq(' + i + ')').removeClass('over_hidden');
+                    $('.candidate_img_container:eq(' + i + ')').removeClass('content_top');
+                    $(show_button[i]).addClass('hidden');
+                    $(hide_button[i]).removeClass('hidden');
+                }
+            })(i))
+        }
+        for (var i = 0; i < hide_button.length; i++) {
+            $(hide_button[i]).click((function (i){
+                return function (){
+                    $('.candidate-li:eq(' + i + ')').addClass('over_hidden');
+                    $('.candidate_img_container:eq(' + i + ')').addClass('content_top');
+                    $(hide_button[i]).addClass('hidden');
+                    $(show_button[i]).removeClass('hidden');
+                }
+            })(i))
+        }
 
+    }
+})
+
+model.attachObserver(homepage);
+model.attachObserver(candidates);
 /*
 function View(options) {
 	this.template = options.template;
