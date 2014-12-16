@@ -3,6 +3,7 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
+from datetime import datetime
 from urlhandler.models import User, Activity, Ticket, SettingForm, District, Seat, Candidate, VoteAct
 from urlhandler.settings import STATIC_URL
 import urllib, urllib2
@@ -12,6 +13,7 @@ from django.forms import *
 from queryhandler.tickethandler import get_user
 from django.db.models import F
 import json
+import time
 from queryhandler.settings import SITE_DOMAIN
 
 
@@ -173,6 +175,32 @@ def vote_details_view(request, voteActId):
     return render_to_response('votedetails.html', variables)
 
 #modified by WYW
+def vote_activity_info(request, voteActId):
+    activity = VoteAct.objects.get(id=voteActId)
+    result = {}
+    result["name"] = activity.name
+    result["key"] = activity.key
+    result["description"] = activity.description
+    result["config"] = activity.config
+    result["start"] = activity.begin_vote.strftime("%Y年%m月%d日 %H:%M")
+    result["end"] = activity.end_vote.strftime("%Y年%m月%d日 %H:%M")
+    if activity.status != 1:
+        raise Http404
+    elif activity.begin_vote < datetime.datetime.now():
+        result["status"] = "正在进行"
+    else:
+        result["status"] = "即将开始"
+    candidates = activity.candidate_set.filter(status=1)
+    result["candidates"] = []
+    for candidate in candidates:
+        result["candidates"].append({
+            "name": candidate.name,
+            "key": candidate.key,
+            "description": candidate.description,
+            "vote": candidate.votes
+        })
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
 
 def get_candidate_list(request, voteActId):
     activity = VoteAct.objects.get(id=voteActId)
