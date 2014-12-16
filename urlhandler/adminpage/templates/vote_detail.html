@@ -18,6 +18,7 @@
 
 {% block js %}
     <script src="{% static "js/vote_detail.js"%}"></script>
+    <script src="{% static "lib/bs/js/bootstrap.min.js"%}"></script>
 
     <script type="text/javascript">
 
@@ -84,6 +85,15 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="input-name" class="col-sm-2 control-label"
+                                           id="label-input-config">最多投票</label>
+
+                                    <div class="col-sm-6">
+                                        <label class="control-label" id="input-config"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label for="input-description" class="col-sm-2 control-label">活动简介</label>
 
                                     <div class="col-sm-9">
@@ -110,10 +120,10 @@
                         投票结果
                         <div style="float:right">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default" onclick="view_bar(vote_activity, candidates)"><span class="glyphicon glyphicon-stats gbtn" ></span></button>
-  <button type="button" class="btn btn-default" onclick="view_pie(vote_activity, candidates)"><span class="glyphicon glyphicon-dashboard gbtn" ></span></button>
-  <button type="button" class="btn btn-default" onclick="view_table(vote_activity, candidates)"><span class="glyphicon glyphicon-th gbtn"></span></button>
-    <button type="button" class="btn btn-default" onclick="download_data()"> <span class="glyphicon glyphicon-arrow-down gbtn"></span></button>
+                                <button type="button" class="btn btn-default" onclick="view_bar(vote_activity, candidates)" id="bar_btn"><span class="glyphicon glyphicon-stats gbtn" ></span></button>
+  <button type="button" class="btn btn-default" onclick="view_pie(vote_activity, candidates)" id="pie_btn"><span class="glyphicon glyphicon-dashboard gbtn" ></span></button>
+  <button type="button" class="btn btn-default" onclick="view_table(vote_activity, candidates)" id="table_btn"><span class="glyphicon glyphicon-th gbtn"></span></button>
+    <button type="button" class="btn btn-default" onclick="download_data()" id="download_btn"> <span class="glyphicon glyphicon-arrow-down gbtn"></span></button>
 
 </div>
 

@@ -311,6 +311,7 @@ function appendAct(act) {
         getTd(key).html(tdActionMap[tdMap[key]](act, key)).appendTo(tr);
     }
     tr.css('cursor', 'pointer');
+
     tr.click(function(){
         window.location.href = '/vote/detail/'+act.id+'/';
     });
@@ -322,7 +323,9 @@ function initialActs() {
     for (i = 0, len = vote_acts.length; i < len; ++i) {
         appendAct(vote_acts[i]);
     }
-    createtips();
+    $('td.td-operations').css('text-align', 'center');
+    $('.td-operations').click(function(event){event.stopPropagation();});
+//    createtips();
 }
 
 
@@ -376,3 +379,4 @@ function delete_post(id){
         contentType: 'application/json'
     })
 }
+

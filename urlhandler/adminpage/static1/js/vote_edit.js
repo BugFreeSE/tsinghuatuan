@@ -665,7 +665,7 @@ function fromCandidateListAPIFormat(data) {
         var _candidate = data[i];
         var candidate = {};
         candidate.no = _candidate.key;
-        candidate.pic = '';
+        candidate.pic = _candidate.pic;
         candidate.name = _candidate.name;
         candidate.description = _candidate.description;
         result.push(candidate);
@@ -686,7 +686,7 @@ function getData() {
 }
 
 
-if (typeof id != 'undefined' && id != '') { getData(); }
+if (typeof id != 'undefined' && id != -1) { getData(); }
 
 
 function toCandidateListAPIFormat() {
@@ -784,6 +784,7 @@ function m_publishActivity() {
                             contentType: 'application/json',
                             data: Candidates,
                             success: function () {
+                                upload_act_img();
                                 setResult('活动发布成功!');
                                 showResult();
                             },
@@ -820,6 +821,7 @@ function m_publishActivity() {
                     contentType: 'application/json',
                     data: Candidates,
                     success: function () {
+                        upload_act_img();
                         setResult('活动发布成功!');
                         showResult();
                     },
@@ -861,7 +863,20 @@ function bind_validation(){
         validate_action(validate_name(), $('#name-form'), $('#name-label'))
     });
     $('#input-key').change(function(){
-        validate_action(validate_key(), $('#key-form'), $('#key-label'))
+        //validate_action(validate_key(), $('#key-form'), $('#key-label'))
+        $.get("/api/v1/VoteAct/?format=json&status__gte=0&status_lt=2&key="+$('#input-key').val(),function (data) {
+            var key_exist_flag = true;
+            for (var i in data.objects) {
+                if (data.objects[i].id != id) {
+                    validate_action(validate_key('活动简称有重复'), $('#key-form'), $('#key-label'));
+                    key_exist_flag = false;
+                    break;
+                }
+            }
+            if (data.meta.total_count==0||key_exist_flag) {
+                validate_action(validate_key(''), $('#key-form'), $('#key-label'))
+            }
+        })
     });
     $('#input-start_time').change(function(){
         validate_action(validate_start(), $('#start-form'), $('#start-label'))
@@ -874,34 +889,47 @@ function bind_validation(){
     })
 }
 
-function validate_key(){
-//    return '活动简称有重复'
-    return ''
+function validate_key(str){
+    if (typeof str === 'undefined'){
+        return '';
+    }
+    return str;
 }
 
 function validate_name(){
     return ''
 }
+//'yyyy-mm-dd mm:ss'
+function parseDate(str){
+    var year = (str.substring(0,4));
+    var month = parseInt(str.substring(5,7)) - 1;
+
+    var day = (str.substring(8,10));
+    var hour = (str.substring(11,13));
+    var minute = (str.substring(14,16));
+    return new Date(year, month, day, hour, minute);
+}
 
 function validate_start(){
     var now = new Date();
-    var start = new Date($('#input-start_time').val());
-    if (start < now){
-        return '开始时间应晚于当前时间！';
+    var start = parseDate($('#input-start_time').val());
+    if (start > now){
+        return '';
     }
     else{
-        return '';
+        return '开始时间应晚于当前时间！';
     }
 }
 
 function validate_end(){
-    var start = new Date($('#input-start_time').val());
-    var end = new Date($('#input-end_time').val());
-    if (end < start){
-        return '结束时间应晚于开始时间！';
+    var start = parseDate($('#input-start_time').val());
+    var end = parseDate($('#input-end_time').val());
+    if (end > start){
+        return '';
+
     }
     else{
-        return '';
+        return '结束时间应晚于开始时间！';
     }
 }
 
@@ -927,7 +955,7 @@ function validatePage(){
     var items = ['name', 'key', 'start', 'end', 'config'];
     var infos = {
         'name': validate_name(),
-        'key': validate_key(),
+        'key': validate_key(''),
         'start': validate_start(),
         'end': validate_end(),
         'config': validate_config()

@@ -68,6 +68,7 @@ function setForm(){
     var end_time = getChsFullDate(vote_activity.end_time) + " " + getTimeStr(vote_activity.end_time);
     $('#input-start_time').html(start_time);
     $('#input-end_time').html(end_time);
+    $('#input-config').html(vote_activity.config);
     $('#poster').attr('src',vote_activity.act_pic);
     $('#input-description').html(vote_activity.description);
 }
@@ -94,7 +95,8 @@ function fromVoteActDetailAPIFormat(data) {
     result.name = data.name;
     result.description = data.description;
     result.key = data.key;
-    result.act_pic = '';
+    result.config = data.config;
+    result.act_pic = data.pic;
     data.begin_vote = data.begin_vote.substring(0,10) + " " + data.begin_vote.substring(11);
     data.end_vote = data.end_vote.substring(0,10) + " " + data.end_vote.substring(11);
     result.start_time =  new Date(data.begin_vote.replace(/-/g,"/"));
@@ -186,6 +188,7 @@ function initializeResultPage(){
 function initializePage(){
     showButton();
     initializeResultPage();
+    createTips();
 }
 
 function actionButton(action){
@@ -229,5 +232,8 @@ function actionButton(action){
 }
 
 function createTips(){
-
+    $('#pie_btn').tooltip({title:'饼状图', container:'body'});
+    $('#bar_btn').tooltip({title:'柱状图', container:'body'});
+    $('#table_btn').tooltip({title:'统计表', container:'body'});
+    $('#download_btn').tooltip({title:'下载统计表', container:'body'});
 }
