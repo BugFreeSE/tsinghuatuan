@@ -103,7 +103,7 @@ var candidates = new Observer({
             '<form id="vote" style="font-size:10px">' +
                 '<div id="vote_area">' +
                     '<div style="text-align:center;">' +
-                        '<div class="hightlight" style="font-size:x-large;">投票</div>' +
+                        '<div class="highlight" style="font-size:x-large;">投票</div>' +
                     '</div>' +
                     '<table id="vote_table">' + 
                     '<% for (i = 0; i < parseInt((candidates.length - 1) / 5) + 1; i++) { %>' +
@@ -116,7 +116,7 @@ var candidates = new Observer({
                         '</tr>' +
                         '<tr>' +
                         '<% for (j = 0; j < 5 && j < candidates.length - i * 5; j++) { %>' +
-                            '<td><input type="checkbox"></td>' +
+                            '<td><input type="checkbox" name="voted"></td>' +
                             '<td><div>编号&nbsp;<%=candidates[i * 5 + j].key%></div><div><%=candidates[i * 5 + j].name%></div></td>' +
                         '<% } %>' +
                         '</tr>' +
@@ -128,8 +128,8 @@ var candidates = new Observer({
                     '<button class="hidden">提交</button>' +
                 '</div>' +
             '</form>' +  
-            '<div style="text-align: center;">' +
-                '<div style="font-size:x-large; font-weight:bold;">候选人信息</div>' +
+            '<div class="top_border" style="text-align: center;">' +
+                '<div class="highlight" style="font-size:x-large; font-weight:bold;">候选人信息</div>' +
             '</div>' +
             '<ul class="candidate-list">' +
                 '<% for (i = 0; i < candidates.length; i++) { %>' +
@@ -146,10 +146,6 @@ var candidates = new Observer({
                                     '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
                                 '</div>' +
                                 '<div></div>' +
-                                '<div class="show" style="margin-top: 45px;">' +
-                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
-                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
-                                '</div>' +
                             '</td>' +
                             '<td class="candidate_info content_top">' +
                                 '<p><%=candidates[i].description %></p>' +
@@ -167,15 +163,15 @@ var candidates = new Observer({
                                     '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
                                 '</div>' +
                                 '<div></div>' +
-                                '<div class="show" style="margin-top: 45px;">' +
-                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
-                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
-                                '</div>' +
                             '</td>' +
                             '<% } %>' +
                         '</tr>' +
                         '<tr>' +
                             '<td style="text-align: center" colspan="2">' +
+                                '<div class="show">' +
+                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
+                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
+                                '</div>' +
                                 '<div class="hide hidden">' +
                                     '<span class="icon-hide"></span>' +
                                     '<span style="font-size:12px;">&nbsp;收起</span>' +
@@ -213,7 +209,19 @@ var candidates = new Observer({
                 }
             })(i))
         }
-        $('#submit_button').onclick
+        $('#submit_button').click(function() {
+            var data = {}
+            var csrf_input = $(csrf);
+            data[csrf_input.attr('name')] = csrf_input.val();
+            var checks = $('[name=voted]');
+            data['activity'] = vote_id
+            data['student_id'] = 2012
+            data['voted'] = []
+            for (var i = 0; i < checks.length; i++) {
+                data['voted'].push(checks[i].checked)
+            }
+            $.post('/u/vote/submit/', data, function(data) {alert(data);});
+        })
     }
 })
 

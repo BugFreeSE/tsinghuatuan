@@ -6,7 +6,11 @@
         <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
         <title>投票</title>
         <link rel="stylesheet" type="text/css" href="{% static "css/vote-detail.css" %}" />
-        <script>var vote_id = {{ vote_id }}</script>
+        <script>
+            var vote_id = {{ vote_id }};
+            var csrf = "{% csrf_token %}";
+        </script>
+
     </head>
     <body background="{% static "img/bg_vote.gif" %}">
 
@@ -390,6 +394,7 @@
         </footer>
         <script type="text/javascript" src="{% static "lib/jq/jquery-1.10.2.js" %}"></script>
         <script type="text/javascript" src="{% static "js/jquery.flot.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/jquery.form.min.js" %}"></script>
         <script type="text/javascript" src="{% static "js/jquery.flot.pie.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui-tab.js" %}"></script>
         <script type="text/javascript" src="{% static "js/app.js" %}"></script>
