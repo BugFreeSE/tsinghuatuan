@@ -24,7 +24,7 @@ function show_error(msg){
     var $msg = $('<span>').css('font-weight', 'bold').css('margin','7em').text(msg);
     $div.append($msg);
     $('#detail_result').append($div);
-    $('#download_btn').disable();
+    $('#download_btn').attr('disabled', 'disabled');
 }
 
 function removeBottomText(){

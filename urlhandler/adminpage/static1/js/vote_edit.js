@@ -894,10 +894,20 @@ function validate_key(str){
 function validate_name(){
     return ''
 }
+//'yyyy-mm-dd mm:ss'
+function parseDate(str){
+    var year = (str.substring(0,4));
+    var month = parseInt(str.substring(5,7)) - 1;
+
+    var day = (str.substring(8,10));
+    var hour = (str.substring(11,13));
+    var minute = (str.substring(14,16));
+    return new Date(year, month, day, hour, minute);
+}
 
 function validate_start(){
     var now = new Date();
-    var start = new Date($('#input-start_time').val());
+    var start = parseDate($('#input-start_time').val());
     if (start > now){
         return '';
     }
@@ -907,8 +917,8 @@ function validate_start(){
 }
 
 function validate_end(){
-    var start = new Date($('#input-start_time').val());
-    var end = new Date($('#input-end_time').val());
+    var start = parseDate($('#input-start_time').val());
+    var end = parseDate($('#input-end_time').val());
     if (end > start){
         return '';
 
