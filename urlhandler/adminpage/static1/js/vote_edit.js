@@ -763,37 +763,78 @@ function m_publishActivity() {
         showResult();
         return;
     }
-
-    var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
     var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(false));
-    $.ajax({
-        type: 'PATCH',
-        url: '/api/v1/VoteAct/'+id+'/?format=json',
-        contentType: 'application/json',
-        data: VoteAct,
-        success: function() {
-            $.ajax({
-                type: 'DELETE',
-                url: '/api/v1/Candidate/?format=json&activity_id='+id,
-                contentType: 'application/json',
-                success: function() {
-                    $.ajax({
-                        type: 'PATCH',
-                        url: '/api/v1/Candidate/?format=json',
-                        contentType: 'application/json',
-                        data: Candidates,
-                        success: function(){
-                            upload_act_img();
-                            setResult('活动发布成功!');showResult();
-                        },
-                        error: function() {setResult('create candidates failed');showResult();}
-                    })
-                },
-                error: function() {setResult('delete candidate failed');showResult();}
-            })
-        },
-        error: function() {setResult('save VoteAct failed');showResult();}
-    })
+    if (id != -1) {
+        var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
+        $.ajax({
+            type: 'PATCH',
+            url: '/api/v1/VoteAct/' + id + '/?format=json',
+            contentType: 'application/json',
+            data: VoteAct,
+            success: function () {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/api/v1/Candidate/?format=json&activity_id=' + id,
+                    contentType: 'application/json',
+                    success: function () {
+                        var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
+                        $.ajax({
+                            type: 'PATCH',
+                            url: '/api/v1/Candidate/?format=json',
+                            contentType: 'application/json',
+                            data: Candidates,
+                            success: function () {
+                                setResult('活动发布成功!');
+                                showResult();
+                            },
+                            error: function () {
+                                setResult('create candidates failed');
+                                showResult();
+                            }
+                        })
+                    },
+                    error: function () {
+                        setResult('delete candidate failed');
+                        showResult();
+                    }
+                })
+            },
+            error: function () {
+                setResult('save VoteAct failed');
+                showResult();
+            }
+        })
+    }
+    else {
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/VoteAct/?format=json',
+            contentType: 'application/json',
+            data: VoteAct,
+            success: function () {
+                id = - -arguments[2].getResponseHeader('Location').split('/').splice(-2,1).pop();
+                var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
+                $.ajax({
+                    type: 'PATCH',
+                    url: '/api/v1/Candidate/?format=json',
+                    contentType: 'application/json',
+                    data: Candidates,
+                    success: function () {
+                        setResult('活动发布成功!');
+                        showResult();
+                    },
+                    error: function () {
+                        setResult('create candidates failed');
+                        showResult();
+                    }
+                })
+            },
+            error: function () {
+                setResult('save VoteAct failed');
+                showResult();
+            }
+        })
+    }
 }
 
 function upload_act_img(){

@@ -43,7 +43,7 @@ var homepage = new Observer({
     template:
         '<div id="home" style="font-size:14px;">' +
             '<div class="poster_container">' +
-                '<img id="poster" style="width:100%;" src="http://hdn.xnimg.cn/photos/hdn521/20120210/1750/h_large_YZaI_71850005ba532f76.jpg"/>' +
+                '<img id="poster" style="width:100%;" src="<%=pic%>"/>' +
             '</div>' +
                 '<!--信息部分1：活动标题、时间、候选人头像列表、候选人人数、参与者人数-->' +
             '<div style="text-align: center; padding: 10px;">' +
@@ -51,11 +51,9 @@ var homepage = new Observer({
                 '<div style="font-size:12px;"><%=start%> - <%=end%></div>' +
                 '<div><strong class="highlight"><%=status%></strong></div>' +
                 '<div id="avatar-list" style="margin: 10px 10px;">' +
-                    '<span><img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0" /></span>' +
-                    '<span><img class="avatar shadow" src="http://tp2.sinaimg.cn/1752502537/180/5648896565/1" /></span>' +
-                    '<span><img class="avatar shadow" src="http://tp3.sinaimg.cn/1195354434/180/5712827770/1" /></span>' +
-                    '<span><img class="avatar shadow" src="http://tp2.sinaimg.cn/1732008061/180/5706365063/1" /></span>' +
-                    '<span><img class="avatar shadow" src="http://tp4.sinaimg.cn/1717748707/180/40010130572/1" /></span>' +
+                    '<% for (i = 0; i < candidates.length && i < 5; i++) { %>' +
+                        '<span><img class="avatar shadow" src="candidates[i].pic" /></span>' +
+                    '<% } %>' +
                 '</div>' +
                 '<table class="tb_counter" cellpadding="0" cellspacing="0">' +
                     '<tbody>' +
@@ -63,11 +61,11 @@ var homepage = new Observer({
                             '<td>' +
                             '</td>' +
                             '<td class="S_line1">' +
-                                '<strong>10</strong>' +
+                                '<strong><%=candidate_num%></strong>' +
                                 '<span class="highlight">候选人</span>' +
                             '</td>' +
                             '<td class="S_line1" style="border-left-style: solid;">' +
-                                '<strong>100</strong>' +
+                                '<strong><%=participant_num%></strong>' +
                                 '<span class="highlight">参与者</span>' +
                             '</td>' +
                             '<td>' +
@@ -77,7 +75,7 @@ var homepage = new Observer({
             '</div>' +
             '<!--信息部分2：投票形式、活动代码、投票方式-->' +
             '<div class="top_border">' +
-                '<div><strong class="highlight">投票形式&nbsp;&nbsp;</strong> <span>限选3人</span></div>' +
+                '<div><strong class="highlight">投票形式&nbsp;&nbsp;</strong> <span>限选<%=config%>人</span></div>' +
                 '<div><strong class="highlight">活动代码&nbsp;&nbsp;</strong> <span>嘉宾</span></div>' +
                 '<div><strong class="highlight">投票方式&nbsp;&nbsp;</strong> <span>微信回复“投票 活动代码 候选人编号列表”。例如“投票 嘉宾 1 3”</span></div>' +
             '</div>' +
@@ -111,7 +109,7 @@ var candidates = new Observer({
                     '<table class="one_candidate">' +
                         '<tr>' +
                             '<td class="candidate_img_container content_top">' +
-                                '<img class="candidate_img shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>' +
+                                '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
                                 '<div style="font-size:16px">' +
                                     '<span class="highlight">编号&nbsp;<%=candidates[i].key%></span>' +
                                 '</div>' +
@@ -120,8 +118,8 @@ var candidates = new Observer({
                                 '</div>' +
                                 '<div></div>' +
                                 '<div class="show" style="margin-top: 45px;">' +
-                                    '<span class="icon-show">&nbsp;</span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
-                                    '<span style="font-size:12px;">展开</span>' +
+                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
+                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
                                 '</div>' +
                             '</td>' +
                             '<td class="candidate_info">' +
@@ -131,8 +129,8 @@ var candidates = new Observer({
                         '<tr>' +
                             '<td style="text-align: center" colspan="2">' +
                                 '<div class="hide hidden">' +
-                                    '<span class="icon-hide">&nbsp;</span>' +
-                                    '<span style="font-size:12px;">收起</span>' +
+                                    '<span class="icon-hide"></span>' +
+                                    '<span style="font-size:12px;">&nbsp;收起</span>' +
                                 '</div>' +
                             '</td>' +
                         '</tr>' +
