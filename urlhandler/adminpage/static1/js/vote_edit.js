@@ -886,22 +886,23 @@ function validate_name(){
 function validate_start(){
     var now = new Date();
     var start = new Date($('#input-start_time').val());
-    if (start < now){
-        return '开始时间应晚于当前时间！';
+    if (start > now){
+        return '';
     }
     else{
-        return '';
+        return '开始时间应晚于当前时间！';
     }
 }
 
 function validate_end(){
     var start = new Date($('#input-start_time').val());
     var end = new Date($('#input-end_time').val());
-    if (end < start){
-        return '结束时间应晚于开始时间！';
+    if (end > start){
+        return '';
+
     }
     else{
-        return '';
+        return '结束时间应晚于开始时间！';
     }
 }
 

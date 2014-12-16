@@ -20,11 +20,11 @@ function no_votes(candidates){
 
 function show_error(msg){
     $('#detail_result').children().remove();
-    var $div = $('<div>').attr('class', 'mycenter').attr('id', 'result');
-    var $img = $('<img>').attr('src', '/static1/img/ohno.jpg').attr('width', 200);
-    var $msg = $('<span>').css('font-size', '3em').css('margin','1em').text(msg);
-    $div.append($img).append($msg);
+    var $div = $('<div>').attr('id', 'result');
+    var $msg = $('<span>').css('font-weight', 'bold').css('margin','7em').text(msg);
+    $div.append($msg);
     $('#detail_result').append($div);
+    $('#download_btn').disable();
 }
 
 function removeBottomText(){
