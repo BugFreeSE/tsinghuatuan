@@ -4,9 +4,11 @@ window.addEventListener('load', function(){
     if (!debugView) {
         model.fetch();
         dataSet = [
-            {label: "王宁晨", data: 100, color:"#005CDE"},
-            {label: "王宇炜", data: 10, color:"#00A36A"},
-            {label: "耿正霖", data: 10, color:"#7D0096"}
+            {label: "王宁晨", data: 180, color:"#3D7D53"},
+            {label: "王宁晨", data: 1000, color:"#97CEA2"},
+            {label: "王宁晨", data: 150, color:"#EDF1B0"},
+            {label: "王宁晨", data: 120, color:"#CDDF74"},
+            {label: "王宁晨", data: 340, color:"#36B596"}
         ];
         options = {
             series: {
