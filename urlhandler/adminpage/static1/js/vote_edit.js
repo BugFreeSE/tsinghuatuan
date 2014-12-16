@@ -686,7 +686,7 @@ function getData() {
 }
 
 
-if (typeof id != 'undefined' && id != '') { getData(); }
+if (typeof id != 'undefined' && id != -1) { getData(); }
 
 
 function toCandidateListAPIFormat() {
@@ -861,7 +861,20 @@ function bind_validation(){
         validate_action(validate_name(), $('#name-form'), $('#name-label'))
     });
     $('#input-key').change(function(){
-        validate_action(validate_key(), $('#key-form'), $('#key-label'))
+        //validate_action(validate_key(), $('#key-form'), $('#key-label'))
+        $.get("/api/v1/VoteAct/?format=json&status__gte=0&status_lt=2&key="+$('#input-key').val(),function (data) {
+            var key_exist_flag = true;
+            for (var i in data.objects) {
+                if (data.objects[i].id != id) {
+                    validate_action(validate_key('活动简称有重复'), $('#key-form'), $('#key-label'));
+                    key_exist_flag = false;
+                    break;
+                }
+            }
+            if (data.meta.total_count==0||key_exist_flag) {
+                validate_action(validate_key(''), $('#key-form'), $('#key-label'))
+            }
+        })
     });
     $('#input-start_time').change(function(){
         validate_action(validate_start(), $('#start-form'), $('#start-label'))
@@ -874,9 +887,8 @@ function bind_validation(){
     })
 }
 
-function validate_key(){
-//    return '活动简称有重复'
-    return ''
+function validate_key(str){
+    return str;
 }
 
 function validate_name(){
