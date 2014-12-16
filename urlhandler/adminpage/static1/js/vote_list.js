@@ -324,6 +324,7 @@ function initialActs() {
         appendAct(vote_acts[i]);
     }
     $('td.td-operations').css('text-align', 'center');
+    $('.td-operations').click(function(event){event.stopPropagation();});
 //    createtips();
 }
 
@@ -378,3 +379,4 @@ function delete_post(id){
         contentType: 'application/json'
     })
 }
+

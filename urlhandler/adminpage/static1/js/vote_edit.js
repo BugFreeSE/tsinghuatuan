@@ -955,7 +955,7 @@ function validatePage(){
     var items = ['name', 'key', 'start', 'end', 'config'];
     var infos = {
         'name': validate_name(),
-        'key': validate_key(),
+        'key': validate_key(''),
         'start': validate_start(),
         'end': validate_end(),
         'config': validate_config()
