@@ -52,7 +52,7 @@ var homepage = new Observer({
                 '<div><strong class="highlight"><%=status%></strong></div>' +
                 '<div id="avatar-list" style="margin: 10px 10px;">' +
                     '<% for (i = 0; i < candidates.length && i < 5; i++) { %>' +
-                        '<span><img class="avatar shadow" src="candidates[i].pic" /></span>' +
+                        '<span><img class="avatar shadow" src="<%=candidates[i].pic%>" /></span>' +
                     '<% } %>' +
                 '</div>' +
                 '<table class="tb_counter" cellpadding="0" cellspacing="0">' +
