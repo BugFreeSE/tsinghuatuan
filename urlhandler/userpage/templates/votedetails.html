@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" href="{% static "css/vote-detail.css" %}" />
         <script>
             var vote_id = {{ vote_id }};
+            var stu_id = {{stu_id}};
             var csrf = "{% csrf_token %}";
         </script>
 
@@ -28,7 +29,7 @@
                         <div style="font-size:x-large; font-weight:bold;">校歌赛嘉宾票选</div>
                         <div>2014年12月8日 - 12月15日 &nbsp;&nbsp; <strong class="highlight">正在进行</strong></div>
                         <div id="avatar-list" style="margin: 10px 10px;">
-                            <span><img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0" /></span>
+                            <span><img class="avatar shadow" src="http://tp2.sinaimg.cn/1692544657/180/5634295149/1" /></span>
                             <span><img class="avatar shadow" src="http://tp2.sinaimg.cn/1752502537/180/5648896565/1" /></span>
                             <span><img class="avatar shadow" src="http://tp3.sinaimg.cn/1195354434/180/5712827770/1" /></span>
                             <span><img class="avatar shadow" src="http://tp2.sinaimg.cn/1732008061/180/5706365063/1" /></span>
@@ -80,11 +81,12 @@
                         <div id="vote_area">
                         <div style="text-align: center;">
                             <div class="highlight" style="font-size:x-large;">投票</div>
+                            <div>限选3人</div>
                         </div>
                         <table id="vote_table">
                             <tr>
                                 <td class="table_avatar" colspan="2">
-                                    <img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                    <img class="avatar shadow" src="http://tp2.sinaimg.cn/1692544657/180/5634295149/1"/>
                                 </td>
                                 <td class="table_avatar" colspan="2">
                                     <img class="avatar shadow" src="http://tp2.sinaimg.cn/1752502537/180/5648896565/1"/>
@@ -93,7 +95,7 @@
                                     <img class="avatar shadow" src="http://tp2.sinaimg.cn/1732008061/180/5706365063/1"/>
                                 </td>
                                 <td class="table_avatar" colspan="2">
-                                    <img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                    <img class="avatar shadow" src="http://tp2.sinaimg.cn/1692544657/180/5634295149/1"/>
                                 </td>
                                 <td class="table_avatar" colspan="2">
                                     <img class="avatar shadow" src="http://tp2.sinaimg.cn/1752502537/180/5648896565/1"/>
@@ -108,7 +110,11 @@
                                     -->
                             </tr>
                             <tr>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" style="display:none;">
+                                    <span class="icon-unselected"></span>
+                                </td>
+
                                 <td>
                                     <div>
                                         编号&nbsp;1
@@ -117,7 +123,10 @@
                                         范玮琪
                                     </div>
                                 </td>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" style="display:none;">
+                                    <span class="icon-unselected"></span>
+                                </td>
                                 <td>
                                     <div>
                                         编号&nbsp;1
@@ -126,7 +135,10 @@
                                         范玮琪
                                     </div>
                                 </td>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" style="display:none;">
+                                    <span class="icon-unselected"></span>
+                                </td>
                                 <td>
                                     <div>
                                         编号&nbsp;1
@@ -135,7 +147,10 @@
                                         范玮琪
                                     </div>
                                 </td>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" style="display:none;">
+                                    <span class="icon-unselected"></span>
+                                </td>
                                 <td>
                                     <div>
                                         编号&nbsp;1
@@ -144,7 +159,10 @@
                                         范玮琪
                                     </div>
                                 </td>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" style="display:none;">
+                                    <span class="icon-unselected"></span>
+                                </td>
                                 <td>
                                     <div>
                                         编号&nbsp;1
@@ -157,10 +175,10 @@
 
                             <tr>
                                 <td class="table_avatar" colspan="2">
-                                    <img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                    <img class="avatar shadow" src="http://tp2.sinaimg.cn/1692544657/180/5634295149/1"/>
                                 </td>
                                 <td class="table_avatar" colspan="2">
-                                    <img class="avatar shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                    <img class="avatar shadow" src="http://tp2.sinaimg.cn/1692544657/180/5634295149/1"/>
                                 </td>
                                 <td class="table_avatar" colspan="2">
                                     <img class="avatar shadow" src="http://tp2.sinaimg.cn/1752502537/180/5648896565/1"/>
@@ -173,7 +191,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" style="display:none;">
+                                    <span class="icon-unselected"></span>
+                                </td>
                                 <td>
                                     <div>
                                         编号&nbsp;1
@@ -182,7 +203,10 @@
                                         范玮琪
                                     </div>
                                 </td>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" style="display:none;">
+                                    <span class="icon-unselected"></span>
+                                </td>
                                 <td>
                                     <div>
                                         编号&nbsp;1
@@ -191,7 +215,10 @@
                                         范玮琪
                                     </div>
                                 </td>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" style="display:none;">
+                                    <span class="icon-unselected"></span>
+                                </td>
                                 <td>
                                     <div>
                                         编号&nbsp;1
@@ -200,7 +227,10 @@
                                         范玮琪
                                     </div>
                                 </td>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" style="display:none;">
+                                    <span class="icon-unselected"></span>
+                                </td>
                                 <td>
                                     <div>
                                         编号&nbsp;1
@@ -209,7 +239,10 @@
                                         范玮琪
                                     </div>
                                 </td>
-                                <td><input type="checkbox"></td>
+                                <td>
+                                    <input type="checkbox" style="display:none;">
+                                    <span class="icon-unselected"></span>
+                                </td>
                                 <td>
                                     <div>
                                         编号&nbsp;1
@@ -235,7 +268,7 @@
                             <table class="one_candidate">
                                 <tr>
                                     <td class="candidate_img_container content_top">
-                                        <img class="candidate_img shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                        <img class="candidate_img shadow" src="http://tp2.sinaimg.cn/1692544657/180/5634295149/1"/>
                                         <div style="font-size:16px">
                                             <span class="highlight">编号&nbsp;1</span>
                                         </div>
@@ -280,35 +313,7 @@
 
                                     </td>
                                     <td class="candidate_img_container content_top">
-                                        <img class="candidate_img shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
-                                        <div style="font-size:16px">
-                                            <span class="highlight">编号&nbsp;1</span>
-                                        </div>
-                                        <div style="font-size:16px">
-                                            <span style="font-weight: bold">范玮琪</span>
-                                        </div>
-                                        <div></div>
-                                        <div class="show" style="margin-top: 45px;">
-                                            <span class="icon-show"></span>
-                                            <span style="font-size:12px;">&nbsp;展开</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center" colspan="2">
-                                        <div class="hide hidden">
-                                            <span class="icon-hide"></span>
-                                            <span style="font-size:12px;">&nbsp;收起</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </li>
-                        <li class="over_hidden candidate-li">
-                            <table class="one_candidate">
-                                <tr>
-                                    <td class="candidate_img_container content_top">
-                                        <img class="candidate_img shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                        <img class="candidate_img shadow" src="http://tp2.sinaimg.cn/1692544657/180/5634295149/1"/>
                                         <div style="font-size:16px">
                                             <span class="highlight">编号&nbsp;1</span>
                                         </div>
@@ -321,6 +326,34 @@
                                             <span style="font-size:12px;">&nbsp;展开</span>
                                         </div>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center" colspan="2">
+                                        <div class="hide hidden">
+                                            <span class="icon-hide"></span>
+                                            <span style="font-size:12px;">&nbsp;收起</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li class="over_hidden candidate-li">
+                            <table class="one_candidate">
+                                <tr>
+                                    <td class="candidate_img_container content_top">
+                                        <img class="candidate_img shadow" src="http://tp2.sinaimg.cn/1692544657/180/5634295149/1"/>
+                                        <div style="font-size:16px">
+                                            <span class="highlight">编号&nbsp;1</span>
+                                        </div>
+                                        <div style="font-size:16px">
+                                            <span style="font-weight: bold">范玮琪</span>
+                                        </div>
+                                        <div></div>
+                                        <div class="show" style="margin-top: 45px;">
+                                            <span class="icon-show"></span>
+                                            <span style="font-size:12px;">&nbsp;展开</span>
+                                        </div>
+                                    </td>
                                     <td class="candidate_info">
                                         <p>这几天心里颇不宁静。今晚在院子里坐着乘凉，忽然想起日日走过的荷塘，在这满月的光里，总该另有一番样子吧。月亮渐渐地升高了，墙外马路上孩子们的欢笑，已经听不见了；妻在屋里拍着闰儿，迷迷糊糊地哼着眠歌。我悄悄地披了大衫，带上门出去。</p>
 　　<p>沿着荷塘，是一条曲折的小煤屑路。这是一条幽僻的路；白天也少人走，夜晚更加寂寞。荷塘四面，长着许多树，蓊蓊郁郁的。路的一旁，是些杨柳，和一些不知道名字的树。没有月光的晚上，这路上阴森森的，有些怕人。今晚却很好，虽然月光也还是淡淡的。</p>
@@ -353,7 +386,7 @@
 
                                     </td>
                                     <td class="candidate_img_container content_top">
-                                        <img class="candidate_img shadow" src="http://tp1.sinaimg.cn/1752467960/180/1283204936/0"/>
+                                        <img class="candidate_img shadow" src="http://tp2.sinaimg.cn/1692544657/180/5634295149/1"/>
                                         <div style="font-size:16px">
                                             <span class="highlight">编号&nbsp;1</span>
                                         </div>

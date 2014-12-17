@@ -35,7 +35,7 @@ var model = new Subject({
             console.log(data);
             model.notify();
         }
-		$.getJSON('/u/vote/info/' + vote_id, callback);
+		$.getJSON('/u/vote/info/' + vote_id + '/', callback);
 	}
 })
 
@@ -52,7 +52,7 @@ var homepage = new Observer({
                 '<div><strong class="highlight"><%=status%></strong></div>' +
                 '<div id="avatar-list" style="margin: 10px 10px;">' +
                     '<% for (i = 0; i < candidates.length && i < 5; i++) { %>' +
-                        '<span><img class="avatar shadow" src="candidates[i].pic" /></span>' +
+                        '<span><img class="avatar shadow" src="<%=candidates[i].pic%>" /></span>' +
                     '<% } %>' +
                 '</div>' +
                 '<table class="tb_counter" cellpadding="0" cellspacing="0">' +
@@ -76,8 +76,8 @@ var homepage = new Observer({
             '<!--信息部分2：投票形式、活动代码、投票方式-->' +
             '<div class="top_border">' +
                 '<div><strong class="highlight">投票形式&nbsp;&nbsp;</strong> <span>限选<%=config%>人</span></div>' +
-                '<div><strong class="highlight">活动代码&nbsp;&nbsp;</strong> <span>嘉宾</span></div>' +
-                '<div><strong class="highlight">投票方式&nbsp;&nbsp;</strong> <span>微信回复“投票 活动代码 候选人编号列表”。例如“投票 嘉宾 1 3”</span></div>' +
+                '<div><strong class="highlight">活动代码&nbsp;&nbsp;</strong> <span><%=key%></span></div>' +
+                '<div><strong class="highlight">投票方式&nbsp;&nbsp;</strong> <span>微信回复“投票 活动代码 候选人编号列表”。例如“投票 <%=key%> 1 3”</span></div>' +
             '</div>' +
             '<!--信息部分3：活动介绍-->' +
             '<div class="top_border">' +
@@ -146,6 +146,10 @@ var candidates = new Observer({
                                     '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
                                 '</div>' +
                                 '<div></div>' +
+                                '<div class="show" style="margin-top: 45px;">' +
+                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
+                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
+                                '</div>' +
                             '</td>' +
                             '<td class="candidate_info content_top">' +
                                 '<p><%=candidates[i].description %></p>' +
@@ -163,15 +167,15 @@ var candidates = new Observer({
                                     '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
                                 '</div>' +
                                 '<div></div>' +
+                                '<div class="show" style="margin-top: 45px;">' +
+                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
+                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
+                                '</div>' +
                             '</td>' +
                             '<% } %>' +
                         '</tr>' +
                         '<tr>' +
                             '<td style="text-align: center" colspan="2">' +
-                                '<div class="show">' +
-                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
-                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
-                                '</div>' +
                                 '<div class="hide hidden">' +
                                     '<span class="icon-hide"></span>' +
                                     '<span style="font-size:12px;">&nbsp;收起</span>' +
@@ -187,9 +191,16 @@ var candidates = new Observer({
     update: function(model) {
         var dest = tpl(this.template, model.data);
         $(this.target).replaceWith(dest);
+        desc = $('.candidate_info');
         show_button = $('.show');
         hide_button = $('.hide');
         for (var i = 0; i < show_button.length; i++) {
+            console.log($(desc[i]).height());
+            if($(desc[i]).height() < 210){
+                console.log(i+"too short");
+                $(show_button[i]).remove();
+                continue;
+            }
             $(show_button[i]).click((function (i){
                 return function (){
                     $('.candidate-li:eq(' + i + ')').removeClass('over_hidden');
@@ -200,6 +211,10 @@ var candidates = new Observer({
             })(i))
         }
         for (var i = 0; i < hide_button.length; i++) {
+            if($(desc[i]).height() < 210){
+                $(hide_button[i]).remove();
+                continue;
+            }
             $(hide_button[i]).click((function (i){
                 return function (){
                     $('.candidate-li:eq(' + i + ')').addClass('over_hidden');
@@ -215,7 +230,7 @@ var candidates = new Observer({
             data[csrf_input.attr('name')] = csrf_input.val();
             var checks = $('[name=voted]');
             data['activity'] = vote_id
-            data['student_id'] = 2012
+            data['student_id'] = stu_id
             data['voted'] = []
             for (var i = 0; i < checks.length; i++) {
                 data['voted'].push(checks[i].checked)

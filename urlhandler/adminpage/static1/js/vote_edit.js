@@ -712,46 +712,100 @@ function toVoteActDetailAPIFormat(IsSave) {
     result['description'] = vote_activity.description;
     result['key'] = vote_activity.key;
     result['config'] = vote_activity.config;
-    result['begin_vote'] = vote_activity.start_time;
-    result['end_vote'] = vote_activity.end_time;
+    if (vote_activity.start_time != '')
+        result['begin_vote'] = vote_activity.start_time;
+    else
+        result['begin_vote'] = null;
+    if (vote_activity.end_time != '')
+        result['end_vote'] = vote_activity.end_time;
+    else
+        result['end_vote'] = null;
     if (!IsSave) {
         result['status'] = 1;
+    }
+    else {
+        result['status'] = 0;
     }
     return result;
 }
 
 
 function saveActivity() {
+    showProcessing();
     getForm();
     var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
     var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(true));
-    $.ajax({
-        type: 'PATCH',
-        url: '/api/v1/VoteAct/'+id+'/?format=json',
-        contentType: 'application/json',
-        data: VoteAct,
-        success: function() {
-            $.ajax({
-                type: 'DELETE',
-                url: '/api/v1/Candidate/?format=json&activity_id='+id,
-                contentType: 'application/json',
-                success: function() {
-                    $.ajax({
-                        type: 'PATCH',
-                        url: '/api/v1/Candidate/?format=json',
-                        contentType: 'application/json',
-                        data: Candidates,
-                        success: function() {
-                            upload_act_img();
-                            setResult('活动暂存成功!');showResult();},
-                        error: function() {setResult('create candidates failed');showResult();}
-                    })
-                },
-                error: function() {setResult('delete candidate failed');showResult();}
-            })
-        },
-        error: function() {setResult('save VoteAct failed');showResult();}
-    })
+    if (id != -1) {
+        $.ajax({
+            type: 'PATCH',
+            url: '/api/v1/VoteAct/' + id + '/?format=json',
+            contentType: 'application/json',
+            data: VoteAct,
+            success: function () {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/api/v1/Candidate/?format=json&activity_id=' + id,
+                    contentType: 'application/json',
+                    success: function () {
+                        $.ajax({
+                            type: 'PATCH',
+                            url: '/api/v1/Candidate/?format=json',
+                            contentType: 'application/json',
+                            data: Candidates,
+                            success: function () {
+                                upload_act_img();
+                                setResult('活动暂存成功!');
+                                showResult();
+                            },
+                            error: function () {
+                                setResult('create candidates failed');
+                                showResult();
+                            }
+                        })
+                    },
+                    error: function () {
+                        setResult('delete candidate failed');
+                        showResult();
+                    }
+                })
+            },
+            error: function () {
+                setResult('save VoteAct failed');
+                showResult();
+            }
+        })
+    }
+    else {
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/VoteAct/?format=json',
+            contentType: 'application/json',
+            data: VoteAct,
+            success: function () {
+                id = - -arguments[2].getResponseHeader('Location').split('/').splice(-2,1).pop();
+                var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
+                $.ajax({
+                    type: 'PATCH',
+                    url: '/api/v1/Candidate/?format=json',
+                    contentType: 'application/json',
+                    data: Candidates,
+                    success: function () {
+                        upload_act_img();
+                        setResult('活动暂存成功!');
+                        showResult();
+                    },
+                    error: function () {
+                        setResult('create candidates failed');
+                        showResult();
+                    }
+                })
+            },
+            error: function () {
+                setResult('save VoteAct failed');
+                showResult();
+            }
+        })
+    }
 }
 
 function m_publishActivity() {
