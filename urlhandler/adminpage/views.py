@@ -692,6 +692,7 @@ def vote_download_excel(request, act_id):
         ws.write(i, 0, str(c.key))
         ws.write(i, 1, c.name)
         ws.write(i, 2, str(c.votes))
+        i = i+1
 
     wb.save(response)
     return response

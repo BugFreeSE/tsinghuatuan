@@ -114,7 +114,7 @@ var candidates = new Observer({
                     '</tr>' +
                     '<tr>' +
                     '<% for (j = 0; j < 5 && j < candidates.length - i * 5; j++) { %>' +
-                        '<td><input type="checkbox" name="voted"></td>' +
+                        '<td><input type="checkbox" name="voted" class="hidden"><span class="icon-unselected"></span></td>' +
                         '<td><div>编号&nbsp;<%=candidates[i * 5 + j].key%></div><div><%=candidates[i * 5 + j].name%></div></td>' +
                     '<% } %>' +
                     '</tr>' +
@@ -222,6 +222,27 @@ var candidates = new Observer({
                 }
             })(i))
         }
+
+        real_checkbox = $('[name=voted]');
+        fake_checkbox = $('.icon-unselected');
+
+        for (var i = 0; i < fake_checkbox.length; i++) {
+            $(fake_checkbox[i]).click((function (i){
+                return function (){
+                    if($(fake_checkbox[i]).attr("class") == "icon-unselected") {
+                        $(fake_checkbox[i]).addClass('icon-selected');
+                        $(fake_checkbox[i]).removeClass('icon-unselected');
+                        real_checkbox[i].checked = true;
+                    }else{
+                        $(fake_checkbox[i]).addClass('icon-unselected');
+                        $(fake_checkbox[i]).removeClass('icon-selected');
+                        real_checkbox[i].checked = false;
+                    }
+                }
+            })(i))
+        }
+
+
         $('#submit_button').click(function() {
             var data = {}
             var csrf_input = $(csrf);

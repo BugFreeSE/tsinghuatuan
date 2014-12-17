@@ -195,6 +195,7 @@ function actionButton(action){
     var href = '';
     var html = '';
     var point = '';
+    $('#showButton a').attr('onclick', '');
     switch(action){
         case 'begin':
             href = '/vote/begin/'+id+'/';
