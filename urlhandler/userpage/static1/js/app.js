@@ -35,7 +35,7 @@ var model = new Subject({
             console.log(data);
             model.notify();
         }
-		$.getJSON('/u/vote/info/' + vote_id, callback);
+		$.getJSON('/u/vote/info/' + vote_id + '/', callback);
 	}
 })
 
@@ -230,7 +230,7 @@ var candidates = new Observer({
             data[csrf_input.attr('name')] = csrf_input.val();
             var checks = $('[name=voted]');
             data['activity'] = vote_id
-            data['student_id'] = 2012
+            data['student_id'] = stu_id
             data['voted'] = []
             for (var i = 0; i < checks.length; i++) {
                 data['voted'].push(checks[i].checked)
