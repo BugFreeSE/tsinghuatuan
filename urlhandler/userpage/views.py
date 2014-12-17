@@ -209,8 +209,12 @@ def vote_activity_info(request, voteActId):
 def vote_submit(request):
     activity = VoteAct.objects.get(id=request.POST['activity'])
     stu_id = request.POST['student_id']
+
     if (activity.end_vote < datetime.datetime.now()):
         return HttpResponse(json.dumps("投票已结束"), content_type="application/json")
+
+    if (stu_id == -1):
+        return HttpResponse(json.dumps("请先绑定学号"), content_type="application/json")
 
     record = VoteLog.objects.filter(stu_id=stu_id, activity_id=activity.id)
     if len(record) > 0:
