@@ -37,9 +37,14 @@ window.addEventListener('load', function(){
         $.plot($('#result'), dataSet, options);
     }
     else {
+        //desc = $('.candidate_info')
         show_button = $('.show');
         hide_button = $('.hide');
         for (var i = 0; i < show_button.length; i++) {
+            /*if($(desc[i]).height() < 210){
+                $(show_button[i]).remove();
+                continue;
+            }*/
             $(show_button[i]).click((function (i){
                 return function (){
                     $('.candidate-li:eq(' + i + ')').removeClass('over_hidden');
@@ -50,6 +55,10 @@ window.addEventListener('load', function(){
             })(i))
         }
         for (var i = 0; i < hide_button.length; i++) {
+            /*if($(desc[i]).height() < 210){
+                $(hide_button[i]).remove();
+                continue;
+            }*/
             $(hide_button[i]).click((function (i){
                 return function (){
                     $('.candidate-li:eq(' + i + ')').addClass('over_hidden');

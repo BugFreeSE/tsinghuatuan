@@ -146,6 +146,10 @@ var candidates = new Observer({
                                     '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
                                 '</div>' +
                                 '<div></div>' +
+                                '<div class="show" style="margin-top: 45px;">' +
+                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
+                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
+                                '</div>' +
                             '</td>' +
                             '<td class="candidate_info content_top">' +
                                 '<p><%=candidates[i].description %></p>' +
@@ -163,15 +167,15 @@ var candidates = new Observer({
                                     '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
                                 '</div>' +
                                 '<div></div>' +
+                                '<div class="show" style="margin-top: 45px;">' +
+                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
+                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
+                                '</div>' +
                             '</td>' +
                             '<% } %>' +
                         '</tr>' +
                         '<tr>' +
                             '<td style="text-align: center" colspan="2">' +
-                                '<div class="show">' +
-                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
-                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
-                                '</div>' +
                                 '<div class="hide hidden">' +
                                     '<span class="icon-hide"></span>' +
                                     '<span style="font-size:12px;">&nbsp;收起</span>' +
