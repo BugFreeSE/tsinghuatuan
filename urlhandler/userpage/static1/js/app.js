@@ -35,7 +35,7 @@ var model = new Subject({
             console.log(data);
             model.notify();
         }
-		$.getJSON('/u/vote/info/' + vote_id, callback);
+		$.getJSON('/u/vote/info/' + vote_id + '/', callback);
 	}
 })
 

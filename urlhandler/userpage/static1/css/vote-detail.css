@@ -239,6 +239,22 @@ table td strong {
     display: inline-block;
 }
 
+.icon-unselected{
+    width:10px;
+    height:10px;
+    background-image: url("../img/unselected.gif");
+    background-size: 10px 10px;
+    display: inline-block;
+}
+
+.icon-selected{
+    width:10px;
+    height:10px;
+    background-image: url("../img/selected.gif");
+    background-size: 10px 10px;
+    display: inline-block;
+}
+
 #vote_table{
     margin: 0 auto;
     text-align: center;
@@ -259,7 +275,9 @@ table td strong {
     width: 40px;
     margin: 0 auto;
     text-align: center;
-    border-color: #d9d9d9;
+    border-color: lightskyblue;
     border-width: 1px;
     border-style: solid;
+    background-color: white;
+    border-radius: 5px;
 }
