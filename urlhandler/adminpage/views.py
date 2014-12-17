@@ -674,7 +674,7 @@ def vote_download_excel(request, act_id):
         return HttpResponseRedirect(s_reverse_admin_home())
     vote_act = VoteAct.objects.get(id=int(act_id))
     response = HttpResponse(mimetype="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename='+vote_act.name+'.xls'
+    response['Content-Disposition'] = 'attachment; filename='+'result.xls'
 
     wb = xlwt.Workbook()
     ws = wb.add_sheet('vote_result')
