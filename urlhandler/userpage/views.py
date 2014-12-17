@@ -171,8 +171,8 @@ def details_view(request, activityid):
     return render_to_response('activitydetails.html', variables)
 
 #modified by YY
-def vote_details_view(request, voteActId):
-    variables = RequestContext(request, {'vote_id': voteActId })
+def vote_details_view(request, voteActId, stu_id):
+    variables = RequestContext(request, {'vote_id': voteActId , 'stu_id': stu_id})
     return render_to_response('votedetails.html', variables)
 
 #modified by WYW
