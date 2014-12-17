@@ -26,7 +26,6 @@ from django.utils.http import urlquote
 from django.utils.encoding import smart_str
 import sys
 from urlhandler.settings import MEDIA_ROOT
-import ImageFile
 import time
 
 
