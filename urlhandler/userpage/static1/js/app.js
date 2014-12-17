@@ -76,8 +76,8 @@ var homepage = new Observer({
             '<!--信息部分2：投票形式、活动代码、投票方式-->' +
             '<div class="top_border">' +
                 '<div><strong class="highlight">投票形式&nbsp;&nbsp;</strong> <span>限选<%=config%>人</span></div>' +
-                '<div><strong class="highlight">活动代码&nbsp;&nbsp;</strong> <span>嘉宾</span></div>' +
-                '<div><strong class="highlight">投票方式&nbsp;&nbsp;</strong> <span>微信回复“投票 活动代码 候选人编号列表”。例如“投票 嘉宾 1 3”</span></div>' +
+                '<div><strong class="highlight">活动代码&nbsp;&nbsp;</strong> <span><%=key%></span></div>' +
+                '<div><strong class="highlight">投票方式&nbsp;&nbsp;</strong> <span>微信回复“投票 活动代码 候选人编号列表”。例如“投票 <%=key%> 1 3”</span></div>' +
             '</div>' +
             '<!--信息部分3：活动介绍-->' +
             '<div class="top_border">' +
