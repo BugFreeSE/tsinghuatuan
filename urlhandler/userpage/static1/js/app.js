@@ -102,6 +102,7 @@ var candidates = new Observer({
             '<div id="vote_area">' +
                 '<div style="text-align:center;">' +
                     '<div class="highlight" style="font-size:x-large;">投票</div>' +
+                    '<div>限选<%=config%>人</div>' +
                 '</div>' +
                 '<table id="vote_table">' +
                 '<% for (i = 0; i < parseInt((candidates.length - 1) / 5) + 1; i++) { %>' +
