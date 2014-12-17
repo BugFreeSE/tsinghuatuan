@@ -132,6 +132,10 @@ a.show-more, a.show-more:visited{
     border-radius:20px;
 }
 
+#avatar-list span + span{
+    margin-left: 10px;
+}
+
 .S_line1 {
     border-left-width: 1px;
     border-color: #d9d9d9;
@@ -186,7 +190,7 @@ table td strong {
 }
 
 .poster_container{
-    height: 250px;
+    max-height: 250px;
     display: block;
     overflow: hidden;
 }
