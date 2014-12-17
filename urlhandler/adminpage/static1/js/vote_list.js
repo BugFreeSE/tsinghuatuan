@@ -164,6 +164,9 @@ var tdMap = {
         return str;
     },
     'time': function(act, key) {
+        if (!act.start_time || !act.end_time){
+            return '时间未设置完整';
+        }
         return smartTimeMap[key](act);
     },
 //    'operation_links': function(act, key) {
@@ -341,10 +344,17 @@ function fromAPIFormat(data) {
         vote_act.status = act.status;
         vote_act.name = act.name;
         vote_act.description = act.description;
-        act.begin_vote = act.begin_vote.substring(0,10) + " " + act.begin_vote.substring(11);
-        act.end_vote = act.end_vote.substring(0,10) + " " + act.end_vote.substring(11);
-        vote_act.start_time = new Date(act.begin_vote.replace(/-/g,"/"));
-        vote_act.end_time = new Date(act.end_vote.replace(/-/g,"/"));
+        if (act.begin_vote){
+            act.begin_vote = act.begin_vote.substring(0,10) + " " + act.begin_vote.substring(11);
+            vote_act.start_time = new Date(act.begin_vote.replace(/-/g,"/"));
+        }
+        if (act.end_vote){
+            act.end_vote = act.end_vote.substring(0,10) + " " + act.end_vote.substring(11);
+            vote_act.end_time = new Date(act.end_vote.replace(/-/g,"/"));
+        }
+
+
+
         vote_act.id = act.id;
         result.push(vote_act);
     }
