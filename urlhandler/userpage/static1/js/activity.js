@@ -3,38 +3,6 @@ var debugView = false
 window.addEventListener('load', function(){
     if (!debugView) {
         model.fetch();
-        dataSet = [
-            {label: "王宁晨", data: 180, color:"#3D7D53"},
-            {label: "王宁晨", data: 1000, color:"#97CEA2"},
-            {label: "王宁晨", data: 150, color:"#EDF1B0"},
-            {label: "王宁晨", data: 120, color:"#CDDF74"},
-            {label: "王宁晨", data: 340, color:"#36B596"}
-        ];
-        options = {
-            series: {
-                pie: {
-                    show: true,
-                    radius: 0.8,
-                    formatter: function (label, series) {
-                        return '<div style="border:1px solid grey;font-size:8pt;text-align:center;padding:5px;color:white;">' +
-                        label + ' : ' +
-                        Math.round(series.percent) +
-                        '%</div>';
-                    },
-                    background: {
-                        opacity: 0.8,
-                        color: '#000'
-                    },
-                    label: {
-                        show: true
-                    }
-                }
-            },
-            legend: {
-                show: false,
-            }
-        };
-        $.plot($('#result'), dataSet, options);
     }
     else {
 

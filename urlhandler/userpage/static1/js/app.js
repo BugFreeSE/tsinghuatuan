@@ -41,156 +41,154 @@ var model = new Subject({
 
 var homepage = new Observer({
     template:
-        '<div id="home" style="font-size:14px;">' +
-            '<div class="poster_container">' +
-                '<img id="poster" style="width:100%;" src="<%=pic%>"/>' +
+        '<div class="poster_container">' +
+            '<img id="poster" style="width:100%;" src="<%=pic%>"/>' +
+        '</div>' +
+            '<!--信息部分1：活动标题、时间、候选人头像列表、候选人人数、参与者人数-->' +
+        '<div style="text-align: center; padding: 10px;">' +
+            '<div style="font-size:x-large; font-weight:bold;"><%=name%></div>' +
+            '<div style="font-size:12px;"><%=start%> - <%=end%></div>' +
+            '<div><strong class="highlight"><%=status%></strong></div>' +
+            '<div id="avatar-list" style="margin: 10px 10px;">' +
+                '<% for (i = 0; i < candidates.length && i < 5; i++) { %>' +
+                    '<span><img class="avatar shadow" src="<%=candidates[i].pic%>" /></span>' +
+                '<% } %>' +
             '</div>' +
-                '<!--信息部分1：活动标题、时间、候选人头像列表、候选人人数、参与者人数-->' +
-            '<div style="text-align: center; padding: 10px;">' +
-                '<div style="font-size:x-large; font-weight:bold;"><%=name%></div>' +
-                '<div style="font-size:12px;"><%=start%> - <%=end%></div>' +
-                '<div><strong class="highlight"><%=status%></strong></div>' +
-                '<div id="avatar-list" style="margin: 10px 10px;">' +
-                    '<% for (i = 0; i < candidates.length && i < 5; i++) { %>' +
-                        '<span><img class="avatar shadow" src="<%=candidates[i].pic%>" /></span>' +
-                    '<% } %>' +
-                '</div>' +
-                '<table class="tb_counter" cellpadding="0" cellspacing="0">' +
-                    '<tbody>' +
-                        '<tr>' +
-                            '<td>' +
-                            '</td>' +
-                            '<td class="S_line1">' +
-                                '<strong><%=candidate_num%></strong>' +
-                                '<span class="highlight">候选人</span>' +
-                            '</td>' +
-                            '<td class="S_line1" style="border-left-style: solid;">' +
-                                '<strong><%=participant_num%></strong>' +
-                                '<span class="highlight">参与者</span>' +
-                            '</td>' +
-                            '<td>' +
-                            '</td>' +
-                    '</tbody>' +
-                '</table>' +
-            '</div>' +
-            '<!--信息部分2：投票形式、活动代码、投票方式-->' +
-            '<div class="top_border">' +
-                '<div><strong class="highlight">投票形式&nbsp;&nbsp;</strong> <span>限选<%=config%>人</span></div>' +
-                '<div><strong class="highlight">活动代码&nbsp;&nbsp;</strong> <span><%=key%></span></div>' +
-                '<div><strong class="highlight">投票方式&nbsp;&nbsp;</strong> <span>微信回复“投票 活动代码 候选人编号列表”。例如“投票 <%=key%> 1 3”</span></div>' +
-            '</div>' +
-            '<!--信息部分3：活动介绍-->' +
-            '<div class="top_border">' +
-                '<div><strong class="highlight">活动介绍</strong></div>' +
-                '<span>你想在校歌赛上看到谁？快来投票吧！</span>' +
-            '</div>' +
-            '<!--信息部分4：抽奖信息-->' +
-            '<div class="top_border">' +
-                '<div><strong class="highlight">抽奖信息</strong></div>' +
-                '<span>活动结束后将从参与者中抽取3名幸运观众，获得神秘礼品一份~</span>' +
-            '</div>' +
-        '</div>',
+            '<table class="tb_counter" cellpadding="0" cellspacing="0">' +
+                '<tbody>' +
+                    '<tr>' +
+                        '<td>' +
+                        '</td>' +
+                        '<td class="S_line1">' +
+                            '<strong><%=candidate_num%></strong>' +
+                            '<span class="highlight">候选人</span>' +
+                        '</td>' +
+                        '<td class="S_line1" style="border-left-style: solid;">' +
+                            '<strong><%=participant_num%></strong>' +
+                            '<span class="highlight">参与者</span>' +
+                        '</td>' +
+                        '<td>' +
+                        '</td>' +
+                '</tbody>' +
+            '</table>' +
+        '</div>' +
+        '<!--信息部分2：投票形式、活动代码、投票方式-->' +
+        '<div class="top_border">' +
+            '<div><strong class="highlight">投票形式&nbsp;&nbsp;</strong> <span>限选<%=config%>人</span></div>' +
+            '<div><strong class="highlight">活动代码&nbsp;&nbsp;</strong> <span><%=key%></span></div>' +
+            '<div><strong class="highlight">投票方式&nbsp;&nbsp;</strong> <span>微信回复“投票 活动代码 候选人编号列表”。例如“投票 <%=key%> 1 3”</span></div>' +
+        '</div>' +
+        '<!--信息部分3：活动介绍-->' +
+        '<div class="top_border">' +
+            '<div><strong class="highlight">活动介绍</strong></div>' +
+            '<span><%=description%></span>' +
+        '</div>'/* +
+        '<!--信息部分4：抽奖信息-->' +
+        '<div class="top_border">' +
+            '<div><strong class="highlight">抽奖信息</strong></div>' +
+            '<span>活动结束后将从参与者中抽取3名幸运观众，获得神秘礼品一份~</span>' +
+        '</div>'*/,
     target: '#home',
     update: function(model) {
         var dest = tpl(this.template, model.data);
-        $(this.target).replaceWith(dest);
+        $(this.target).html(dest);
     }
 })
 
 var candidates = new Observer({
     template:
-        '<div id="candidates" style="font-size:14px;">' +
-            '<form id="vote" style="font-size:10px">' +
-                '<div id="vote_area">' +
-                    '<div style="text-align:center;">' +
-                        '<div class="highlight" style="font-size:x-large;">投票</div>' +
-                    '</div>' +
-                    '<table id="vote_table">' + 
-                    '<% for (i = 0; i < parseInt((candidates.length - 1) / 5) + 1; i++) { %>' +
-                        '<tr>' +
-                        '<% for (j = 0; j < 5 && j < candidates.length - i * 5; j++) { %>' +
-                            '<td class="table_avatar" colspan="2">' +
-                                '<img class="avatar shadow" src="<%=candidates[i * 5 + j].pic%>" />' +
-                            '</td>' +
-                        '<% } %>' +
-                        '</tr>' +
-                        '<tr>' +
-                        '<% for (j = 0; j < 5 && j < candidates.length - i * 5; j++) { %>' +
-                            '<td><input type="checkbox" name="voted"></td>' +
-                            '<td><div>编号&nbsp;<%=candidates[i * 5 + j].key%></div><div><%=candidates[i * 5 + j].name%></div></td>' +
-                        '<% } %>' +
-                        '</tr>' +
+        '<% if (status == "正在进行") { %>' +
+        '<form id="vote" style="font-size:10px">' +
+            '<div id="vote_area">' +
+                '<div style="text-align:center;">' +
+                    '<div class="highlight" style="font-size:x-large;">投票</div>' +
+                '</div>' +
+                '<table id="vote_table">' +
+                '<% for (i = 0; i < parseInt((candidates.length - 1) / 5) + 1; i++) { %>' +
+                    '<tr>' +
+                    '<% for (j = 0; j < 5 && j < candidates.length - i * 5; j++) { %>' +
+                        '<td class="table_avatar" colspan="2">' +
+                            '<img class="avatar shadow" src="<%=candidates[i * 5 + j].pic%>" />' +
+                        '</td>' +
                     '<% } %>' +
-                    '</table>' +
-                '</div>' +
-                '<div style="margin-top: 10px; margin-bottom: 20px;">' +
-                    '<div id="submit_button">提交</div>' +
-                    '<button class="hidden">提交</button>' +
-                '</div>' +
-            '</form>' +  
-            '<div class="top_border" style="text-align: center;">' +
-                '<div class="highlight" style="font-size:x-large; font-weight:bold;">候选人信息</div>' +
-            '</div>' +
-            '<ul class="candidate-list">' +
-                '<% for (i = 0; i < candidates.length; i++) { %>' +
-                '<li class="over_hidden candidate-li">' +
-                    '<table class="one_candidate">' +
-                        '<tr>' +
-                            '<% if (i % 2 == 0) { %>' +
-                            '<td class="candidate_img_container content_top">' +
-                                '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
-                                '<div style="font-size:16px">' +
-                                    '<span class="highlight">编号&nbsp;<%=candidates[i].key%></span>' +
-                                '</div>' +
-                                '<div style="font-size:16px">' +
-                                    '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
-                                '</div>' +
-                                '<div></div>' +
-                                '<div class="show" style="margin-top: 45px;">' +
-                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
-                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
-                                '</div>' +
-                            '</td>' +
-                            '<td class="candidate_info content_top">' +
-                                '<p><%=candidates[i].description %></p>' +
-                            '</td>' +
-                            '<% } else { %>' +
-                            '<td class="candidate_info content_top">' +
-                                '<p><%=candidates[i].description %></p>' +
-                            '</td>' +
-                            '<td class="candidate_img_container content_top">' +
-                                '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
-                                '<div style="font-size:16px">' +
-                                    '<span class="highlight">编号&nbsp;<%=candidates[i].key%></span>' +
-                                '</div>' +
-                                '<div style="font-size:16px">' +
-                                    '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
-                                '</div>' +
-                                '<div></div>' +
-                                '<div class="show" style="margin-top: 45px;">' +
-                                    '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
-                                    '<span style="font-size:12px;">&nbsp;展开</span>' +
-                                '</div>' +
-                            '</td>' +
-                            '<% } %>' +
-                        '</tr>' +
-                        '<tr>' +
-                            '<td style="text-align: center" colspan="2">' +
-                                '<div class="hide hidden">' +
-                                    '<span class="icon-hide"></span>' +
-                                    '<span style="font-size:12px;">&nbsp;收起</span>' +
-                                '</div>' +
-                            '</td>' +
-                        '</tr>' +
-                    '</table>' +
-                '</li>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<% for (j = 0; j < 5 && j < candidates.length - i * 5; j++) { %>' +
+                        '<td><input type="checkbox" name="voted"></td>' +
+                        '<td><div>编号&nbsp;<%=candidates[i * 5 + j].key%></div><div><%=candidates[i * 5 + j].name%></div></td>' +
+                    '<% } %>' +
+                    '</tr>' +
                 '<% } %>' +
-            '</ul>' +
-        '</div>',
+                '</table>' +
+            '</div>' +
+            '<div style="margin-top: 10px; margin-bottom: 20px;">' +
+                '<div id="submit_button">提交</div>' +
+                '<button class="hidden">提交</button>' +
+            '</div>' +
+        '</form>' +
+         '<% } %>' +
+        '<div class="top_border" style="text-align: center;">' +
+            '<div class="highlight" style="font-size:x-large; font-weight:bold;">候选人信息</div>' +
+        '</div>' +
+        '<ul class="candidate-list">' +
+            '<% for (i = 0; i < candidates.length; i++) { %>' +
+            '<li class="over_hidden candidate-li">' +
+                '<table class="one_candidate">' +
+                    '<tr>' +
+                        '<% if (i % 2 == 0) { %>' +
+                        '<td class="candidate_img_container content_top">' +
+                            '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
+                            '<div style="font-size:16px">' +
+                                '<span class="highlight">编号&nbsp;<%=candidates[i].key%></span>' +
+                            '</div>' +
+                            '<div style="font-size:16px">' +
+                                '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
+                            '</div>' +
+                            '<div></div>' +
+                            '<div class="show" style="margin-top: 45px;">' +
+                                '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
+                                '<span style="font-size:12px;">&nbsp;展开</span>' +
+                            '</div>' +
+                        '</td>' +
+                        '<td class="candidate_info content_top">' +
+                            '<p><%=candidates[i].description %></p>' +
+                        '</td>' +
+                        '<% } else { %>' +
+                        '<td class="candidate_info content_top">' +
+                            '<p><%=candidates[i].description %></p>' +
+                        '</td>' +
+                        '<td class="candidate_img_container content_top">' +
+                            '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
+                            '<div style="font-size:16px">' +
+                                '<span class="highlight">编号&nbsp;<%=candidates[i].key%></span>' +
+                            '</div>' +
+                            '<div style="font-size:16px">' +
+                                '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
+                            '</div>' +
+                            '<div></div>' +
+                            '<div class="show" style="margin-top: 45px;">' +
+                                '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
+                                '<span style="font-size:12px;">&nbsp;展开</span>' +
+                            '</div>' +
+                        '</td>' +
+                        '<% } %>' +
+                    '</tr>' +
+                    '<tr>' +
+                        '<td style="text-align: center" colspan="2">' +
+                            '<div class="hide hidden">' +
+                                '<span class="icon-hide"></span>' +
+                                '<span style="font-size:12px;">&nbsp;收起</span>' +
+                            '</div>' +
+                        '</td>' +
+                    '</tr>' +
+                '</table>' +
+            '</li>' +
+            '<% } %>' +
+        '</ul>',
     target: '#candidates',
     update: function(model) {
         var dest = tpl(this.template, model.data);
-        $(this.target).replaceWith(dest);
+        $(this.target).html(dest);
         desc = $('.candidate_info');
         show_button = $('.show');
         hide_button = $('.hide');
@@ -240,8 +238,52 @@ var candidates = new Observer({
     }
 })
 
+var statistics = new Observer({
+    update: function(model) {
+        dataSet = [];
+        for (var i = 0; i < model.data.candidates.length; i++) {
+            dataSet.push({label: model.data.candidates[i].name, data: model.data.candidates[i].vote});
+        }
+        options = {
+            series: {
+                pie: {
+                    show: true,
+                    radius: 0.8,
+                    formatter: function (label, series) {
+                        return '<div style="border:1px solid grey;font-size:8pt;text-align:center;padding:5px;color:white;">' +
+                        label + ' : ' +
+                        Math.round(series.percent) +
+                        '%</div>';
+                    },
+                    background: {
+                        opacity: 0.8,
+                        color: '#000'
+                    },
+                    label: {
+                        show: true
+                    }
+                }
+            },
+            legend: {
+                show: false
+            },
+            colors: [
+                "#3D7D53", "#97CEA2", "#EDF1B0", "#CDDF74", "#36B596"
+            ]
+        };
+        if (model.data.status == "正在进行") {
+            var chart = $('<div id="chart" style="width:100%; height: 300px"></div>');
+            $('#statistics').children('.loading').replaceWith(chart);
+            $.plot(chart, dataSet, options);
+        }
+        else {
+            $('#statistics').children('.loading').text('活动尚未开始');
+        }
+    }
+})
 model.attachObserver(homepage);
 model.attachObserver(candidates);
+model.attachObserver(statistics);
 /*
 function View(options) {
 	this.template = options.template;
