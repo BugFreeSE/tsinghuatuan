@@ -67,6 +67,19 @@ def validate_through_igeek(secret):
     else:
         return 'Error'
 
+def validate_through_learn(userid, userpass):
+    req_data = urllib.urlencode({'userid': userid, 'userpass': userpass, 'submit1': u'登录'.encode('gb2312')})
+    request_url = 'https://learn.tsinghua.edu.cn/MultiLanguage/lesson/teacher/loginteacher.jsp'
+    req = urllib2.Request(url=request_url, data=req_data)
+    res_data = urllib2.urlopen(req)
+    try:
+        res = res_data.read()
+    except:
+        return 'Error'
+    if 'loginteacher_action.jsp' in res:
+        return 'Accepted'
+    else:
+        return 'Rejected'
 
 # METHOD 2 is not valid, because student.tsinghua has not linked to Internet
 # METHOD 2: student.tsinghua
@@ -86,7 +99,8 @@ def validate_post(request):
     if not userid.isdigit():
         raise Http404
     secret = request.POST['secret']
-    validate_result = validate_through_igeek(secret)
+    #validate_result = validate_through_igeek(secret)
+    validate_result = validate_through_learn(userid, request.POST["password"])
     if validate_result == 'Accepted':
         openid = request.POST['openid']
         try:
