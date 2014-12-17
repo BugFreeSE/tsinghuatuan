@@ -867,12 +867,12 @@ function move_pics_to_form(){
 
 function initializePage(){
     bind_validation();
+    editNav();
 //    makeImgFormAjax();
 }
 
-function makeImgFormAjax(){
-    $('#act_img_form').ajaxForm(function() {
-            });
+function editNav(){
+    $('ul.navbar-nav li a[href="/list/"]').attr('href', '/vote/list/');
 }
 
 function bind_validation(){
