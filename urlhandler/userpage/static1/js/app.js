@@ -134,13 +134,14 @@ var candidates = new Observer({
                     '<tr>' +
                         '<% if (i % 2 == 0) { %>' +
                         '<td class="candidate_img_container content_top">' +
+                            '<div class="click_area">'+
                             '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
-
                             '<div style="font-size:16px">' +
                                 '<span class="highlight">编号&nbsp;<%=candidates[i].key%></span>' +
                             '</div>' +
                             '<div style="font-size:16px">' +
                                 '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
+                            '</div>' +
                             '</div>' +
                             '<div class="icon-unselected"></div>'+
                             '<div class="show" style="margin-top: 25px;">' +
@@ -156,6 +157,7 @@ var candidates = new Observer({
                             '<p><%=candidates[i].description %></p>' +
                         '</td>' +
                         '<td class="candidate_img_container content_top">' +
+                            '<div class="click_area">'+
                             '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
 
                             '<div style="font-size:16px">' +
@@ -163,6 +165,7 @@ var candidates = new Observer({
                             '</div>' +
                             '<div style="font-size:16px">' +
                                 '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
+                            '</div>' +
                             '</div>' +
                             '<div class="icon-unselected"></div>' +
                             '<div class="show" style="margin-top: 25px;">' +
@@ -229,9 +232,23 @@ var candidates = new Observer({
 
         real_checkbox = $('[name=voted]');
         fake_checkbox = $('.icon-unselected');
+        click_areas = $('.click_area');
 
         for (var i = 0; i < fake_checkbox.length; i++) {
             $(fake_checkbox[i]).click((function (i){
+                return function (){
+                    if($(fake_checkbox[i]).attr("class") == "icon-unselected") {
+                        $(fake_checkbox[i]).addClass('icon-selected');
+                        $(fake_checkbox[i]).removeClass('icon-unselected');
+                        real_checkbox[i].checked = true;
+                    }else{
+                        $(fake_checkbox[i]).addClass('icon-unselected');
+                        $(fake_checkbox[i]).removeClass('icon-selected');
+                        real_checkbox[i].checked = false;
+                    }
+                }
+            })(i))
+            $(click_areas[i]).click((function (i){
                 return function (){
                     if($(fake_checkbox[i]).attr("class") == "icon-unselected") {
                         $(fake_checkbox[i]).addClass('icon-selected');
