@@ -25,5 +25,5 @@ def s_reverse_activity_menu(actid):
 def s_reverse_setting(openid):
     return SITE_DOMAIN + reverse('userpage.views.setting_view',kwargs={'openid': openid})
 
-def s_reverse_vote_detail(vote_act_id, stu_id):
-    return SITE_DOMAIN + reverse('userpage.views.vote_details_view', kwargs={'voteActId': vote_act_id, 'stu_id': stu_id})
+def s_reverse_vote_detail(vote_act_id, openid):
+    return SITE_DOMAIN + reverse('userpage.views.vote_details_view', kwargs={'voteActId': vote_act_id, 'openid': openid})

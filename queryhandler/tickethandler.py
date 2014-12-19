@@ -569,10 +569,6 @@ def check_vote_activities(msg):
 def response_vote_activities(msg):
     fromuser = get_msg_from(msg)
     user = get_user(fromuser)
-    if user is None:
-        stu_id = -1
-    else:
-        stu_id = user.stu_id
     now = datetime.datetime.fromtimestamp(get_msg_create_time(msg))
     vote_published = VoteAct.objects.filter(status=1).order_by('begin_vote')
     votes = list(vote_published)
@@ -590,14 +586,14 @@ def response_vote_activities(msg):
             description=get_text_activity_description(vote, 100),
             #test
             pic_url="http://g.hiphotos.baidu.com/image/pic/item/d6ca7bcb0a46f21f68b9075ef4246b600c33ae2a.jpg",
-            url=s_reverse_vote_detail(vote.id, stu_id)
+            url=s_reverse_vote_detail(vote.id, user.weixin_id)
         ))
     items = []
     for vote in votes:
         items.append(get_item_dict(
             title=get_text_vote_title_with_status(vote, now),
             pic_url="http://g.hiphotos.baidu.com/image/pic/item/d6ca7bcb0a46f21f68b9075ef4246b600c33ae2a.jpg",
-            url=s_reverse_vote_detail(vote.id, stu_id)
+            url=s_reverse_vote_detail(vote.id, user.weixin_id)
         ))
         if len(items) >= 10:
             break
