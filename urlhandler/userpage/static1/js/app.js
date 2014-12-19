@@ -294,10 +294,14 @@ var candidates = new Observer({
 
 var statistics = new Observer({
     update: function(model) {
-        dataSet = [];
+        var dataSet = [];
+        var keySet = [];
+        var colors = ['#F6BD0F', '#AFD8F8', '#8BBA00', '#FF8E46', '#008E8E', '#D64646', '#8E468E'];
         for (var i = 0; i < model.data.candidates.length; i++) {
-            dataSet.push({label: model.data.candidates[i].name, data: model.data.candidates[i].vote});
+            keySet.push(model.data.candidates[i].name);
+            dataSet.push({y: model.data.candidates[i].vote, color: colors[i % colors.length]});
         }
+        /*
         options = {
             series: {
                 pie: {
@@ -324,11 +328,60 @@ var statistics = new Observer({
             colors: [
                 "#3D7D53", "#97CEA2", "#EDF1B0", "#CDDF74", "#36B596"
             ]
-        };
-        if (model.data.status != "即将开始") {
+        };*/
+        if (model.data.status == "正在进行") {
             var chart = $('<div id="chart" style="width:100%; height: 300px"></div>');
             $('#statistics').children('.loading').replaceWith(chart);
-            $.plot(chart, dataSet, options);
+            $('#chart').highcharts({
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: false
+                },
+                xAxis: {
+                    categories: keySet,
+                    title: {
+                        text: null
+                    },
+                    gridLineWidth: 0,
+                    lineWidth: 0,
+                    tickLength: 0
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: null,
+                        align: 'high'
+                    },
+                    labels: {
+                        enabled: false
+                    },
+                    gridLineWidth: 0,
+                    lineWidth: 0,
+                    tickLength: 0
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Year 1800',
+                    data: dataSet
+                }]
+            });
         }
         else {
             $('#statistics').children('.loading').text('活动尚未开始');
