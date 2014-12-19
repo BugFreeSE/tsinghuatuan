@@ -302,3 +302,8 @@ table td strong {
 .fake_checkbox{
     margin: -10px auto 0 auto;
 }
+
+.small_highlight{
+    font-weight: 900;
+    color:lightcoral;
+}

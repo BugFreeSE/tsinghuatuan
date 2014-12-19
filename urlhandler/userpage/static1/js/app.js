@@ -76,7 +76,7 @@ var homepage = new Observer({
         '<div class="top_border">' +
             '<div><strong class="highlight">投票形式&nbsp;&nbsp;</strong> <span>限选<%=config%>人</span></div>' +
             '<div><strong class="highlight">活动代码&nbsp;&nbsp;</strong> <span><%=key%></span></div>' +
-            '<div><strong class="highlight">投票方式&nbsp;&nbsp;</strong> <span>微信回复“投票 活动代码 候选人编号列表”。例如“投票 <%=key%> 1 3”</span></div>' +
+            '<div><strong class="highlight">投票方式&nbsp;&nbsp;</strong> <span>微信回复“投票 活动代码 候选人编号列表”，例如“投票 <%=key%> 1 3”。也可以在“候选人”标签页下直接投票。</span></div>' +
         '</div>' +
         '<!--信息部分3：活动介绍-->' +
         '<div class="top_border">' +
@@ -127,6 +127,12 @@ var candidates = new Observer({
         '<div class="top_border" style="text-align: center;">' +
             '<div class="highlight" style="font-size:x-large; font-weight:bold;">候选人信息</div>' +
         '</div>' +
+        '<% if (status == "正在进行") { %>' +
+        '<div style="margin: 0 20px 20px 20px; font-size:12px;">'+
+            '<p>现在是投票期间，您可以点击候选人头像或其下方选框选中候选人，然后点击提交按钮给他/她（们）投票。您也可以通过发送微信消息投票，消息格式参见“主页”标签页的说明。</p>'+
+            '<p>注意本次活动<span class="small_highlight">限选<%=config%>人</span>。每个学号只能投<span class="small_highlight">一次</span>票哦~</p>'+
+        '</div>' +
+        '<% } %>' +
         '<ul class="candidate-list">' +
             '<% for (i = 0; i < candidates.length; i++) { %>' +
             '<li class="over_hidden candidate-li">' +
@@ -143,7 +149,9 @@ var candidates = new Observer({
                                 '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
                             '</div>' +
                             '</div>' +
+                            '<% if (status == "正在进行") { %>' +
                             '<div class="icon-unselected"></div>'+
+                            '<% } %>' +
                             '<div class="show" style="margin-top: 25px;">' +
                                 '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
                                 '<span style="font-size:12px;">&nbsp;展开</span>' +
@@ -167,7 +175,9 @@ var candidates = new Observer({
                                 '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
                             '</div>' +
                             '</div>' +
+                            '<% if (status == "正在进行") { %>' +
                             '<div class="icon-unselected"></div>' +
+                            '<% } %>' +
                             '<div class="show" style="margin-top: 25px;">' +
                                 '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
                                 '<span style="font-size:12px;">&nbsp;展开</span>' +
@@ -187,10 +197,12 @@ var candidates = new Observer({
             '</li>' +
             '<% } %>' +
         '</ul>'+
+        '<% if (status == "正在进行") { %>' +
         '<div style="margin: 20px;">' +
                 '<div id="submit_button">提交</div>' +
                 '<button class="hidden">提交</button>' +
-        '</div>'
+        '</div>' +
+        '<% } %>'
     ,
     target: '#candidates',
     update: function(model) {
@@ -304,6 +316,34 @@ var statistics = new Observer({
             keySet.push(model.data.candidates[i].name);
             dataSet.push({y: model.data.candidates[i].vote, color: colors[i % colors.length]});
         }
+        /*
+        options = {
+            series: {
+                pie: {
+                    show: true,
+                    radius: 0.8,
+                    formatter: function (label, series) {
+                        return '<div style="border:1px solid grey;font-size:8pt;text-align:center;padding:5px;color:white;">' +
+                        label + ' : ' +
+                        Math.round(series.percent) +
+                        '%</div>';
+                    },
+                    background: {
+                        opacity: 0.8,
+                        color: '#000'
+                    },
+                    label: {
+                        show: true
+                    }
+                }
+            },
+            legend: {
+                show: false
+            },
+            colors: [
+                "#3D7D53", "#97CEA2", "#EDF1B0", "#CDDF74", "#36B596"
+            ]
+        };*/
         if (model.data.status == "正在进行") {
             var chart = $('<div id="chart" style="width:100%; height: 300px"></div>');
             $('#statistics').children('.loading').replaceWith(chart);
