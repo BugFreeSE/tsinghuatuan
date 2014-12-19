@@ -185,7 +185,12 @@ def details_view(request, activityid):
     return render_to_response('activitydetails.html', variables)
 
 #modified by YY
-def vote_details_view(request, voteActId, stu_id):
+def vote_details_view(request, voteActId, openid):
+    user = User.objects.filter(weixin_id=openid, status=1)
+    if user.exists():
+        stu_id = user[0].stu_id
+    else:
+        stu_id = -1
     variables = RequestContext(request, {'vote_id': voteActId , 'stu_id': stu_id})
     return render_to_response('votedetails.html', variables)
 

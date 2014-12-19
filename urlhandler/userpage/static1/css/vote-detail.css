@@ -225,6 +225,9 @@ table td strong {
     height: 80px;
     border-radius: 40px;
     margin-bottom: 10px;
+    /*border-color: lightgreen;
+    border-width: 2px;
+    border-style: solid;*/
 }
 
 .icon-show {
@@ -244,19 +247,21 @@ table td strong {
 }
 
 .icon-unselected{
-    width:10px;
-    height:10px;
+    margin: 5px auto;
+    width:15px;
+    height:15px;
     background-image: url("../img/unselected.gif");
-    background-size: 10px 10px;
-    display: inline-block;
+    background-size: 15px 15px;
+    /*display: inline-block;*/
 }
 
 .icon-selected{
-    width:10px;
-    height:10px;
+    margin: 5px auto;
+    width:15px;
+    height:15px;
     background-image: url("../img/selected.gif");
-    background-size: 10px 10px;
-    display: inline-block;
+    background-size: 15px 15px;
+    /*display: inline-block;*/
 }
 
 #vote_table{
@@ -292,4 +297,8 @@ table td strong {
     text-align: center;
     width: 100%;
     font-size: 14px;
+}
+
+.fake_checkbox{
+    margin: -10px auto 0 auto;
 }
