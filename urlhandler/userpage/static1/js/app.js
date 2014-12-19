@@ -311,3 +311,7 @@ window.addEventListener('load', function() {
     model.fetch();
     var tab = new Navigation('.ui-tab-nav', '.ui-tab-content');
 })
+
+$('body').on('touchmove', function (event) {
+    event.preventDefault();
+});

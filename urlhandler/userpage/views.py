@@ -240,7 +240,7 @@ def vote_submit(request):
         if result[i] == 'true':
             voted += 1
     if voted > activity.config:
-        return HttpResponse(json.dumps("至多能投" + activity.config + "张票"), content_type="application/json")
+        return HttpResponse(json.dumps("至多能投" + str(activity.config) + "张票"), content_type="application/json")
     if voted == 0:
         return HttpResponse(json.dumps("至少要投1张票"), content_type="application/json")
 
