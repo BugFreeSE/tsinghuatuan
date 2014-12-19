@@ -263,6 +263,21 @@ var candidates = new Observer({
             })(i))
         }
 
+        var tab = new Scroll('.ui-tab', {
+            role: 'tab',
+            autoplay: false,
+            interval: 3000
+        });
+
+        tab.on('slideStart', function() {
+            console.log('start')
+        });
+
+        tab.on('slideEnd', function() {
+            console.log('end')
+        });
+
+
 
         $('#submit_button').click(function() {
             var data = {}
