@@ -381,6 +381,9 @@ var statistics = new Observer({
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    series: {
+                        pointWidth: 12
                     }
                 },
                 legend: {
