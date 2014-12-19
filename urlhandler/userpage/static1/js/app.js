@@ -311,7 +311,7 @@ var statistics = new Observer({
     update: function(model) {
         var dataSet = [];
         var keySet = [];
-        var colors = ['#F6BD0F', '#AFD8F8', '#8BBA00', '#FF8E46', '#008E8E', '#D64646', '#8E468E'];
+        var colors = ["rgb(0,152,158)", "rgb(180,215,141)", "rgb(255,230,122)", "#CDDF74", "#36B596"];
         for (var i = 0; i < model.data.candidates.length; i++) {
             keySet.push(model.data.candidates[i].name);
             dataSet.push({y: model.data.candidates[i].vote, color: colors[i % colors.length]});
@@ -344,8 +344,8 @@ var statistics = new Observer({
                 "#3D7D53", "#97CEA2", "#EDF1B0", "#CDDF74", "#36B596"
             ]
         };*/
-        if (model.data.status == "正在进行") {
-            var chart = $('<div id="chart" style="width:100%; height: 300px"></div>');
+        if (model.data.status != "即将开始") {
+            var chart = $('<div id="chart" style="width:100%;height:300px"></div>');
             $('#statistics').children('.loading').replaceWith(chart);
             $('#chart').highcharts({
                 chart: {
