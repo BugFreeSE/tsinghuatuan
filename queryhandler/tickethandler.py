@@ -585,14 +585,14 @@ def response_vote_activities(msg):
             title = get_text_vote_title_with_status(vote, now),
             description=get_text_activity_description(vote, 100),
             #test
-            pic_url="http://g.hiphotos.baidu.com/image/pic/item/d6ca7bcb0a46f21f68b9075ef4246b600c33ae2a.jpg",
+            pic_url=SITE_DOMAIN + vote.pic.url,
             url=s_reverse_vote_detail(vote.id, user.weixin_id)
         ))
     items = []
     for vote in votes:
         items.append(get_item_dict(
             title=get_text_vote_title_with_status(vote, now),
-            pic_url="http://g.hiphotos.baidu.com/image/pic/item/d6ca7bcb0a46f21f68b9075ef4246b600c33ae2a.jpg",
+            pic_url=SITE_DOMAIN + vote.pic.url,
             url=s_reverse_vote_detail(vote.id, user.weixin_id)
         ))
         if len(items) >= 10:
