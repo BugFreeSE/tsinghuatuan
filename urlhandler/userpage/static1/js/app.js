@@ -134,6 +134,7 @@ var candidates = new Observer({
                     '<tr>' +
                         '<% if (i % 2 == 0) { %>' +
                         '<td class="candidate_img_container content_top">' +
+                            '<div class="click_area">'+
                             '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
 
                             '<div style="font-size:16px">' +
@@ -164,6 +165,8 @@ var candidates = new Observer({
                             '<div style="font-size:16px">' +
                                 '<span style="font-weight: bold"><%=candidates[i].name%></span>' +
                             '</div>' +
+                            '</div>' +
+                            '<% if (status == "正在进行") { %>' +
                             '<div class="icon-unselected"></div>' +
                             '<div class="show" style="margin-top: 25px;">' +
                                 '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
@@ -184,6 +187,7 @@ var candidates = new Observer({
             '</li>' +
             '<% } %>' +
         '</ul>'+
+        '<% if (status == "正在进行") { %>' +
         '<div style="margin: 20px;">' +
                 '<div id="submit_button">提交</div>' +
                 '<button class="hidden">提交</button>' +
@@ -245,6 +249,16 @@ var candidates = new Observer({
                 }
             })(i))
         }
+
+
+        tab.on('slideStart', function() {
+            console.log('start')
+        });
+
+        tab.on('slideEnd', function() {
+            console.log('end')
+        });
+
 
 
         $('#submit_button').click(function() {
@@ -314,7 +328,3 @@ window.addEventListener('load', function() {
     model.fetch();
     var tab = new Navigation('.ui-tab-nav', '.ui-tab-content');
 })
-
-$('body').on('touchmove', function (event) {
-    event.preventDefault();
-});
