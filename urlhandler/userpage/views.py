@@ -205,12 +205,14 @@ def vote_activity_info(request, voteActId):
     result["start"] = activity.begin_vote.strftime("%Y年%m月%d日 %H:%M")
     result["end"] = activity.end_vote.strftime("%Y年%m月%d日 %H:%M")
     result["pic"] = activity.pic.url
-    if activity.status != 1:
+    if activity.status != 1 and activity.status != 2:
         raise Http404
-    elif activity.begin_vote < datetime.datetime.now():
+    if activity.begin_vote > datetime.datetime.now():
+        result["status"] = "即将开始"
+    elif activity.end_vote > datetime.datetime.now():
         result["status"] = "正在进行"
     else:
-        result["status"] = "即将开始"
+        result["status"] = "已结束"
     candidates = activity.candidate_set.filter(status=1)
     result["candidate_num"] = len(candidates)
     result["participant_num"] = len(activity.votelog_set.all())
