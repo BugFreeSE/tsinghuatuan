@@ -13,9 +13,9 @@
         </script>
 
     </head>
-    <body background="{% static "img/bg_vote.gif" %}">
+    <body background="{% static "img/bg_vote.gif" %}" ontouchmove="event.preventDefault()">
 
-        <ul class="ui-tab-content">
+        <ul class="ui-tab-content" ontouchmove="event.stopPropagation()">
             <li>
                 <div id="home" class="content-container" style="font-size:14px;">
                 </div>
