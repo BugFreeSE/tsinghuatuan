@@ -189,6 +189,7 @@ function initializePage(){
     showButton();
     initializeResultPage();
     createTips();
+    $('div.navbar-header a.navbar-brand').attr('href', '/vote/index/').css('cursor', 'pointer');
 }
 
 function actionButton(action){

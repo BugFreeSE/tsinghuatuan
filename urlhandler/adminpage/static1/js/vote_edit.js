@@ -922,6 +922,7 @@ function move_pics_to_form(){
 function initializePage(){
     bind_validation();
     editNav();
+    $('div.navbar-header a.navbar-brand').attr('href', '/vote/index/').css('cursor', 'pointer');
 //    makeImgFormAjax();
 }
 

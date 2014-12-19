@@ -29,4 +29,5 @@ urlpatterns = patterns('',
                        url(r'^vote/end/(?P<act_id>\d+)/$', 'adminpage.views.vote_end'),
                        url(r'^vote/pub/(?P<act_id>\d+)/$', 'adminpage.views.vote_pub'),
                        url(r'^vote/detail_download/(?P<act_id>\d+)/$', 'adminpage.views.vote_download_excel'),
+                       url(r'^vote/index/', 'adminpage.views.vote_index'),
                        )

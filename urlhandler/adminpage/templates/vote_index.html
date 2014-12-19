@@ -1,0 +1,114 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- Styles -->
+
+  <link rel="stylesheet" href="/static1/lib/bs/css/bootstrap.css">
+  <link rel="stylesheet" href="/static1/css/index/main.css">
+    <link rel="stylesheet" href="/static1/css/index/website.css">
+    <!-- /Styles -->
+
+
+</head>
+<body class="website homepage" style="background-color: #e8ebf2">
+
+  <div class="promo" id="promo"><section class="positioning">
+      <article class="folioA">
+        <h1 class="sectionHeadline">新时代的微信投票平台</h1>
+        <h2 class="sectionTagline">清华大学紫荆之声</h2>
+        <p class="hpTagline">简洁，优雅，实用，美观</p>
+      </article>
+    </section>
+
+    <section class="bottomCallToAction"><div class="positioning">
+      <p><a class="sectionHeadline" href="#how-it-works"><span class="hex block"></span>查看使用方法</a></p>
+      <div class="githubLoginButton">
+        <a class="githubLoginButtonLink" href="/vote/list/"><span class="githubLoginButtonInside">点击进入活动列表</span></a>
+      </div>
+    </div></section>
+
+  </div>
+<a name="how-it-works"></a>
+  <hr>
+
+  <section class="featuredAPIs positioning">
+
+      <div id="features" class="features">
+        <header>
+            <h1 class="sectionHeadline">功能描述</h1>
+        </header>
+        <div>
+          <div class="row">
+            <div class="feature-item col-md-4 text-center"><img class="fa" src="/static1/img/detail.png" style="margin-bottom: 2em"/>
+              <h3>活动详情</h3>
+              <div class="desc" style="padding: 2em">
+                <p>在活动详情页面上，<br>您除了可以查看活动信息，<br>我们还为您提供了<br>查看统计图，<br>统计表，<br>和下载excel的功能，<br>方便您随时对投票数据进行分析。</p>
+              </div>
+            </div>
+            <div class="feature-item col-md-4 text-center"><img src="/static1/img/list.png" style="margin-bottom: 2em"/>
+              <h3>活动列表</h3>
+              <div class="desc" style="padding: 2em">
+                <p>对于一场投票活动来说，将分为5种状态：<br>暂存，已发布，投票开始，投票结束，发布结果。<br>在活动列表页面上您可以非常清晰地看到所有的活动以及所有活动的状态。<br>同时，您也可以方便地进行编辑，删除，以及查看详情等操作.</p>
+              </div>
+            </div>
+            <div class="feature-item col-md-4 text-center"><img src="/static1/img/edit.png" style="margin-bottom: 2em"/>
+              <h3>活动编辑</h3>
+              <div class="desc" style="padding: 2em">
+                <p>在活动编辑，我们会为您提供方便友好的提示，<br>帮助您一步一步完成活动的创建工作。<br>同时，您也可以上传海报以及候选人图片到我们的服务器，满足您对活动各种各样的需求。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+
+<script>
+  (function(){
+    var w=window;
+    var ic=w.Intercom;
+    if(typeof ic==="function"){
+      ic('reattach_activator');
+      ic('update',intercomSettings);
+    }else{
+      var d=document;
+      var i=function(){i.c(arguments)};
+      i.q=[];
+      i.c=function(args){i.q.push(args)};
+      w.Intercom=i;
+      function l(){
+        var s=d.createElement('script');s.type='text/javascript';
+        s.async=true;
+        s.src='https://static.intercomcdn.com/intercom.v1.js';
+        var x=d.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s,x);
+      }
+      if(w.attachEvent){
+        w.attachEvent('onload',l);
+      }else{
+        w.addEventListener('load',l,false);
+      }
+    }
+  })()
+</script><script>
+(function () {
+  var loadCSS = function (href, before, media) {
+    var st = window.document.createElement( "link" ),
+    ref = before || window.document.getElementsByTagName("script")[0];
+    st.rel = "stylesheet";
+    st.href = href;
+    st.media = "only x";
+    ref.parentNode.insertBefore(st, ref);
+    setTimeout(function () {
+      st.media = media || "all";
+    });
+    return st;
+  };
+
+})();
+</script>
+</body>
+</html>
