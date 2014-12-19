@@ -13,38 +13,38 @@
         </script>
 
     </head>
-    <body background="{% static "img/bg_vote.gif" %}" ontouchmove="event.preventDefault()">
-
-        <ul class="ui-tab-content" ontouchmove="event.stopPropagation()">
-            <li>
-                <div id="home" class="content-container" style="font-size:14px;">
-                </div>
-            </li>
-            <li>
-                <div id="candidates" class="content-container" style="font-size:14px;">
-                    <div id="candidate_info_area" class="top_border">
-                        <div class="highlight" style="font-size:x-large; text-align: center">候选人信息</div>
+    <body background="{% static "img/bg_vote.gif" %}"">
+            <div class="ui-tab">
+            <ul class="ui-tab-content">
+                <li>
+                    <div id="home" class="content-container" style="font-size:14px;">
                     </div>
-                    <div class="loading">加载中</div>
-                </div>
-            </li>
-            <li>
-                <div id="statistics" class="content-container">
-                    <div class="highlight top_border" style="font-size: x-large; text-align: center">投票结果</div>
-                    <div class="loading">活动尚未开始</div>
-                </div>
-            </li>
-        </ul>
-        <footer>
+                </li>
+                <li>
+                    <div id="candidates" class="content-container" style="font-size:14px;">
+                        <div id="candidate_info_area" class="top_border">
+                            <div class="highlight" style="font-size:x-large; text-align: center">候选人信息</div>
+                        </div>
+                        <div class="loading">加载中</div>
+                    </div>
+                </li>
+                <li>
+                    <div id="statistics" class="content-container">
+                        <div class="highlight top_border" style="font-size: x-large; text-align: center">投票结果</div>
+                        <div class="loading">活动尚未开始</div>
+                    </div>
+                </li>
+            </ul>
             <ul class="ui-tab-nav">
                 <li class="current">主页</li>
                 <li>候选人</li>
                 <li>投票结果</li>
             </ul>
-        </footer>
+        </div>
         <script type="text/javascript" src="{% static "lib/jq/jquery-1.10.2.js" %}"></script>
         <script type="text/javascript" src="{% static "js/jquery.form.min.js" %}"></script>
         <script type="text/javascript" src="{% static "js/highcharts.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui.scroller.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui-tab.js" %}"></script>
         <script type="text/javascript" src="{% static "js/app.js" %}"></script>
     </body>
