@@ -586,14 +586,14 @@ def response_vote_activities(msg):
             description=get_text_activity_description(vote, 100),
             #test
             pic_url=SITE_DOMAIN + vote.pic.url,
-            url=s_reverse_vote_detail(vote.id, user.weixin_id)
+            url=s_reverse_vote_detail(vote.id, fromuser)
         ))
     items = []
     for vote in votes:
         items.append(get_item_dict(
             title=get_text_vote_title_with_status(vote, now),
             pic_url=SITE_DOMAIN + vote.pic.url,
-            url=s_reverse_vote_detail(vote.id, user.weixin_id)
+            url=s_reverse_vote_detail(vote.id, fromuser)
         ))
         if len(items) >= 10:
             break

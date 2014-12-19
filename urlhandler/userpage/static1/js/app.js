@@ -349,7 +349,8 @@ var statistics = new Observer({
             $('#statistics').children('.loading').replaceWith(chart);
             $('#chart').highcharts({
                 chart: {
-                    type: 'bar'
+                    type: 'bar',
+                    backgroundColor: 'rgba(0, 0, 0, 0)'
                 },
                 title: {
                     text: false
@@ -412,5 +413,5 @@ model.attachObserver(statistics);
 
 window.addEventListener('load', function() {
     model.fetch();
-    var tab = new Navigation('.ui-tab-nav', '.ui-tab-content');
+    //var tab = new Navigation('.ui-tab-nav', '.ui-tab-content');
 })
