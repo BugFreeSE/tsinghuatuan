@@ -142,10 +142,10 @@ function getSmartStatus(act) {
 }
 
 function showButton(){
-    var $beginBtn = $('<a class="btnBegin mycenter">投票开始！</a>');
-    var $endBtn = $('<a class="btnEnd mycenter">结束投票！</a>');
-    var $pubBtn = $('<a class="btnPub mycenter">发布结果！</a>');
-    var $bonusBtn = $('<a class="btnBegin mycenter">我要抽奖！</a>');
+    var $beginBtn = $('<a class="btnBegin mycenter">投票开始</a>');
+    var $endBtn = $('<a class="btnEnd mycenter">结束投票</a>');
+    var $pubBtn = $('<a class="btnPub mycenter">发布结果</a>');
+    var $bonusBtn = $('<a class="btnBegin mycenter">我要抽奖</a>');
     var $editBtn = $('<a class="btnPub mycenter">编辑活动</a>');
     var edithref = '/vote/edit/'+id+'/';
     var bonushref = '/vote/bonus/'+id+'/';

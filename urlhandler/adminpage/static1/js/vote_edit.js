@@ -503,7 +503,7 @@ function setCandidate(candidate, $trNode){
        $tds.eq(1).children('span').remove();
     }
     $tds.eq(2).children('input').val(candidate.name);
-    $tds.eq(3).children('input').val(candidate.description);
+    $tds.eq(3).children('textarea').val(candidate.description);
 }
 
 function setModalData(candidate){
@@ -542,9 +542,7 @@ function returnFromModal(){
 
 function uploadIconClick(node){
     uploadImgClick(node);
-    var $img = $(node).parent().children('img');
-    $(node).remove();
-    $img.css('display', 'inline');
+
 }
 
 function uploadImgClick(node){
@@ -554,6 +552,9 @@ function uploadImgClick(node){
 
 function putCandidateImg(node){
     var $img = $(node).parent().children('img');
+    var $span = $(node).parent().children('span');
+    $span.remove();
+    $img.css('display', 'inline');
     $img.attr('src', getImgURL(node));
 }
 
@@ -601,16 +602,16 @@ function addEmptyCandidate(){
     var $tbody = $('#candidate-list').children('tbody');
     var key = $tbody.children().length+1;
     var $tr = $('<tr />');
-    var $key = $('<td style="vertical-align:middle"/>').html($tbody.children().length + 1);
+    var $key = $('<td style="vertical-align:middle;text-align: center"/>').html($tbody.children().length + 1);
     var $img = $('<img width="100" src="" onclick="uploadImgClick(this)" style="cursor:pointer;display:none"/>');
     var $upicon = $('<span class="glyphicon glyphicon-circle-arrow-up gbtn" onclick="uploadIconClick(this)"></span>');
     var $input = $('<input style="display: none" type="file" accept="image/*" onchange="putCandidateImg(this)" />');
-    var $imgtd = $('<td style="vertical-align:middle"/>').append($img).append($upicon).append($input);
+    var $imgtd = $('<td style="vertical-align:middle;text-align: center"/>').append($img).append($upicon).append($input);
     var $name = $('<td style="vertical-align:middle"/>').append($('<input type="text" class="form-control" placeholder="姓名"/>'));
-    var $descript = $('<td style="vertical-align:middle"/>').append($('<input type="text" class="form-control" placeholder="候选人描述"/>'));
+    var $descript = $('<td style="vertical-align:middle"/>').append($('<textarea type="text" class="form-control" placeholder="候选人描述" rows="1"/>'));
     var $deleteicon = $('<span class="glyphicon glyphicon-trash gbtn" onclick="deleteCandidate(this)"></span>');
     var $editicon = $('<span class="glyphicon glyphicon-pencil gbtn" data-toggle="modal" data-target="#candidate_detail" onclick="launchModal(this)"></span>');
-    var $action = $('<td style="vertical-align:middle"/>').append($deleteicon).append($editicon);
+    var $action = $('<td style="vertical-align:middle;text-align: center"/>').append($deleteicon).append($editicon);
     $tr.append($key).append($imgtd).append($name).append($descript).append($action);
     setCandKey($tr, key);
     $tbody.append($tr);
@@ -638,7 +639,7 @@ function deleteCandidate(node)
     }
     for (var i = 0; i < $tbody.children().length; i++)
     {
-        setCandKey($tbody.children().eq(i), i);
+        setCandKey($tbody.children().eq(i), i+1);
     }
 }
 

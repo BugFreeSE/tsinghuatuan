@@ -124,6 +124,7 @@ function expand_long_text(dom) {
     refdata = refdata.substring(0, refdata.length - 3);
     newhtml = dom.attr('ref-data') + ' <a style="cursor:pointer;" ref-data="' + refdata + '" ref-hint="' + dom.text() + '" onclick="expand_long_text(this);">' + dom.attr('ref-hint') + '</a>';
     par.html(newhtml);
+
 }
 
 var duringbook = new Array,beforeact = new Array, duringact = new Array;
@@ -185,29 +186,34 @@ var tdMap = {
                 ops = ['edit','delete'];
                 break;
             case '投票尚未开始':
-                ops = ['edit', 'delete'];
+                ops = ['detail', 'delete'];
                 break;
             case '投票已结束':
-                ops = ['delete'];
+                ops = ['detail', 'delete'];
                 break;
             case '正在投票':
-                ops = ['delete'];
+                ops = ['detail', 'delete'];
                 break;
             case '结果已发布':
-                ops = ['delete'];
+                ops = ['detail', 'delete'];
                 break;
         }
         var icons = {
             'edit':'pencil',
-            'delete':'trash'
+            'delete':'trash',
+            'detail': 'briefcase'
         }
         var names = {
             'edit':'编辑',
-            'delete':'删除'
+            'delete':'删除',
+            'detail':'详情'
         }
         function gethref(op, id){
             if (op === 'edit'){
                 return '/vote/edit/'+id+'/';
+            }
+            else if (op === 'detail'){
+                return '/vote/detail/'+id+'/'
             }
             else{
                 return 'javascript:delete_activity(this,'+id+')';
@@ -315,9 +321,6 @@ function appendAct(act) {
     }
     tr.css('cursor', 'pointer');
 
-    tr.click(function(){
-        window.location.href = '/vote/detail/'+act.id+'/';
-    });
     $('#tbody-activities').append(tr);
 }
 

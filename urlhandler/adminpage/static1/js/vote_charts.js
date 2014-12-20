@@ -28,8 +28,9 @@ function show_error(msg){
 }
 
 function removeBottomText(){
-    $('text[text-anchor="end"').remove();
+    $('text[zIndex=8]').remove();
 }
+
 function view_pie(vote_act, candidates){
     if (no_candidates(candidates)){
         show_error('没有候选人！');
@@ -72,7 +73,7 @@ function view_pie(vote_act, candidates){
       },
       series: [{
         type: 'pie',
-        name: 'Browser share',
+        name: '占比',
         data: candsData
 //        data: [
 //        ['Firefox',   45.0],
@@ -90,7 +91,7 @@ function view_pie(vote_act, candidates){
       }]
     });
   });
-removeBottomText()
+removeBottomText();
 
 }
 
@@ -136,7 +137,7 @@ function view_bar(vote_act, candidates){
         enabled: false
       },
       tooltip: {
-        pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
+        pointFormat: '票数: <b>{point.y}</b>'
       },
       series: [{
         name: 'Population',
