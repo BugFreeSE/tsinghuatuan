@@ -604,7 +604,7 @@ def vote_index(request):
 def vote_detail(request, act_id):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(s_reverse_admin_home())
-    return render_to_response('vote_detail.html')
+    return render_to_response('vote_detail.html', context_instance=RequestContext(request))
 
 
 def vote_edit(request, voteid):
@@ -699,4 +699,10 @@ def vote_download_excel(request, act_id):
 
     wb.save(response)
     return response
+
+def vote_set_result(request, act_id):
+    vote_act = VoteAct.objects.get(id=int(act_id))
+    vote_act.act_result = request.POST['result']
+    vote_act.save()
+    return HttpResponse()
 

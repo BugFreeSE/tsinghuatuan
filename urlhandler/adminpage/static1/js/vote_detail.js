@@ -151,7 +151,7 @@ function showButton(){
     var bonushref = '/vote/bonus/'+id+'/';
     $beginBtn.attr('onclick','actionButton("begin")');
     $endBtn.attr('onclick','actionButton("end")');
-    $pubBtn.attr('onclick','actionButton("pub")');
+    $pubBtn.attr('onclick','pubResult()');
     $bonusBtn.attr('href', '');
     $editBtn.attr('href', edithref);
     var $contain = $('#showButton');
@@ -175,6 +175,19 @@ function showButton(){
         default :
             break;
     }
+
+}
+
+function pubResult(){
+    $('#resultModal').modal();
+    $('#result-confirm').click(function(){
+        $('#result-form').ajaxSubmit({
+            url:'/vote/set_result/'+id+'/',
+            success: function(){
+                actionButton('pub');
+            }
+     });
+    })
 
 }
 
