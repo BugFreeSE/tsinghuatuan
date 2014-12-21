@@ -628,18 +628,19 @@ def vote_act_upload_img(request, act_id):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(s_reverse_admin_home())
     vote_act = VoteAct.objects.get(id=act_id)
+    timestamp = time.ctime().replace(' ', '-')
     for (name, pic) in request.FILES.items():
         if name == 'pic':
 
             vote_act.pic = pic
-            pic.name = vote_act.key + '.' + get_pic_type(pic.content_type)
+            pic.name = timestamp + '.' + get_pic_type(pic.content_type)
             vote_act.save()
         else:
             key = int(name)
             cands = Candidate.objects.filter(activity_id=vote_act.id, key=key)
             if cands.exists():
                 for cand in cands:
-                    pic.name = vote_act.key + '_cand_' + str(cand.key) + '.' + get_pic_type(pic.content_type)
+                    pic.name = timestamp + '_cand_' + str(cand.key) + '.' + get_pic_type(pic.content_type)
                     cand.pic = pic
                     cand.save()
 

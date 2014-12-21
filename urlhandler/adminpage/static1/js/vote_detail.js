@@ -178,13 +178,26 @@ function showButton(){
 
 }
 
+function defultResult(){
+    var result = '本次' + vote_activity.name + '投票活动已圆满结束，投票结果:\n';
+    for (var i in candidates){
+        if (i > 3) break;
+        var temp = '第' +(i+1)+'名：'+candidates[i].name +', '+candidates[i].votes+'票;\n';
+        result += temp;
+    }
+    result += '让我们恭喜他们！';
+    return result;
+}
+
 function pubResult(){
+    $('#act-result').val(defultResult());
     $('#resultModal').modal();
     $('#result-confirm').click(function(){
         $('#result-form').ajaxSubmit({
             url:'/vote/set_result/'+id+'/',
             success: function(){
                 actionButton('pub');
+                $('#resultModal').modal('hide');
             }
      });
     })

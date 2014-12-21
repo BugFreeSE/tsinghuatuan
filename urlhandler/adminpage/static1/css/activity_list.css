@@ -7,8 +7,7 @@
 }
 .td-description {
     word-break: break-all;
-    min-width: 100px;
-    max-width: 30em;
+    min-width: 100px;max-width: 30em;
 }
 .td-activity_time {
     width: 135px;

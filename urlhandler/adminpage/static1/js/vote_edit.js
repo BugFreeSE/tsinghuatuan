@@ -440,6 +440,7 @@ function getImgURL(node) {
      }
     //imgurl = imgURL;
     //creatImg(imgRUL);
+    $(node).attr('changed', 'true');
     return imgRUL;
 }
 
@@ -581,6 +582,7 @@ function getForm(){
 }
 
 function setForm(){
+    if (!validateStatus()) return;
     $('#input-name').val(vote_activity.name);
     $('#input-key').val(vote_activity.key);
     $('#input-start_time').val(vote_activity.start_time);
@@ -655,6 +657,7 @@ function fromVoteActDetailAPIFormat(data) {
     result.end_time = data.end_vote.replace(/-/g,"/");
     result.act_pic = data.pic;
     result.config = data.config;
+    result.status = data.status;
     result.candidates = [];
     return result;
 }
@@ -699,6 +702,7 @@ function toCandidateListAPIFormat() {
         Candidate['name'] = _candidate.name;
         Candidate['description'] = _candidate.description;
         Candidate['key'] = _candidate.no;
+        Candidate['pic'] = _candidate.pic;
         Candidate['votes'] = 0;
         Candidate['status'] = 1;
         result.push(Candidate);
@@ -759,19 +763,19 @@ function saveActivity() {
                                 showResult();
                             },
                             error: function () {
-                                setResult('create candidates failed');
+                                setResult('创建候选人失败！');
                                 showResult();
                             }
                         })
                     },
                     error: function () {
-                        setResult('delete candidate failed');
+                        setResult('删除候选人失败！');
                         showResult();
                     }
                 })
             },
             error: function () {
-                setResult('save VoteAct failed');
+                setResult('保存活动失败！');
                 showResult();
             }
         })
@@ -809,7 +813,7 @@ function saveActivity() {
     }
 }
 
-function m_publishActivity() {
+function confirmPublish(){
     showProcessing();
     getForm();
     var info = validatePage();
@@ -818,6 +822,19 @@ function m_publishActivity() {
         showResult();
         return;
     }
+    $('#confirmModal').modal('toggle');
+    $('#confirm-btn').click(function(){
+        m_publishActivity();
+        $('#confirmModal').modal('hide');
+    })
+    $('#cancel-confirm').click(function(){
+        showForm();
+    })
+
+}
+
+function m_publishActivity() {
+
     var VoteAct = JSON.stringify(toVoteActDetailAPIFormat(false));
     if (id != -1) {
         var Candidates = '{"objects":'+JSON.stringify(toCandidateListAPIFormat())+'}';
@@ -841,22 +858,23 @@ function m_publishActivity() {
                             success: function () {
                                 upload_act_img();
                                 setResult('活动发布成功!');
+                                $('#continueBtn').remove();
                                 showResult();
                             },
                             error: function () {
-                                setResult('create candidates failed');
+                                setResult('创建候选人失败！');
                                 showResult();
                             }
                         })
                     },
                     error: function () {
-                        setResult('delete candidate failed');
+                        setResult('清除候选人失败！');
                         showResult();
                     }
                 })
             },
             error: function () {
-                setResult('save VoteAct failed');
+                setResult('保存活动失败！');
                 showResult();
             }
         })
@@ -878,16 +896,17 @@ function m_publishActivity() {
                     success: function () {
                         upload_act_img();
                         setResult('活动发布成功!');
+                        $('#continueBtn').remove();
                         showResult();
                     },
                     error: function () {
-                        setResult('create candidates failed');
+                        setResult('创建候选人失败！');
                         showResult();
                     }
                 })
             },
             error: function () {
-                setResult('save VoteAct failed');
+                setResult('保存活动失败！');
                 showResult();
             }
         })
@@ -903,19 +922,15 @@ function upload_act_img(){
                 $('#act_img_form input[type="file"]').remove();
             }
      });
-//    $('#act_img_form').submit(function(){
-//        $.ajax({
-//            url:'/vote/uploadImg/'+id+'/',
-//            contentType:"multipart/form-data",
-//            success: function(){
-//                $('#act_img_form input[type="file"]').remove();
-//            }
-//        })
-//    })
+}
+
+function startWith(str1, str2){
+  var reg=new RegExp("^"+str2);
+  return reg.test(str1);
 }
 
 function move_pics_to_form(){
-    var $inputs = $('input[type="file"]');
+    var $inputs = $('input[type="file"][changed="true"]');
     $('#act_img_form').prepend($inputs);
     $('#act_img_form #modal-pic').remove();
 }
@@ -924,7 +939,16 @@ function initializePage(){
     bind_validation();
     editNav();
     $('div.navbar-header a.navbar-brand').attr('href', '/vote/index/').css('cursor', 'pointer');
-//    makeImgFormAjax();
+}
+
+function validateStatus(){
+    if (vote_activity.status >= 1){
+        setResult('活动已发布，请不要对已发布的活动进行随便更改^_^');
+        showResult();
+        $('#continueBtn').remove();
+        return false;
+    }
+    return true;
 }
 
 function editNav(){
@@ -971,6 +995,7 @@ function validate_key(str){
 }
 
 function validate_name(){
+    if ($('#input-name').val() === '') return '活动名称不能为空！';
     return ''
 }
 //'yyyy-mm-dd mm:ss'
@@ -1051,7 +1076,10 @@ function validatePage(){
     var result = '';
     for (var i in items){
         validate_action(infos[items[i]], $(divs[items[i]]), $(labels[items[i]]));
-        result += infos[items[i]];
+        var temp = infos[items[i]];
+        if (temp != ''){
+            result += temp + '\n';
+        }
     }
     result += validateCandidates(vote_activity.candidates);
     return result;
@@ -1073,6 +1101,9 @@ function validateCandidates(candidates){
     for (var i in candidates){
         if (typeof candidates[i].name === 'undefined' || candidates[i].name === ''){
             result += '第' + (parseInt(i)+1) + '号候选人姓名为空\n'
+        }
+        if (typeof candidates[i].pic === 'undefined' || candidates[i].pic === ''){
+            result += '第' + (parseInt(i)+1) + '号候选人图片为空\n'
         }
     }
     return result;
