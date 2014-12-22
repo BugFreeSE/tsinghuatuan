@@ -705,6 +705,9 @@ function toCandidateListAPIFormat() {
         Candidate['pic'] = _candidate.pic;
         Candidate['votes'] = 0;
         Candidate['status'] = 1;
+        if (_candidate.name == '' && _candidate.description == '' && _candidate.pic == '') {
+            continue;
+        }
         result.push(Candidate);
     }
     return result;

@@ -3,7 +3,7 @@ from urlhandler.models import VoteAct, Candidate, VoteLog
 from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
-from tastypie.authentication import BasicAuthentication, Authentication, MultiAuthentication
+from tastypie.authentication import BasicAuthentication, Authentication, MultiAuthentication, SessionAuthentication
 import time
 
 
@@ -25,13 +25,15 @@ class VoteActValidation(Validation):
                 errors['time'] = "Vote ends before it begins"
             if VoteAct.objects.filter(key=bundle.data['key']).exists():
                 errors['key'] = "The key is used by an exist vote activity"
-        if bundle.data['status'] == -1 and request.method == 'PATCH' \
-                and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < time.strftime('%Y-%m-%d %H:%M:%S',
-                                                                                        time.localtime(time.time())):
-            errors['delete'] = "delete failed"
-        if request.method == 'PATCH' and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < \
-                time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())):
-            errors['update'] = "update failed"
+        if not bundle.obj.begin_vote is None:
+            if bundle.data['status'] == -1 and request.method == 'PATCH' \
+                    and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < time.strftime('%Y-%m-%d %H:%M:%S',
+                                                                                            time.localtime(time.time())):
+                errors['delete'] = "delete failed"
+                return errors
+            if request.method == 'PATCH' and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < \
+                    time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())):
+                errors['update'] = "update failed"
         return errors
 
 
@@ -63,7 +65,12 @@ class CandidateResource(ModelResource):
 
 
 class VoteLogResource(ModelResource):
+    activity_id = fields.ForeignKey(VoteActResource, 'activity_id')
+
     class Meta:
         queryset = VoteLog.objects.all()
         resource_name = 'VoteLog'
+        filtering = {
+            'activity_id': ALL_WITH_RELATIONS,
+        }
         authentication = MultiAuthentication(MyAuthentication(), BasicAuthentication())

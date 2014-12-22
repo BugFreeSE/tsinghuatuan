@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>lottery</title>
+    <script src="{% static "lib/jq/jquery-1.10.2.min.js" %}"></script>
+    <script>var id = {{ id }};</script>
+    <script src="{% static "js/vote_lottery.js" %}"></script>
+</head>
+<body>
+<div id="random_number_generator">
+    <p id="random_number"></p>
+</div>
+<form>
+    <label>result:</label>
+    <textarea></textarea>
+    <input type="submit" value="submit">
+</form>
+</body>
+</html>

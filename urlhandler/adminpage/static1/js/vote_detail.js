@@ -216,6 +216,7 @@ function initializePage(){
     initializeResultPage();
     createTips();
     $('div.navbar-header a.navbar-brand').attr('href', '/vote/index/').css('cursor', 'pointer');
+    $('ul.navbar-nav li.active a.btn-link').attr('href', '/vote/list/');
 }
 
 function actionButton(action){

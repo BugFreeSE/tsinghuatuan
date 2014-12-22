@@ -707,3 +707,8 @@ def vote_set_result(request, act_id):
     vote_act.save()
     return HttpResponse()
 
+
+def vote_lottery(request, act_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(s_reverse_admin_home())
+    return render_to_response('vote_lottery.html',{'id': act_id})
