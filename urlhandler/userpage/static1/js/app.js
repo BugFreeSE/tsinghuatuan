@@ -135,7 +135,7 @@ var candidates = new Observer({
         '<% } %>' +
         '<ul class="candidate-list">' +
             '<% for (i = 0; i < candidates.length; i++) { %>' +
-            '<li class="over_hidden candidate-li">' +
+            '<li class="over_hidden candidate-li" id="candidate<%=i%>">' +
                 '<table class="one_candidate">' +
                     '<tr>' +
                         '<% if (i % 2 == 0) { %>' +
@@ -242,6 +242,8 @@ var candidates = new Observer({
                     $('.candidate_img_container:eq(' + i + ')').addClass('content_top');
                     $(hide_button[i]).addClass('hidden');
                     $(show_button[i]).removeClass('hidden');
+                    window.location.hash = '#candidate' + i;
+                    window.location.hash = '#';
                 }
             })(i))
         }
@@ -279,7 +281,7 @@ var candidates = new Observer({
             })(i))
         }
 
-        /*var tab = new Scroll('.ui-tab', {
+        var tab = new Scroll('.ui-tab', {
             role: 'tab',
             autoplay: false,
             interval: 3000
@@ -291,7 +293,7 @@ var candidates = new Observer({
 
         tab.on('slideEnd', function() {
             console.log('end')
-        });*/
+        });
 
 
 
@@ -389,5 +391,5 @@ model.attachObserver(statistics);
 
 window.addEventListener('load', function() {
     model.fetch();
-    var tab = new Navigation('.ui-tab-nav', '.ui-tab-content');
+    //var tab = new Navigation('.ui-tab-nav', '.ui-tab-content');
 })

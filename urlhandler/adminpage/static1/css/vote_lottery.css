@@ -113,7 +113,7 @@ p.title {
 #header .content, #footer .content {
     color: #FFFFFF;
     float: left;
-    /*font-family: 'Pathway Gothic One';*/
+    font-family: 'Pathway Gothic One';
     font-size: 70px;
     font-weight: 300;
     line-height: 80px;
@@ -176,7 +176,7 @@ p.title {
     font-size: 3.5em;
 }
 #textMachine > *, #textMachine2 > * {
-    padding: 0;
+    /*padding: 0;*/
 }
 .slotMachineButton {
     display: inline-block;
@@ -217,4 +217,8 @@ p.title {
 }
 #slotMachineButtonSave {
     margin-right: 40px;
+}
+
+.slotMachineContainer {
+    padding-top: 20px;
 }
