@@ -32,7 +32,8 @@ class VoteActValidation(Validation):
                 errors['delete'] = "delete failed"
                 return errors
             if request.method == 'PATCH' and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < \
-                    time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())):
+                    time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) and \
+                    (not eval(request._body).has_key('bonus_result')):
                 errors['update'] = "update failed"
         return errors
 
