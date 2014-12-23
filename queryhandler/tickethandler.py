@@ -570,7 +570,7 @@ def response_vote_activities(msg):
     fromuser = get_msg_from(msg)
     user = get_user(fromuser)
     now = datetime.datetime.fromtimestamp(get_msg_create_time(msg))
-    vote_published = VoteAct.objects.filter(status=1).order_by('begin_vote')
+    vote_published = VoteAct.objects.filter(status__gt=0).order_by('begin_vote')
     votes = list(vote_published)
     #对投票活动进行排序
     for i in range(0,len(votes)-1):
