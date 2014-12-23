@@ -137,7 +137,7 @@ var candidates = new Observer({
             '<% for (i = 0; i < candidates.length; i++) { %>' +
             '<li class="over_hidden candidate-li">' +
                 '<table class="one_candidate">' +
-                    '<tr>' +
+                    '<tr id="candidate<%=i%>">' +
                         '<% if (i % 2 == 0) { %>' +
                         '<td class="candidate_img_container content_top">' +
                             '<div class="candidate_td">' +
@@ -242,6 +242,7 @@ var candidates = new Observer({
                     $('.candidate_img_container:eq(' + i + ')').addClass('content_top');
                     $(hide_button[i]).addClass('hidden');
                     $(show_button[i]).removeClass('hidden');
+                    window.location.hash = '#candidate' + i;
                 }
             })(i))
         }
