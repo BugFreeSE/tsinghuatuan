@@ -258,7 +258,10 @@ def get_text_unbinded_setting(openid):
 #modified by YY
 def get_text_vote_title_with_status(vote, now):
     title = vote.name
-    if vote.begin_vote > now:
+    status = vote.status
+    if vote.status == 2:
+        title = '【结果已发布】\n  '+ title
+    elif vote.begin_vote > now:
         delta = vote.begin_vote - now
         title = ('【%s后开始投票】\n  ' % time_chs_format(delta)) + title
     elif vote.end_vote > now:

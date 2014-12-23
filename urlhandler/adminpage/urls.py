@@ -31,4 +31,5 @@ urlpatterns = patterns('',
                        url(r'^vote/detail_download/(?P<act_id>\d+)/$', 'adminpage.views.vote_download_excel'),
                        url(r'^vote/index/', 'adminpage.views.vote_index'),
                        url(r'^vote/set_result/(?P<act_id>\d+)/$', 'adminpage.views.vote_set_result'),
+                       url(r'^vote/lottery/(?P<act_id>\d+)/$','adminpage.views.vote_lottery'),
                        )
