@@ -13,12 +13,20 @@ $(document).ready(function(){
                 result += ' ' + $('#textMachine').children().children().eq(slotmachine.active).html();
             })
         });
-        $.get("/api/v1/VoteAct/"+id+"?format=json", function(data, status){
+        $.get("/api/v1/VoteAct/"+id+"/?format=json", function(data, status){
             $('.content h1').html(data.name+' 抽奖')
         })
     })
     $('#slotMachineButtonSave').click(function () {
-        return;
+        $.ajax({
+            type: 'PATCH',
+            url: '/api/v1/VoteAct/'+id+'/?format=json',
+            contentType: 'application/json',
+            data: {bonus_result:result},
+            success: function () {
+                setTimeout(function(){location.href='/vote/list'},5000);
+            }
+        })
     })
 
 })
