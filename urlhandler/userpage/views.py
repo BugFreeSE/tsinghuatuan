@@ -7,10 +7,12 @@ from datetime import datetime
 from urlhandler.models import User, Activity, Ticket, SettingForm, District, Seat, Candidate, VoteAct, VoteLog
 from urlhandler.settings import STATIC_URL
 import urllib, urllib2
+
 import datetime
 from django.utils import timezone
 from django.forms import *
 from queryhandler.tickethandler import get_user
+from django.db import transaction
 
 from django.db.models import F
 import json
@@ -229,7 +231,7 @@ def vote_activity_info(request, voteActId):
 
 def vote_submit(request):
     with transaction.atomic():
-        activity = VoteAct.objects.selectget(id=request.POST['activity'])
+        activity = VoteAct.objects.get(id=request.POST['activity'])
         stu_id = request.POST['student_id']
 
         if (activity.end_vote < datetime.datetime.now()):
