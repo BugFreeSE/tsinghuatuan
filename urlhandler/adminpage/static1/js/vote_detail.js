@@ -153,7 +153,7 @@ function showButton(){
     $beginBtn.attr('onclick','actionButton("begin")');
     $endBtn.attr('onclick','actionButton("end")');
     $pubBtn.attr('onclick','pubResult()');
-    $bonusBtn.attr('href', '');
+    $bonusBtn.attr('href', '/vote/lottery/'+id+'/');
     $editBtn.attr('href', edithref);
     var $contain = $('#showButton');
     $contain.children().remove();
