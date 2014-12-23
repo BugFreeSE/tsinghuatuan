@@ -1,10 +1,24 @@
-var stu_num_list = [];
+var stu_num_list = '';
 $(document).ready(function(){
+
     $.get("/api/v1/VoteLog/?format=json&limit=0&activity_id="+id, function(data, status){
         var i;
         for (i in data.objects) {
-            stu_num_list.push(data.objects[i].stu_id);
+            stu_num_list += ("<div>"+data.objects[i].stu_id+"</div>");
         }
-        $('#random_number').text(stu_num_list[0]);
+        $('#textMachine').append(stu_num_list);
+        var slotmachine = $('#textMachine').slotMachine({delay: 350, active: 0})
+        $('#slotMachineButtonShuffle').click(function () {
+            slotmachine.shuffle(5, function(){
+                result += ' ' + $('#textMachine').children().children().eq(slotmachine.active).html();
+            })
+        });
+        $.get("/api/v1/VoteAct/"+id+"?format=json", function(data, status){
+            $('.content h1').html(data.name+' 抽奖')
+        })
     })
+    $('#slotMachineButtonSave').click(function () {
+        return;
+    })
+
 })
