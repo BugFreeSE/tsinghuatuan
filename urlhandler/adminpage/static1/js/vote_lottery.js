@@ -13,7 +13,7 @@ $(document).ready(function(){
                 result += ' ' + $('#textMachine').children().children().eq(slotmachine.active).html();
             })
         });
-        $.get("/api/v1/VoteAct/"+id+"?format=json", function(data, status){
+        $.get("/api/v1/VoteAct/"+id+"/?format=json", function(data, status){
             $('.content h1').html(data.name+' 抽奖')
         })
     })
