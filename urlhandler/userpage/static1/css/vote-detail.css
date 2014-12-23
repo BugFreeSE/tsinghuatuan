@@ -71,6 +71,7 @@ li {
 	width: 300%;
 	height: 100%;
 	position: fixed;
+    transition: left 1s ease;
 }
 
 .ui-tab-content > li {

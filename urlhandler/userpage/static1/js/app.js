@@ -279,7 +279,7 @@ var candidates = new Observer({
             })(i))
         }
 
-        var tab = new Scroll('.ui-tab', {
+        /*var tab = new Scroll('.ui-tab', {
             role: 'tab',
             autoplay: false,
             interval: 3000
@@ -291,7 +291,7 @@ var candidates = new Observer({
 
         tab.on('slideEnd', function() {
             console.log('end')
-        });
+        });*/
 
 
 
@@ -320,34 +320,6 @@ var statistics = new Observer({
             keySet.push(model.data.candidates[i].name);
             dataSet.push({y: model.data.candidates[i].vote, color: colors[i % colors.length]});
         }
-        /*
-        options = {
-            series: {
-                pie: {
-                    show: true,
-                    radius: 0.8,
-                    formatter: function (label, series) {
-                        return '<div style="border:1px solid grey;font-size:8pt;text-align:center;padding:5px;color:white;">' +
-                        label + ' : ' +
-                        Math.round(series.percent) +
-                        '%</div>';
-                    },
-                    background: {
-                        opacity: 0.8,
-                        color: '#000'
-                    },
-                    label: {
-                        show: true
-                    }
-                }
-            },
-            legend: {
-                show: false
-            },
-            colors: [
-                "#3D7D53", "#97CEA2", "#EDF1B0", "#CDDF74", "#36B596"
-            ]
-        };*/
         if (model.data.status != "即将开始") {
             var chart = $('<div id="chart" style="width:100%;height:300px"></div>');
             $('#statistics').children('.loading').replaceWith(chart);
@@ -417,5 +389,5 @@ model.attachObserver(statistics);
 
 window.addEventListener('load', function() {
     model.fetch();
-    //var tab = new Navigation('.ui-tab-nav', '.ui-tab-content');
+    var tab = new Navigation('.ui-tab-nav', '.ui-tab-content');
 })
