@@ -60,8 +60,7 @@ def check_help_or_subscribe(msg):
 
 #get help information
 def response_help_or_subscribe_response(msg):
-    #去注释改菜单 modified by YY
-    modify_custom_menu(json.dumps(WEIXIN_CUSTOM_MENU_TEMPLATE, ensure_ascii=False).encode('utf-8'))
+    #modify_custom_menu(json.dumps(WEIXIN_CUSTOM_MENU_TEMPLATE, ensure_ascii=False).encode('utf-8'))
     return get_reply_single_news_xml(msg, get_item_dict(
         title=get_text_help_title(),
         description=get_text_help_description(is_authenticated(get_msg_from(msg))),
@@ -513,55 +512,56 @@ def check_vote(msg):
     return is_msgtype(msg, 'text') and (msg['Content'].lower()[:6] == '投票')
 
 def response_vote(msg):
-    now = datetime.datetime.fromtimestamp(get_msg_create_time(msg))
-    #对投票操作作出回复
-    #判断是否已绑定
-    fromuser = get_msg_from(msg)
-    user = get_user(fromuser)
-    if user is None:
-        return get_reply_text_xml(msg, get_text_unbinded_vote(fromuser))
+    with transaction.atomic():
+        now = datetime.datetime.fromtimestamp(get_msg_create_time(msg))
+        #对投票操作作出回复
+        #判断是否已绑定
+        fromuser = get_msg_from(msg)
+        user = get_user(fromuser)
+        if user is None:
+            return get_reply_text_xml(msg, get_text_unbinded_vote(fromuser))
 
-    #首先分割字符串，得到活动代码及候选人编号列表
-    received_message = get_msg_content(msg).split()
-    length = len(received_message)
-    if length == 1:
-        return get_reply_text_xml(msg, get_text_vote_help())
+        #首先分割字符串，得到活动代码及候选人编号列表
+        received_message = get_msg_content(msg).split()
+        length = len(received_message)
+        if length == 1:
+            return get_reply_text_xml(msg, get_text_vote_help())
 
-    vote_act = is_valid_vote(received_message[1])
-    if(len(vote_act) == 0):
-        return get_reply_text_xml(msg, get_text_vote_not_exist())
+        vote_act = is_valid_vote(received_message[1])
+        if(len(vote_act) == 0):
+            return get_reply_text_xml(msg, get_text_vote_not_exist())
 
-    vote_act = list(vote_act)[0]
+        vote_act = list(vote_act)[0]
 
-    if(vote_act.end_vote < now):
-        return get_reply_text_xml(msg, get_text_vote_end())
+        if(vote_act.end_vote < now):
+            return get_reply_text_xml(msg, get_text_vote_end())
 
-    if(has_voted(user.stu_id, vote_act.id)):
-        return get_reply_text_xml(msg, get_text_already_vote())
+        if(has_voted(user.stu_id, vote_act.id)):
+            return get_reply_text_xml(msg, get_text_already_vote())
 
-    if length == 2:
-        return get_reply_text_xml(msg, get_text_no_candidates_selected())
+        if length == 2:
+            return get_reply_text_xml(msg, get_text_no_candidates_selected())
 
-    n = vote_act.config
-    if(length - 2 > vote_act.config):
-        return get_reply_text_xml(msg, get_text_too_many_candidates_selected(vote_act.config))
+        n = vote_act.config
+        if(length - 2 > vote_act.config):
+            return get_reply_text_xml(msg, get_text_too_many_candidates_selected(vote_act.config))
 
-    for n in range(2, length):
-        cand = Candidate.objects.filter(activity_id=vote_act.id, key=int(received_message[n]))
-        if(len(cand) == 0):
-            return get_reply_text_xml(msg, get_text_invalid_candidates_selected())
+        for n in range(2, length):
+            cand = Candidate.objects.select_for_update().filter(activity_id=vote_act.id, key=int(received_message[n]))
+            if(len(cand) == 0):
+                return get_reply_text_xml(msg, get_text_invalid_candidates_selected())
 
-    for n in range(2, length):
-        cand = Candidate.objects.filter(activity_id=vote_act.id, key=int(received_message[n]))
-        list(cand)[0].votes += 1
-        list(cand)[0].save()
+        for n in range(2, length):
+            cand = Candidate.objects.select_for_update().filter(activity_id=vote_act.id, key=int(received_message[n]))
+            list(cand)[0].votes += 1
+            list(cand)[0].save()
 
-    preDict = dict()
-    preDict['stu_id'] = user.stu_id
-    preDict['activity_id'] = vote_act
-    VoteLog.objects.create(**preDict)
+        preDict = dict()
+        preDict['stu_id'] = user.stu_id
+        preDict['activity_id'] = vote_act
+        VoteLog.objects.create(**preDict)
 
-    return get_reply_text_xml(msg, get_text_vote_succeed())
+        return get_reply_text_xml(msg, get_text_vote_succeed())
 
 def check_vote_activities(msg):
     return handler_check_text(msg, ['投啥']) or handler_check_event_click(msg, [WEIXIN_EVENT_KEYS['vote_what']])
