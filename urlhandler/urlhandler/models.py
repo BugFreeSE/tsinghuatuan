@@ -93,6 +93,7 @@ class VoteAct(models.Model):
     status = models.IntegerField()
     pic = models.ImageField(upload_to="uploadImages/", null=True)
     act_result = models.TextField(null=True)
+    bonus_result = models.TextField(null=True)
     #status=0未发布
     #status=1已发布
     #status=-1已删除

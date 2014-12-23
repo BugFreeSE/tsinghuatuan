@@ -1,0 +1,224 @@
+@charset "utf-8";
+@import "http://fonts.googleapis.com/css?family=Pathway+Gothic+One";
+a {
+    color: #CCD500;
+    text-decoration: none;
+}
+a:hover {
+    color: #A9B119;
+    text-decoration: underline;
+}
+.clear {
+    clear: both;
+}
+html {
+    min-height: 100%;
+    position: relative;
+}
+body {
+    background: #DCD293;
+}
+footer {
+    background: none repeat scroll 0 0 #000000;
+    bottom: 0;
+    height: 80px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+b {
+    font-weight: 600;
+}
+h1 {
+    color: #000000;
+    font-size: 40px;
+    margin-bottom: 25px;
+    width: 100%;
+}
+h2 {
+    color: #000000;
+    display: table-cell;
+    float: left;
+    font-size: 45px;
+    font-weight: 300;
+    line-height: 40px;
+    margin: 0 0 50px;
+    text-align: center;
+    width: 100%;
+}
+h2 span {
+    font-weight: 400;
+}
+h3 {
+    color: #FFFFFF;
+    float: left;
+    font-family: 'Lato','sans-serif';
+    font-size: 40px;
+    font-weight: 300;
+    margin: 0 0 20px;
+    width: 100%;
+}
+h4 {
+    color: #FFFFFF;
+    display: table-cell;
+    float: left;
+    font-size: 35px;
+    font-weight: 400;
+    line-height: 31px;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+p.title {
+    color: #000000;
+    display: table-cell;
+    float: left;
+    font-size: 45px;
+    font-weight: 300;
+    line-height: 40px;
+    margin: 0 0 50px;
+    text-align: center;
+    width: 100%;
+}
+.grey {
+    color: #444444;
+}
+#header {
+    background-color: #6C5726;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 50px 0;
+    position: relative;
+    text-align: center;
+    top: 0;
+    width: 100%;
+}
+#header table, #footer table {
+    height: 100%;
+    width: 100%;
+}
+#header table td, #footer table td {
+    vertical-align: middle;
+}
+#header .content {
+    color: #FFFFFF;
+    float: left;
+    font-size: 50px;
+    font-weight: 300;
+    line-height: 42px;
+    margin-top: 30px;
+    text-align: center;
+    width: 100%;
+}
+#header .content, #footer .content {
+    color: #FFFFFF;
+    float: left;
+    font-family: 'Pathway Gothic One';
+    font-size: 70px;
+    font-weight: 300;
+    line-height: 80px;
+    margin-bottom: 20px;
+    margin-top: 2px;
+    padding: 30px 0;
+    text-align: center;
+    width: 100%;
+}
+#header .content > div, #footer .content > div {
+    display: inline-block;
+}
+#footer {
+    background-color: #6C5726;
+    border-top: 20px dotted #A48E4E;
+    height: 200px;
+    width: 100%;
+}
+.line {
+    background-color: #DCD293;
+    padding: 0;
+    width: 100%;
+}
+.machineContainer {
+    background-color: #000000;
+    height: 135px;
+    overflow: hidden;
+    padding: 5px 1px;
+}
+.slotMachine {
+    background-color: #FFFFFF;
+    border: 5px solid #000000;
+    display: inline-block;
+    height: 100px;
+    overflow: hidden;
+    padding: 0;
+    text-align: center;
+    width: 32.3333%;
+}
+.machineResult {
+    color: #FFFFFF;
+    font-weight: 900;
+    text-align: center;
+}
+.noBorder {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+    border: medium none !important;
+}
+.slotMachine .slot {
+    background-repeat: no-repeat;
+    height: 100px;
+}
+
+#textMachine, #textMachine2 {
+    display: inline-block;
+    height: 72px;
+    overflow: hidden;
+    text-align: left;
+    width: 520px;
+    font-size: 3.5em;
+}
+#textMachine > *, #textMachine2 > * {
+    /*padding: 0;*/
+}
+.slotMachineButton {
+    display: inline-block;
+    height: 100px;
+    overflow: hidden;
+    text-align: center;
+    width: 100px;
+}
+.slotMachineButton {
+    background: -moz-linear-gradient(center top , #FFC477 5%, #FB9E25 100%) repeat scroll 0 0 #FFC477;
+    border: 6px solid #EEB44F;
+    border-radius: 75px;
+    box-shadow: 0 1px 0 0 #FCE2C1 inset;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: bold;
+    height: 100px;
+    line-height: 90px;
+    margin-top: 10px;
+    text-align: center;
+    text-decoration: none;
+    text-indent: 0;
+    text-shadow: 1px 1px 0 #CC9F52;
+    width: 100px;
+}
+.slotMachineButton:hover {
+    background: -moz-linear-gradient(center top , #FB9E25 5%, #FFC477 100%) repeat scroll 0 0 #FB9E25;
+}
+.slotMachineButton:active {
+    position: relative;
+    top: 1px;
+}
+#slotMachineButtonShuffle {
+    margin-right: 200px;
+}
+#slotMachineButtonSave {
+    margin-right: 40px;
+}
+
+.slotMachineContainer {
+    padding-top: 20px;
+}

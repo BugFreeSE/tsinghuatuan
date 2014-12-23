@@ -153,7 +153,7 @@ var candidates = new Observer({
                             '<% if (status == "正在进行") { %>' +
                             '<div class="icon-unselected"></div>'+
                             '<% } %>' +
-                            '<div class="show" style="margin-top: 25px;">' +
+                            '<div class="show">' +
                                 '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
                                 '<span style="font-size:12px;">&nbsp;展开</span>' +
                             '</div>' +
@@ -181,7 +181,7 @@ var candidates = new Observer({
                             '<% if (status == "正在进行") { %>' +
                             '<div class="icon-unselected"></div>' +
                             '<% } %>' +
-                            '<div class="show" style="margin-top: 25px;">' +
+                            '<div class="show">' +
                                 '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
                                 '<span style="font-size:12px;">&nbsp;展开</span>' +
                             '</div>' +
