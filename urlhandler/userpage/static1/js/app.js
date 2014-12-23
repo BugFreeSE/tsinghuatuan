@@ -140,6 +140,7 @@ var candidates = new Observer({
                     '<tr>' +
                         '<% if (i % 2 == 0) { %>' +
                         '<td class="candidate_img_container content_top">' +
+                            '<div class="candidate_td">' +
                             '<div class="click_area">'+
                             '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
                             '<div style="font-size:16px">' +
@@ -156,6 +157,7 @@ var candidates = new Observer({
                                 '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
                                 '<span style="font-size:12px;">&nbsp;展开</span>' +
                             '</div>' +
+                            '</div>' +
                         '</td>' +
                         '<td class="candidate_info content_top">' +
                             '<p><%=candidates[i].description %></p>' +
@@ -165,6 +167,7 @@ var candidates = new Observer({
                             '<p><%=candidates[i].description %></p>' +
                         '</td>' +
                         '<td class="candidate_img_container content_top">' +
+                            '<div class="candidate_td">' +
                             '<div class="click_area">'+
                             '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
 
@@ -181,6 +184,7 @@ var candidates = new Observer({
                             '<div class="show" style="margin-top: 25px;">' +
                                 '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
                                 '<span style="font-size:12px;">&nbsp;展开</span>' +
+                            '</div>' +
                             '</div>' +
                         '</td>' +
                         '<% } %>' +

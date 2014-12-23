@@ -307,3 +307,14 @@ table td strong {
     font-weight: 900;
     color:lightcoral;
 }
+
+.show{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+.candidate_td{
+    height: 200px;
+    position: relative;
+}
