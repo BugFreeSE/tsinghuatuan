@@ -1166,6 +1166,18 @@ function initialize_nav(){
     }
     $a.text()
 }
+
+function renewPage(){
+    setForm();
+    $('div.informer')
+                .fadeIn(800, function(){
+                setTimeout(function(){
+                    $('div.informer').fadeOut(1000, function(){
+                    });
+                }, 1000);
+            });
+}
+
 $(document).ready(function(){
 
     initialzeDateTimePicker();

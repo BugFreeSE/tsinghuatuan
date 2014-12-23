@@ -1,7 +1,8 @@
 from django.conf.urls import patterns, url, include
 
 urlpatterns = patterns('',
-                       url(r'^$', 'adminpage.views.home'),
+                       url(r'^$', 'adminpage.views.vote_index'),
+                       url(r'^vote/$', 'adminpage.views.vote_index'),
                        url(r'^list/$', 'adminpage.views.activity_list'),
                        url(r'^detail/(?P<actid>\d+)/$', 'adminpage.views.activity_detail'),
                        url(r'^checkin/(?P<actid>\d+)/$', 'adminpage.views.activity_checkin'),
