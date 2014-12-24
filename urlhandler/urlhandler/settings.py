@@ -63,7 +63,7 @@ if 'SERVER_SOFTWARE' in os.environ:
             'NAME': 'wx4_tsinghuatuan',
             'USER': 'wx4',
             'PASSWORD': 'SL5iccd9ww0pyMKC',
-            'HOST': 'db.igeek.asia',
+            'HOST': 'localhost',
             'PORT': '3306',
         }
     }
@@ -81,7 +81,7 @@ elif (os.environ.get('USER', '') == 'ssastadmin') or ('SSAST_DEPLOYMENT' in os.e
             'NAME': 'wx4_tsinghuatuan',
             'USER': 'wx4',
             'PASSWORD': 'SL5iccd9ww0pyMKC',
-            'HOST': 'db.igeek.asia',
+            'HOST': 'localhost',
             'PORT': '3306',
         }
     }
@@ -92,7 +92,7 @@ else:
             'NAME': 'wx4_tsinghuatuan',
             'USER': 'wx4',
             'PASSWORD': 'SL5iccd9ww0pyMKC',
-            'HOST': 'db.igeek.asia',
+            'HOST': 'localhost',
             'PORT': '3306',
         }
     }
