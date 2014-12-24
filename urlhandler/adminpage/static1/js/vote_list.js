@@ -319,7 +319,7 @@ function appendAct(act) {
     for (key in tdMap) {
         getTd(key).html(tdActionMap[tdMap[key]](act, key)).appendTo(tr);
     }
-    tr.css('cursor', 'pointer');
+    //tr.css('cursor', 'pointer');
 
     $('#tbody-activities').append(tr);
 }
