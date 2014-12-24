@@ -10,17 +10,57 @@
     <script src="{% static "js/vote_lottery.js" %}"></script>
     <link rel="stylesheet" href="{% static "lib/bs/css/bootstrap.min.css" %}"/>
     <link rel="stylesheet" href="{% static "css/vote_lottery.css" %}"/>
+            <script></script>
 </head>
-<body>
-    <div class="line" >
 
-        <div class="content" style="text-align: center; background: url('/static1/img/machine.png') no-repeat 50% 120px; height: 500px;">
+<body>
+    <div class="line borderedContent" >
+        <table style="min-width: 100%">
+            <tbody>
+            <tr>
+                <td style="min-width: 70%">
+                    <div class="content " style="text-align: center; background: url('/static1/img/machine.png') no-repeat 50% 120px; height: 500px;">
+
+            <h1 id="vote_title">&nbsp;</h1>
+
+            <div style="clear:both; padding-top: 215px;width: 365px;margin: 0 auto;">
+                <div class="col-md-12 col-lg-8 text-center" style='padding-left:25px'>
+					<div id="textMachine" style="position:relative;top:15px">
+
+					</div>
+				</div>
+            </div>
+
+        </div>
+                </td>
+                <td style="min-width: 30%; width: 30%">
+                    <div class="borderedResult" style="width: 80%; min-height: 20%">
+                        <h1>抽奖结果</h1>
+                        <ul id="lottery_result">
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="content text-center">
+            <div id="slotMachineButtonShuffle" class="slotMachineButton" style="font-size: 25px">抽奖!</div>
+            <div id="slotMachineButtonSave" class="slotMachineButton" style="font-size: 25px">保存</div>
+        </div>
+        <div class="clearfix"></div>
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="content " style="text-align: center; background: url('/static1/img/machine.png') no-repeat 50% 120px; height: 500px;">
 
             <h1>&nbsp;</h1>
 
             <div style="clear:both; padding-top: 215px;width: 365px;margin: 0 auto;">
                 <div class="col-md-12 col-lg-8 text-center" style='padding-left:25px'>
-					<div id="textMachine">
+					<div id="textMachine" style="position:relative;top:15px">
 
 					</div>
 				</div>
@@ -29,11 +69,12 @@
         </div>
 
         <div class="content text-center">
-            <div id="slotMachineButtonShuffle" class="slotMachineButton" style="font-size: 25px">Shuffle</div>
-            <div id="slotMachineButtonSave" class="slotMachineButton" style="font-size: 25px">Save</div>
+            <div id="slotMachineButtonShuffle" class="slotMachineButton" style="font-size: 25px">抽奖!</div>
+            <div id="slotMachineButtonSave" class="slotMachineButton" style="font-size: 25px">保存</div>
         </div>
         <div class="clearfix"></div>
 
     </div>
+            <div class="informer">保存成功！即将跳转到活动列表页面.</div>
 </body>
 </html>
