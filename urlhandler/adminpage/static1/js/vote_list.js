@@ -189,13 +189,13 @@ var tdMap = {
                 ops = ['detail', 'delete'];
                 break;
             case '投票已结束':
-                ops = ['detail', 'delete'];
+                ops = ['detail'];
                 break;
             case '正在投票':
-                ops = ['detail', 'delete'];
+                ops = ['detail'];
                 break;
             case '结果已发布':
-                ops = ['detail', 'delete'];
+                ops = ['detail'];
                 break;
         }
         var icons = {

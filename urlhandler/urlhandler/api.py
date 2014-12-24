@@ -23,12 +23,13 @@ class VoteActValidation(Validation):
         if request.method == 'POST':
             if bundle.data['begin_vote'] > bundle.data['end_vote']:
                 errors['time'] = "Vote ends before it begins"
-            if VoteAct.objects.filter(key=bundle.data['key']).exists():
+            if VoteAct.objects.filter(key=bundle.data['key'],status__lt=2,status__gt=-1).exists():
                 errors['key'] = "The key is used by an exist vote activity"
         if not bundle.obj.begin_vote is None:
             if bundle.data['status'] == -1 and request.method == 'PATCH' \
-                    and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < time.strftime('%Y-%m-%d %H:%M:%S',
-                                                                                            time.localtime(time.time())):
+                    and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < \
+                    time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))\
+                    and bundle.obj.status > 0:
                 errors['delete'] = "delete failed"
                 return errors
             if request.method == 'PATCH' and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < \
