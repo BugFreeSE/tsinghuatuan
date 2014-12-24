@@ -186,27 +186,35 @@ p.title {
     width: 100px;
 }
 .slotMachineButton {
-    background: -moz-linear-gradient(center top , #FFC477 5%, #FB9E25 100%) repeat scroll 0 0 #FFC477;
-    border: 6px solid #EEB44F;
-    border-radius: 75px;
-    box-shadow: 0 1px 0 0 #FCE2C1 inset;
-    color: #FFFFFF;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 40px;
-    font-style: normal;
-    font-weight: bold;
-    height: 100px;
-    line-height: 90px;
-    margin-top: 10px;
-    text-align: center;
-    text-decoration: none;
-    text-indent: 0;
-    text-shadow: 1px 1px 0 #CC9F52;
-    width: 100px;
+    -moz-box-shadow:inset 0px 1px 0px 0px #fce2c1;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #fce2c1;
+	box-shadow:inset 0px 1px 0px 0px #fce2c1;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffc477), color-stop(1, #fb9e25) );
+	background:-moz-linear-gradient( center top, #ffc477 5%, #fb9e25 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc477', endColorstr='#fb9e25');
+	background-color:#ffc477;
+	border-radius: 75px;
+	text-indent:0px;
+	border:6px solid #eeb44f;
+	display:inline-block;
+	color:#ffffff;
+	font-size:40px;
+	font-weight:bold;
+	font-style:normal;
+	height:100px;
+	line-height:90px;
+	margin-top:10px;
+	width:100px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px #cc9f52;
+	cursor:pointer;
 }
 .slotMachineButton:hover {
-    background: -moz-linear-gradient(center top , #FB9E25 5%, #FFC477 100%) repeat scroll 0 0 #FB9E25;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fb9e25), color-stop(1, #ffc477) );
+	background:-moz-linear-gradient( center top, #fb9e25 5%, #ffc477 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fb9e25', endColorstr='#ffc477');
+	background-color:#fb9e25;
 }
 .slotMachineButton:active {
     position: relative;
@@ -221,4 +229,37 @@ p.title {
 
 h1 {
     padding-right: 30px;
+}
+
+.informer{
+    position: fixed;
+    bottom: 0.5em;
+    background-color: rgba(0,0,0,0.5);
+    width: 18em;
+    left: 50%;
+    margin-left:  -9em;
+    border-radius: 5px;
+    padding: 0.5em;
+    font-size: 1.5em;
+    color: #ffffff;
+    text-align: center;
+    display: none;
+}
+
+.borderedContent{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 30px dotted #8B814C;
+    border-bottom: 30px dotted #8B814C;
+}
+
+.borderedResult{
+    border: 20px dotted #8B814C;
+    padding: 1em;
+    padding-top: 0;
+    top: 5em;
+    height: 25em;
+    position: relative;
 }

@@ -1,0 +1,41 @@
+.td-status {
+    width: 10%;
+}
+.td-name {
+    width: 20%;
+    word-break: break-all;
+}
+.td-description {
+    word-break: break-all;
+}
+.td-time {
+    width: 20%;
+}
+.td-operations {
+    width: 12%;
+}
+.td-detail_url {
+    min-width: 70px;
+}
+.td-delete {
+    min-width: 50px;
+    text-align: center;
+}
+.td-ban{
+    color: red;
+}
+
+.informer{
+    position: fixed;
+    bottom: 0.5em;
+    background-color: rgba(0,0,0,0.5);
+    width: 6em;
+    left: 50%;
+    margin-left:  -3em;
+    border-radius: 5px;
+    padding: 0.5em;
+    font-size: 1.5em;
+    color: #ffffff;
+    text-align: center;
+    display: none;
+}
