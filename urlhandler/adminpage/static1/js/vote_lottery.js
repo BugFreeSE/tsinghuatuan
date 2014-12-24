@@ -10,7 +10,7 @@ $(document).ready(function(){
         var slotmachine = $('#textMachine').slotMachine({delay: 350, active: 0})
         $('#slotMachineButtonShuffle').click(function () {
             slotmachine.shuffle(5, function(){
-                result += ' ' + $('#textMachine').children().children().eq(slotmachine.active).html();
+                result += ' ' + $('#textMachine').children().children().eq(slotmachine.active+1).html();
             })
         });
         $.get("/api/v1/VoteAct/"+id+"/?format=json", function(data, status){
@@ -18,7 +18,17 @@ $(document).ready(function(){
         })
     })
     $('#slotMachineButtonSave').click(function () {
-        return;
+        t = {};
+        t['bonus_result'] = result;
+        $.ajax({
+            type: 'PATCH',
+            url: '/api/v1/VoteAct/'+id+'/?format=json',
+            contentType: 'application/json',
+            data: JSON.stringify(t),
+            success: function () {
+                setTimeout(function(){location.href='/vote/list'},5000);
+            }
+        })
     })
 
 })

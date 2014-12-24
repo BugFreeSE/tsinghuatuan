@@ -1,5 +1,5 @@
 @charset "utf-8";
-
+/*@import "http://fonts.googleapis.com/css?family=Pathway+Gothic+One";*/
 a {
     color: #CCD500;
     text-decoration: none;
@@ -176,7 +176,7 @@ p.title {
     font-size: 3.5em;
 }
 #textMachine > *, #textMachine2 > * {
-    /*padding: 0;*/
+    padding: 0;
 }
 .slotMachineButton {
     display: inline-block;
@@ -213,12 +213,12 @@ p.title {
     top: 1px;
 }
 #slotMachineButtonShuffle {
-    margin-right: 200px;
+    margin-right: 40px;
 }
 #slotMachineButtonSave {
     margin-right: 40px;
 }
 
-.slotMachineContainer {
-    padding-top: 20px;
+h1 {
+    padding-right: 30px;
 }
