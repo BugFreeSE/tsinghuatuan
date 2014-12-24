@@ -694,7 +694,7 @@ function getData() {
 }
 
 
-if (typeof id != 'undefined' && id != -1) { getData(); }
+
 
 
 function toCandidateListAPIFormat() {
@@ -1165,7 +1165,12 @@ function initialize_nav(){
     }
     else {
         if (typeof vote_activity.name != 'undefined'){
-            $a.html(vote_activity.name);
+            if (vote_activity.name != '') {
+                $a.html(vote_activity.name)
+            }
+            else {
+                $a.html('&nbsp;');
+            }
         }
     }
     $a.text()
@@ -1186,5 +1191,6 @@ $(document).ready(function(){
 
     initialzeDateTimePicker();
     initializePage();
-    initialize_nav();
+    //initialize_nav();
+    if (typeof id != 'undefined' && id != -1) { getData(); }
 })
