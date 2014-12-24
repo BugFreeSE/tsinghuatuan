@@ -29,8 +29,12 @@ class VoteActValidation(Validation):
             if bundle.data['status'] == -1 and request.method == 'PATCH' \
                     and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < \
                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))\
-                    and bundle.obj.status > 0:
+                    and bundle.obj.status == 1 \
+                    and bundle.obj.end_vote.strftime('%Y-%m-%d %H:%M:%S') > \
+                    time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())):
                 errors['delete'] = "delete failed"
+                return errors
+            if bundle.data['status'] == -1:
                 return errors
             if request.method == 'PATCH' and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < \
                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) and \
