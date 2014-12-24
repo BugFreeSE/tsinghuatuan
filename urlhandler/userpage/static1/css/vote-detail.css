@@ -191,10 +191,12 @@ table td strong {
 }
 
 .poster_container{
+
     height: 250px;
     display: block;
     min-height: 250px;
 	overflow: hidden;
+    display: block;
 }
 
 .coverage{
