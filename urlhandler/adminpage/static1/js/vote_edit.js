@@ -1191,6 +1191,6 @@ $(document).ready(function(){
 
     initialzeDateTimePicker();
     initializePage();
-    //initialize_nav();
+    initialize_nav();
     if (typeof id != 'undefined' && id != -1) { getData(); }
 })
