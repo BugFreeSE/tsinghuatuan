@@ -69,6 +69,7 @@ function setForm(){
     $('#input-start_time').html(start_time);
     $('#input-end_time').html(end_time);
     $('#input-config').html(vote_activity.config);
+    if (vote_activity.pic === '') vote_activity.pic = "/static1/img/default.png";
     $('#poster').attr('src',vote_activity.act_pic);
     $('#input-description').html(vote_activity.description);
 }
@@ -152,7 +153,7 @@ function showButton(){
     $beginBtn.attr('onclick','actionButton("begin")');
     $endBtn.attr('onclick','actionButton("end")');
     $pubBtn.attr('onclick','pubResult()');
-    $bonusBtn.attr('href', '');
+    $bonusBtn.attr('href', '/vote/lottery/'+id+'/');
     $editBtn.attr('href', edithref);
     var $contain = $('#showButton');
     $contain.children().remove();

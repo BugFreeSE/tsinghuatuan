@@ -596,10 +596,10 @@ def vote_list(request):
         return HttpResponseRedirect(s_reverse_admin_home())
     return render_to_response('vote_list.html')
 
+
 def vote_index(request):
-    if not request.user.is_authenticated():
-        return HttpResponseRedirect(s_reverse_admin_home())
     return render_to_response('vote_index.html')
+
 
 def vote_detail(request, act_id):
     if not request.user.is_authenticated():

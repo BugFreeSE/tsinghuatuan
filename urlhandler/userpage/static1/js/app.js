@@ -135,11 +135,12 @@ var candidates = new Observer({
         '<% } %>' +
         '<ul class="candidate-list">' +
             '<% for (i = 0; i < candidates.length; i++) { %>' +
-            '<li class="over_hidden candidate-li">' +
+            '<li class="over_hidden candidate-li" id="candidate<%=i%>">' +
                 '<table class="one_candidate">' +
                     '<tr>' +
                         '<% if (i % 2 == 0) { %>' +
                         '<td class="candidate_img_container content_top">' +
+                            '<div class="candidate_td">' +
                             '<div class="click_area">'+
                             '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
                             '<div style="font-size:16px">' +
@@ -152,9 +153,10 @@ var candidates = new Observer({
                             '<% if (status == "正在进行") { %>' +
                             '<div class="icon-unselected"></div>'+
                             '<% } %>' +
-                            '<div class="show" style="margin-top: 25px;">' +
+                            '<div class="show">' +
                                 '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
                                 '<span style="font-size:12px;">&nbsp;展开</span>' +
+                            '</div>' +
                             '</div>' +
                         '</td>' +
                         '<td class="candidate_info content_top">' +
@@ -165,6 +167,7 @@ var candidates = new Observer({
                             '<p><%=candidates[i].description %></p>' +
                         '</td>' +
                         '<td class="candidate_img_container content_top">' +
+                            '<div class="candidate_td">' +
                             '<div class="click_area">'+
                             '<img class="candidate_img shadow" src="<%=candidates[i].pic%>"/>' +
 
@@ -178,9 +181,10 @@ var candidates = new Observer({
                             '<% if (status == "正在进行") { %>' +
                             '<div class="icon-unselected"></div>' +
                             '<% } %>' +
-                            '<div class="show" style="margin-top: 25px;">' +
+                            '<div class="show">' +
                                 '<span class="icon-show"></span>' +//'<img style="width: 10px;" src="img/show.gif"/>' +
                                 '<span style="font-size:12px;">&nbsp;展开</span>' +
+                            '</div>' +
                             '</div>' +
                         '</td>' +
                         '<% } %>' +
@@ -238,6 +242,8 @@ var candidates = new Observer({
                     $('.candidate_img_container:eq(' + i + ')').addClass('content_top');
                     $(hide_button[i]).addClass('hidden');
                     $(show_button[i]).removeClass('hidden');
+                    window.location.hash = '#candidate' + i;
+                    window.location.hash = '#';
                 }
             })(i))
         }
@@ -275,22 +281,6 @@ var candidates = new Observer({
             })(i))
         }
 
-        var tab = new Scroll('.ui-tab', {
-            role: 'tab',
-            autoplay: false,
-            interval: 3000
-        });
-
-        tab.on('slideStart', function() {
-            console.log('start')
-        });
-
-        tab.on('slideEnd', function() {
-            console.log('end')
-        });
-
-
-
         $('#submit_button').click(function() {
             var data = {}
             var csrf_input = $(csrf);
@@ -316,34 +306,8 @@ var statistics = new Observer({
             keySet.push(model.data.candidates[i].name);
             dataSet.push({y: model.data.candidates[i].vote, color: colors[i % colors.length]});
         }
-        /*
-        options = {
-            series: {
-                pie: {
-                    show: true,
-                    radius: 0.8,
-                    formatter: function (label, series) {
-                        return '<div style="border:1px solid grey;font-size:8pt;text-align:center;padding:5px;color:white;">' +
-                        label + ' : ' +
-                        Math.round(series.percent) +
-                        '%</div>';
-                    },
-                    background: {
-                        opacity: 0.8,
-                        color: '#000'
-                    },
-                    label: {
-                        show: true
-                    }
-                }
-            },
-            legend: {
-                show: false
-            },
-            colors: [
-                "#3D7D53", "#97CEA2", "#EDF1B0", "#CDDF74", "#36B596"
-            ]
-        };*/
+        $('#statistics').children('.ui-dialog').remove();
+        $('#statistics').prepend($('<div class="highlight top_border" style="font-size: x-large; text-align: center">投票结果</div>'));
         if (model.data.status != "即将开始") {
             var chart = $('<div id="chart" style="width:100%;height:300px"></div>');
             $('#statistics').children('.loading').replaceWith(chart);
@@ -414,4 +378,10 @@ model.attachObserver(statistics);
 window.addEventListener('load', function() {
     model.fetch();
     //var tab = new Navigation('.ui-tab-nav', '.ui-tab-content');
+    tab = new Scroll('.ui-tab', {
+            role: 'tab',
+            autoplay: false,
+            interval: 3000
+        });
+
 })

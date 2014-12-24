@@ -651,10 +651,14 @@ function fromVoteActDetailAPIFormat(data) {
     result.name = data.name;
     result.description = data.description;
     result.key = data.key;
-    data.begin_vote = data.begin_vote.substring(0,10) + " " + data.begin_vote.substring(11,16);
-    data.end_vote = data.end_vote.substring(0,10) + " " + data.end_vote.substring(11,16);
-    result.start_time =data.begin_vote.replace(/-/g,"/");
-    result.end_time = data.end_vote.replace(/-/g,"/");
+    if (data.begin_vote != null) {
+        data.begin_vote = data.begin_vote.substring(0, 10) + " " + data.begin_vote.substring(11, 16);
+        result.start_time = data.begin_vote.replace(/-/g, "/");
+    }
+    if (data.end_vote != null) {
+        data.end_vote = data.end_vote.substring(0, 10) + " " + data.end_vote.substring(11, 16);
+        result.end_time = data.end_vote.replace(/-/g, "/");
+    }
     result.act_pic = data.pic;
     result.config = data.config;
     result.status = data.status;
@@ -690,7 +694,7 @@ function getData() {
 }
 
 
-if (typeof id != 'undefined' && id != -1) { getData(); }
+
 
 
 function toCandidateListAPIFormat() {
@@ -965,7 +969,7 @@ function bind_validation(){
     });
     $('#input-key').change(function(){
         //validate_action(validate_key(), $('#key-form'), $('#key-label'))
-        $.get("/api/v1/VoteAct/?format=json&status__gte=0&status_lt=2&key="+$('#input-key').val(),function (data) {
+        $.get("/api/v1/VoteAct/?format=json&status__gte=0&status__lt=2&key="+$('#input-key').val(),function (data) {
             var key_exist_flag = true;
             for (var i in data.objects) {
                 if (data.objects[i].id != id) {
@@ -1161,14 +1165,32 @@ function initialize_nav(){
     }
     else {
         if (typeof vote_activity.name != 'undefined'){
-            $a.html(vote_activity.name);
+            if (vote_activity.name != '') {
+                $a.html(vote_activity.name)
+            }
+            else {
+                $a.html('&nbsp;');
+            }
         }
     }
     $a.text()
 }
+
+function renewPage(){
+    setForm();
+    $('div.informer')
+                .fadeIn(800, function(){
+                setTimeout(function(){
+                    $('div.informer').fadeOut(1000, function(){
+                    });
+                }, 1000);
+            });
+}
+
 $(document).ready(function(){
 
     initialzeDateTimePicker();
     initializePage();
-    initialize_nav();
+    //initialize_nav();
+    if (typeof id != 'undefined' && id != -1) { getData(); }
 })

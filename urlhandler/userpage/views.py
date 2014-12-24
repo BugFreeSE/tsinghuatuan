@@ -7,10 +7,12 @@ from datetime import datetime
 from urlhandler.models import User, Activity, Ticket, SettingForm, District, Seat, Candidate, VoteAct, VoteLog
 from urlhandler.settings import STATIC_URL
 import urllib, urllib2
+
 import datetime
 from django.utils import timezone
 from django.forms import *
 from queryhandler.tickethandler import get_user
+from django.db import transaction
 
 from django.db.models import F
 import json
@@ -228,41 +230,42 @@ def vote_activity_info(request, voteActId):
     return HttpResponse(json.dumps(result), content_type="application/json")
 
 def vote_submit(request):
-    activity = VoteAct.objects.get(id=request.POST['activity'])
-    stu_id = request.POST['student_id']
+    with transaction.atomic():
+        activity = VoteAct.objects.get(id=request.POST['activity'])
+        stu_id = request.POST['student_id']
 
-    if (activity.end_vote < datetime.datetime.now()):
-        return HttpResponse(json.dumps("投票已结束"), content_type="application/json")
+        if (activity.end_vote < datetime.datetime.now()):
+            return HttpResponse(json.dumps("投票已结束"), content_type="application/json")
 
-    if (int(stu_id) == -1):
-        return HttpResponse(json.dumps("请先绑定学号"), content_type="application/json")
+        if (int(stu_id) == -1):
+            return HttpResponse(json.dumps("请先绑定学号"), content_type="application/json")
 
-    record = VoteLog.objects.filter(stu_id=stu_id, activity_id=activity.id)
-    if len(record) > 0:
-        return HttpResponse(json.dumps("只能投一次票"), content_type="application/json")
+        record = VoteLog.objects.filter(stu_id=stu_id, activity_id=activity.id)
+        if len(record) > 0:
+            return HttpResponse(json.dumps("只能投一次票"), content_type="application/json")
 
-    result = request.POST.getlist("voted[]")
-    voted = 0
-    for i in range(0, len(result)):
-        if result[i] == 'true':
-            voted += 1
-    if voted > activity.config:
-        return HttpResponse(json.dumps("至多能投" + str(activity.config) + "张票"), content_type="application/json")
-    if voted == 0:
-        return HttpResponse(json.dumps("至少要投1张票"), content_type="application/json")
+        result = request.POST.getlist("voted[]")
+        voted = 0
+        for i in range(0, len(result)):
+            if result[i] == 'true':
+                voted += 1
+        if voted > activity.config:
+            return HttpResponse(json.dumps("至多能投" + str(activity.config) + "张票"), content_type="application/json")
+        if voted == 0:
+            return HttpResponse(json.dumps("至少要投1张票"), content_type="application/json")
 
-    for i in range(0, len(result)):
-        if result[i] == 'true':
-            cand = Candidate.objects.filter(activity_id=activity.id, key=i + 1)
-            list(cand)[0].votes += 1
-            list(cand)[0].save()
+        for i in range(0, len(result)):
+            if result[i] == 'true':
+                cand = Candidate.objects.select_for_update().filter(activity_id=activity.id, key=i + 1)
+                list(cand)[0].votes += 1
+                list(cand)[0].save()
 
-    preDict = dict()
-    preDict['stu_id'] = stu_id
-    preDict['activity_id'] = activity
-    VoteLog.objects.create(**preDict)
+        preDict = dict()
+        preDict['stu_id'] = stu_id
+        preDict['activity_id'] = activity
+        VoteLog.objects.create(**preDict)
 
-    return HttpResponse(json.dumps("投票成功"), content_type="application/json")
+        return HttpResponse(json.dumps("投票成功"), content_type="application/json")
 
 
 def get_candidate_list(request, voteActId):

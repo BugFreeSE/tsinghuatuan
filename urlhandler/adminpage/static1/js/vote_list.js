@@ -192,7 +192,7 @@ var tdMap = {
                 ops = ['detail', 'delete'];
                 break;
             case '正在投票':
-                ops = ['detail', 'delete'];
+                ops = ['detail'];
                 break;
             case '结果已发布':
                 ops = ['detail', 'delete'];
@@ -319,7 +319,7 @@ function appendAct(act) {
     for (key in tdMap) {
         getTd(key).html(tdActionMap[tdMap[key]](act, key)).appendTo(tr);
     }
-    tr.css('cursor', 'pointer');
+    //tr.css('cursor', 'pointer');
 
     $('#tbody-activities').append(tr);
 }
