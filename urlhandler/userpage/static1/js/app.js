@@ -281,7 +281,7 @@ var candidates = new Observer({
             })(i))
         }
 
-        var tab = new Scroll('.ui-tab', {
+        tab = new Scroll('.ui-tab', {
             role: 'tab',
             autoplay: false,
             interval: 3000
@@ -392,4 +392,7 @@ model.attachObserver(statistics);
 window.addEventListener('load', function() {
     model.fetch();
     //var tab = new Navigation('.ui-tab-nav', '.ui-tab-content');
+})
+
+$(window).resize(function() {
 })
