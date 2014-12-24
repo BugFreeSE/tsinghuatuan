@@ -10,6 +10,10 @@ $(document).ready(function () {
         var slotmachine = $('#textMachine').slotMachine({delay: 350, active: 0})
         $('#slotMachineButtonShuffle').click(function () {
             slotmachine.shuffle(5, function () {
+                var tmp = $('#textMachine').children().children().eq(slotmachine.active + 1).html();
+                if (result.indexOf(tmp) >= 0) {
+                    return;
+                }
                 result += ' ' + $('#textMachine').children().children().eq(slotmachine.active + 1).html();
                 setLotteryResult();
             })

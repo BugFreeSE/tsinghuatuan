@@ -34,7 +34,7 @@ class VoteActValidation(Validation):
                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())):
                 errors['delete'] = "delete failed"
                 return errors
-            if bundle.data['status'] == -1:
+            if bundle.data['status'] <= 0:
                 return errors
             if request.method == 'PATCH' and bundle.obj.begin_vote.strftime('%Y-%m-%d %H:%M:%S') < \
                     time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) and \
