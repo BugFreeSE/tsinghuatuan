@@ -410,7 +410,7 @@ function check(n){
 }
 
 function getImgURL(node) {
-    var imgURL = "";
+    imgURL = "";
     try{
         file = null;
         if(node.files && node.files[0] ){
@@ -441,6 +441,14 @@ function getImgURL(node) {
     //imgurl = imgURL;
     //creatImg(imgRUL);
     $(node).attr('changed', 'true');
+    if (!imgRUL){
+        var key = $(node).attr('key');
+        var $img = $('img[key='+key+']');
+        imgRUL = $img.attr('src');
+        if (!imgRUL){
+            imgRUL = '';
+        }
+    }
     return imgRUL;
 }
 
