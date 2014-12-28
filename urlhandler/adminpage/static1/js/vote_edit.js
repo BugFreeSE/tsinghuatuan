@@ -456,7 +456,7 @@ function createImg(id, imgRUL){   //根据指定URL创建一个Img对象
     $(id).attr("src",imgRUL);
 }
 
-var defaultPic = "../../static1/img/default.png";
+var defaultPic = "/static1/img/default.png";
 
 
 var vote_activity = {};
