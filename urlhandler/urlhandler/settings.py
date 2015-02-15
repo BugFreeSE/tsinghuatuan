@@ -90,8 +90,8 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'wx4_tsinghuatuan',
-            'USER': 'wx4',
-            'PASSWORD': 'SL5iccd9ww0pyMKC',
+            'USER': 'root',
+            'PASSWORD': 'lishu-wakaka',
             'HOST': 'localhost',
             'PORT': '3306',
         }
