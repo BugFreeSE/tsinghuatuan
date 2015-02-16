@@ -1,7 +1,7 @@
 {% extends "vote_list.html" %}
 
 {% block activity-title %}
-清韵烛光
+编辑活动
 {% endblock %}
 
 {% load staticfiles %}
@@ -180,7 +180,7 @@
                         <div class="col-sm-3 form-group" style="right:-15%;">
                             <div class="form-group">
                                 <img id="poster" class="img-responsive img-thumbnail" style="width:100%;" alt=""
-                                     src="../../static1/img/default.png"/>
+                                     src="/vote/static1/img/default.png"/>
                             </div>
                             <div class="form-group">
                                 <label style="display: block;text-align: center;">海报预览</label>
@@ -194,7 +194,7 @@
 
         <div role="tabpanel" class="tab-pane fade" id="candidate">
             <div class="panel panel-default">
-                <div class="panel-heading">添加候选人</div>
+                <div class="panel-heading">候选人列表</div>
                 <div class="panel-body" id="tickets_setting">
 
 
@@ -215,7 +215,7 @@
 
                                 </tbody>
                             </table>
-                            <a  style="margin:30px;" href="javascript:addEmptyCandidate()">添加候选人</a>
+                            <a  style="margin:30px;" href="javascript:void(0)" onclick="addEmptyCandidate()">添加候选人</a>
                         </div>
                     </div>
 

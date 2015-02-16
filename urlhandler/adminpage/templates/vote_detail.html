@@ -6,7 +6,7 @@
 
 {% block nav-li %}
     <li class="{% block activity-list-active %}active{% endblock %}"><a class="btn-link"
-                                                                        href="{% url "adminpage.views.activity_list" %}">活动列表</a>
+                                                                        href="{% url "adminpage.views.vote_list" %}">活动列表</a>
     </li>
     {% block nav-li-ext %}{% endblock %}
 {% endblock %}
@@ -41,7 +41,7 @@
     <a name="info_point"></a>
     <div class="container" id="detail-form">
         <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data"
-              action="{% url "adminpage.views.activity_post" %}" id="activity-form">
+              action="{% url "adminpage.views.vote_list" %}" id="activity-form">
             {% csrf_token %}
 
                 <div class="panel panel-default">
