@@ -115,7 +115,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static1-files/
 
-STATIC_URL = '/static1/'
+STATIC_URL = '/vote/static1/'
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static1').replace('\\', '/')
 
@@ -140,4 +140,4 @@ TEMPLATE_LOADERS = (
 )
 
 MEDIA_ROOT = 'media/'
-MEDIA_URL = '/webhost_media/'
+MEDIA_URL = '/vote/webhost_media/'

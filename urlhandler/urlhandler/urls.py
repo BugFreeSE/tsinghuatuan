@@ -16,9 +16,9 @@ urlpatterns = patterns('',
     # Examples:
     #url(r'^$', 'userpage.views.home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^webhost_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^u/', include('userpage.urls')),
-    url(r'^', include('adminpage.urls')),
+    url(r'^vote/webhost_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    url(r'^vote/admin/', include(admin.site.urls)),
+    url(r'^vote/u/', include('userpage.urls')),
+    url(r'^vote/', include('adminpage.urls')),
     url(r'^api/', include(v1_api.urls)),
 ) + staticfiles_urlpatterns()
