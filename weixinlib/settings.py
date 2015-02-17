@@ -22,7 +22,7 @@ WEIXIN_EVENT_KEYS = {
     'ticket_setting': 'V1001_SETTING',
     'ticket_book': 'V1001_BOOK',
     #modified by YY
-    'vote_what': 'TSINGHUA_VOTE_WHAT'
+    'vote_what': 'V1001_VOTE'
 }
 # modified by YY
 WEIXIN_CUSTOM_MENU_TEMPLATE = {

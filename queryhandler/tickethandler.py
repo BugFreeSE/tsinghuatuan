@@ -61,12 +61,12 @@ def check_help_or_subscribe(msg):
 #get help information
 def response_help_or_subscribe_response(msg):
     #modify_custom_menu(json.dumps(WEIXIN_CUSTOM_MENU_TEMPLATE, ensure_ascii=False).encode('utf-8'))
-    return get_reply_single_news_xml(msg, get_item_dict(
-        title=get_text_help_title(),
-        description=get_text_help_description(is_authenticated(get_msg_from(msg))),
-        url=s_reverse_help()
-    ))
-
+    # return get_reply_single_news_xml(msg, get_item_dict(
+    #     title=get_text_help_title(),
+    #     description=get_text_help_description(is_authenticated(get_msg_from(msg))),
+    #     url=s_reverse_help()
+    # ))
+    return
 
 #check book command
 def check_bookable_activities(msg):
@@ -601,3 +601,20 @@ def response_vote_activities(msg):
         return get_reply_news_xml(msg, items)
     else:
         return get_reply_text_xml(msg, get_text_no_votes())
+
+
+def check_subscribe(msg):
+    return handler_check_events(msg, ['subscribe'])
+
+
+def response_subscribe(msg):
+    user = User.objects.create(weixin_id=msg['FromUserName'], stu_id=0, status=1)
+    user.save()
+
+
+def check_unsubscribe(msg):
+    return handler_check_events(msg, ['unsubscribe'])
+
+
+def response_unsubscribe(msg):
+    User.objects.filter(weixin_id=msg['FromUserName']).update(status=0)
