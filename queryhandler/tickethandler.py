@@ -608,8 +608,13 @@ def check_subscribe(msg):
 
 
 def response_subscribe(msg):
-    user = User.objects.create(weixin_id=msg['FromUserName'], stu_id=0, status=1)
-    user.save()
+    if len(User.objects.filter(weixin_id=msg['FromUserName'])) == 0:
+        User.objects.filter(weixin_id=msg['FromUserName']).update(status=0)
+        return ''
+    else:
+        user = User.objects.create(weixin_id=msg['FromUserName'], stu_id=msg['FromUserName'], status=1)
+        user.save()
+        return ''
 
 
 def check_unsubscribe(msg):
@@ -618,3 +623,4 @@ def check_unsubscribe(msg):
 
 def response_unsubscribe(msg):
     User.objects.filter(weixin_id=msg['FromUserName']).update(status=0)
+    return ''

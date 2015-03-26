@@ -140,4 +140,4 @@ TEMPLATE_LOADERS = (
 )
 
 MEDIA_ROOT = 'media/'
-MEDIA_URL = '/vote/webhost_media/'
+MEDIA_URL = '/webhost_media/'
