@@ -109,5 +109,5 @@ class Candidate(models.Model):
 
 
 class VoteLog(models.Model):
-    stu_id = models.IntegerField()
+    stu_id = models.CharField(max_length=255)
     activity_id = models.ForeignKey(VoteAct)

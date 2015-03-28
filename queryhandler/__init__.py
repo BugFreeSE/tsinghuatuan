@@ -24,8 +24,8 @@ handler_list = [
     {'check': check_vote,                   'response': response_vote},
     {'check': check_vote_activities,        'response': response_vote_activities},
     #modified by lishu
-    {'check': check_subscribe,              'response': response_subscribe},
-    {'check': check_unsubscribe,            'response': response_unsubscribe}
+    #{'check': check_subscribe,              'response': response_subscribe},
+    #{'check': check_unsubscribe,            'response': response_unsubscribe}
 ]
 
 

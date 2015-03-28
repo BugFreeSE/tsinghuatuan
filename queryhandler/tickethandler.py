@@ -500,8 +500,8 @@ def is_valid_vote(vote_key):
     act = VoteAct.objects.filter(key=vote_key)
     return act
 
-def has_voted(stu_id, vote_id):
-    record = VoteLog.objects.filter(stu_id=stu_id, activity_id=vote_id)
+def has_voted(fromuser, vote_id):
+    record = VoteLog.objects.filter(openid=fromuser, activity_id=vote_id)
     if(len(record) != 0):
         return True
     return False
@@ -517,9 +517,9 @@ def response_vote(msg):
         #对投票操作作出回复
         #判断是否已绑定
         fromuser = get_msg_from(msg)
-        user = get_user(fromuser)
-        if user is None:
-            return get_reply_text_xml(msg, get_text_unbinded_vote(fromuser))
+        #user = get_user(fromuser)
+        #if user is None:
+        #    return get_reply_text_xml(msg, get_text_unbinded_vote(fromuser))
 
         #首先分割字符串，得到活动代码及候选人编号列表
         received_message = get_msg_content(msg).split()
@@ -536,7 +536,7 @@ def response_vote(msg):
         if(vote_act.end_vote < now):
             return get_reply_text_xml(msg, get_text_vote_end())
 
-        if(has_voted(user.stu_id, vote_act.id)):
+        if(has_voted(fromuser, vote_act.id)):
             return get_reply_text_xml(msg, get_text_already_vote())
 
         if length == 2:
@@ -557,7 +557,7 @@ def response_vote(msg):
             list(cand)[0].save()
 
         preDict = dict()
-        preDict['stu_id'] = user.stu_id
+        preDict['stu_id'] = fromuser
         preDict['activity_id'] = vote_act
         VoteLog.objects.create(**preDict)
 
@@ -568,7 +568,7 @@ def check_vote_activities(msg):
 
 def response_vote_activities(msg):
     fromuser = get_msg_from(msg)
-    user = get_user(fromuser)
+    #user = get_user(fromuser)
     now = datetime.datetime.fromtimestamp(get_msg_create_time(msg))
     vote_published = VoteAct.objects.filter(status__gt=0).order_by('begin_vote')
     votes = list(vote_published)
