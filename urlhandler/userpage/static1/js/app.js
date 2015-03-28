@@ -287,7 +287,7 @@ var candidates = new Observer({
             data[csrf_input.attr('name')] = csrf_input.val();
             var checks = $('[name=voted]');
             data['activity'] = vote_id
-            data['student_id'] = stu_id
+            data['openid'] = openid
             data['voted'] = []
             for (var i = 0; i < checks.length; i++) {
                 data['voted'].push(checks[i].checked)

@@ -188,12 +188,12 @@ def details_view(request, activityid):
 
 #modified by YY
 def vote_details_view(request, voteActId, openid):
-    user = User.objects.filter(weixin_id=openid, status=1)
-    if user.exists():
-        stu_id = user[0].stu_id
-    else:
-        stu_id = -1
-    variables = RequestContext(request, {'vote_id': voteActId , 'stu_id': stu_id})
+    #user = User.objects.filter(weixin_id=openid, status=1)
+    #if user.exists():
+    #    stu_id = user[0].stu_id
+    #else:
+    #    stu_id = -1
+    variables = RequestContext(request, {'vote_id': voteActId , 'openid': openid})
     return render_to_response('votedetails.html', variables)
 
 #modified by WYW
@@ -232,15 +232,15 @@ def vote_activity_info(request, voteActId):
 def vote_submit(request):
     with transaction.atomic():
         activity = VoteAct.objects.get(id=request.POST['activity'])
-        stu_id = request.POST['student_id']
+        openid = request.POST['openid']
 
         if (activity.end_vote < datetime.datetime.now()):
             return HttpResponse(json.dumps("投票已结束"), content_type="application/json")
 
-        if (int(stu_id) == -1):
-            return HttpResponse(json.dumps("请先绑定学号"), content_type="application/json")
+        #if (int(stu_id) == -1):
+        #    return HttpResponse(json.dumps("请先绑定学号"), content_type="application/json")
 
-        record = VoteLog.objects.filter(stu_id=stu_id, activity_id=activity.id)
+        record = VoteLog.objects.filter(openid=openid, activity_id=activity.id)
         if len(record) > 0:
             return HttpResponse(json.dumps("只能投一次票"), content_type="application/json")
 
@@ -261,7 +261,7 @@ def vote_submit(request):
                 list(cand)[0].save()
 
         preDict = dict()
-        preDict['stu_id'] = stu_id
+        preDict['openid'] = openid
         preDict['activity_id'] = activity
         VoteLog.objects.create(**preDict)
 
